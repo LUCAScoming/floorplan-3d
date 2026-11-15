@@ -27,6 +27,10 @@ __pycache__/
 # 浏览器调试 / 自动化临时文件
 .playwright-cli/
 
+# 打包产物
+*.fpk
+.fpk_stage/
+
 # 环境变量
 .env
 .env.*

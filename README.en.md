@@ -120,7 +120,7 @@ plans/              Plans saved on the server (JSON)
 requirements.txt    Python dependencies
 push.py             Git push script (python push.py [commit message])
 pull.py             Git pull script (python pull.py, rebase-based)
-pack_fpk.py         Packaging script (python pack_fpk.py pack / unpack / run, produces a .fpk package)
+pack_fpk.py         fnOS (飞牛 NAS) app packaging script (python pack_fpk.py [version], produces a .fpk installer)
 ```
 
 ## Customizing the Floor Plan

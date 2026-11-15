@@ -120,7 +120,7 @@ plans/              服务器端保存的方案 JSON
 requirements.txt    Python 依赖
 push.py             Git 推送脚本（python push.py [提交说明]）
 pull.py             Git 拉取脚本（python pull.py，rebase 方式）
-pack_fpk.py         打包分发脚本（python pack_fpk.py pack / unpack / run，生成 .fpk 程序包）
+pack_fpk.py         飞牛 fnOS 应用打包脚本（python pack_fpk.py [版本号]，生成 .fpk 安装包）
 ```
 
 ## 自定义户型
