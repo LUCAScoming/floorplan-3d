@@ -65,6 +65,29 @@ def read_version():
     return ""
 
 
+def bump_version(ver):
+    """发布成功后：manifest 的 version= 自动叠加一位（patch +1），作为下次发布的默认版本。"""
+    m = re.match(r"(\d+)\.(\d+)\.(\d+)$", ver)
+    if not m:
+        print(f"[提示] 版本号 {ver} 不是三段数字，manifest 版本号不自动叠加")
+        return None
+    nv = f"{m.group(1)}.{m.group(2)}.{int(m.group(3)) + 1}"
+    MANIFEST.write_text(re.sub(r"(?m)^version=.*$", "version=" + nv,
+                               MANIFEST.read_text(encoding="utf-8"), count=1),
+                        encoding="utf-8")
+    print(f"[版本] manifest 版本号已叠加：{ver} → {nv}")
+    return nv
+
+
+def commit_bump(nv):
+    """把叠加后的 manifest 提交并推送（失败不阻断，留待下次 push.py 一起提交）。"""
+    if run(["git", "add", "manifest"]) != 0:
+        return
+    if run(["git", "commit", "-m", f"chore: 发布完成，manifest 版本号自动叠加至 {nv}"]) != 0:
+        return
+    run(["git"] + git_auth_args() + ["push", "origin", "main"])
+
+
 def build_all(ver):
     """1/3 构建全平台产物。"""
     print("=== 1/3 构建全平台安装包 ===")
@@ -216,6 +239,10 @@ def main():
     print("============== 发布结果 ==============")
     if rel_rc == 0:
         print(f"[成功] v{ver} 发布完成：标签 + Release + 全平台安装包均已就绪")
+        nv = bump_version(ver)
+        if nv:
+            commit_bump(nv)
+            print("[提示] 下次发布将默认使用 v" + nv + "；发布前可顺手更新 manifest 的 changelog=")
     else:
         print("[未完成] 仅完成本地构建；标签 " + ("已推送" if tag_ok else "未推送成功"))
         print("        Release 未创建，见上方说明")
@@ -228,7 +255,3 @@ if __name__ == "__main__":
         sys.exit(main())
     except KeyboardInterrupt:
         sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()
