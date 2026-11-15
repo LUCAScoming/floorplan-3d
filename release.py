@@ -124,6 +124,9 @@ def github_release(ver):
     hashes = [(p.name, hashlib.sha256(p.read_bytes()).hexdigest(), p.stat().st_size)
               for p in arts]
     notes = release_notes(ver, hashes)
+    # 附带应用图标（供发布页/第三方源 icon_url 引用），存在才上传，不计入发布说明表格
+    icons = [p for p in (ROOT / "ICON.PNG", ROOT / "ICON_256.PNG") if p.exists()]
+    arts += icons
     for name, sha, _ in hashes:
         print(f"  {name}  sha256={sha[:16]}...")
 
