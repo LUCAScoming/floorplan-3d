@@ -71,7 +71,7 @@ class Handler(BaseHTTPRequestHandler):
         return False
 
     def _plan_name(self):
-        return plan_path(unquote(urlsplit(self.path).path[len("/api/plans/")]))
+        return plan_path(unquote(urlsplit(self.path).path[len("/api/plans/"):]))
 
     def do_GET(self):
         path = urlsplit(self.path).path
