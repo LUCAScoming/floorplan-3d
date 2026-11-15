@@ -30,6 +30,7 @@ __pycache__/
 # 打包产物
 *.fpk
 .fpk_stage/
+tools/bin/
 
 # 环境变量
 .env
