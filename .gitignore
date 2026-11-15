@@ -20,6 +20,13 @@ npm-debug.log*
 .cache/
 tmp/
 
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 浏览器调试 / 自动化临时文件
+.playwright-cli/
+
 # 环境变量
 .env
 .env.*

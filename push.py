@@ -129,10 +129,10 @@ def main():
     env = load_env()
     message = " ".join(sys.argv[1:]).strip()
     ensure_repo(env)
+    commit_all(message)                             # 先提交本地改动，pull --rebase 才不会因未提交内容拒绝执行
     first_push = not remote_has_branch(env)
     if not first_push:
-        git("pull", "--rebase", "origin", BRANCH)   # 先同步远端，避免冲突堆积
-    commit_all(message)
+        git("pull", "--rebase", "origin", BRANCH)   # 同步远端，避免冲突堆积
     git("push", "-u", "origin", BRANCH)
     print(f"[ok] 已推送到 origin/{BRANCH}" + ("（首次推送）" if first_push else ""))
 
