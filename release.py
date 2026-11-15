@@ -25,11 +25,11 @@ BUILDERS = ["pack_fpk.py", "pack_win.py", "pack_linux.py", "pack_mac.py"]
 
 
 def artifacts(ver):
-    return [ROOT / f"floorplan3d-{ver}-x86.fpk",
-            ROOT / f"floorplan3d-{ver}-arm.fpk",
-            ROOT / f"FloorPlanDesigner-win-{ver}.zip",
-            ROOT / f"FloorPlanDesigner-linux-{ver}.tar.gz",
-            ROOT / f"FloorPlanDesigner-mac-{ver}.tar.gz"]
+    return [ROOT / f"floorplan3d-{ver}-fnos-x86.fpk",
+            ROOT / f"floorplan3d-{ver}-fnos-arm.fpk",
+            ROOT / f"floorplan3d-{ver}-windows.zip",
+            ROOT / f"floorplan3d-{ver}-linux.tar.gz",
+            ROOT / f"floorplan3d-{ver}-macos.tar.gz"]
 
 
 def load_env(path):
@@ -102,8 +102,8 @@ def api(url, token, data=None, method=None, ctype="application/json"):
 def release_notes(ver, hashes):
     lines = [f"## 户型装修设计 v{ver}", "",
              "| 产物 | 适用平台 | 大小 | SHA256 |", "|---|---|---|---|"]
-    plat = {"x86.fpk": "飞牛 fnOS（x86）", "arm.fpk": "飞牛 fnOS（ARM）",
-            "win-": "Windows", "linux-": "Linux", "mac-": "macOS"}
+    plat = {"fnos-x86.fpk": "飞牛 fnOS（x86）", "fnos-arm.fpk": "飞牛 fnOS（ARM）",
+            "windows": "Windows", "linux": "Linux", "macos": "macOS"}
     for name, sha, size in hashes:
         key = next((k for k in plat if k in name), "")
         lines.append(f"| {name} | {plat.get(key, '')} | {size / 1024 / 1024:.1f} MB | {sha[:16]}... |")

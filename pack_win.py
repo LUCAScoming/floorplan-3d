@@ -1,7 +1,7 @@
 """户型装修设计 · Windows 版打包脚本
 
 把网页 + 服务器打成 Windows 直接运行的 zip 包（无需安装任何第三方依赖）。
-产物：FloorPlanDesigner-win-<版本>.zip
+产物：floorplan3d-<版本>-windows.zip
   ├─ app.py            纯标准库服务器（python app.py 即启动）
   ├─ 启动服务器.bat     双击启动（需系统装有 Python，自动打开浏览器）
   ├─ index.html + libs 网页与本地依赖库
@@ -45,7 +45,7 @@ README_TEXT = """# 户型装修设计 · Windows 版
 
 
 def pack_win(version: str) -> None:
-    out = ROOT / f"FloorPlanDesigner-win-{version}.zip"
+    out = ROOT / f"floorplan3d-{version}-windows.zip"
     if out.exists():
         out.unlink()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:

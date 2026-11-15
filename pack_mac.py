@@ -1,7 +1,7 @@
 """户型装修设计 · macOS 版打包脚本
 
 把网页 + 服务器打成 macOS 直接运行的 tar.gz 包（无需安装任何第三方依赖）。
-产物：FloorPlanDesigner-mac-<版本>.tar.gz
+产物：floorplan3d-<版本>-macos.tar.gz
   ├─ start.command     双击即可在 Finder 中运行（浏览器自动打开）
   ├─ start.sh          命令行启动
   ├─ app.py            纯标准库服务器（python3 app.py 即启动）
@@ -48,7 +48,7 @@ README_TEXT = """# 户型装修设计 · macOS 版
 
 
 def pack_mac(version: str) -> None:
-    top = f"FloorPlanDesigner-mac-{version}"
+    top = f"floorplan3d-{version}-macos"
     out = ROOT / f"{top}.tar.gz"
     with tarfile.open(out, "w:gz") as z:
         for name, mode in (("start.command", 0o755),   # Finder 双击入口

@@ -1,7 +1,7 @@
 """户型装修设计 · Linux 版打包脚本
 
 把网页 + 服务器打成 Linux 直接运行的 tar.gz 包（无需安装任何第三方依赖）。
-产物：FloorPlanDesigner-linux-<版本>.tar.gz
+产物：floorplan3d-<版本>-linux.tar.gz
   ├─ app.py            纯标准库服务器（python3 app.py 即启动）
   ├─ start.sh          启动脚本（需系统装有 python3，自动打开浏览器）
   ├─ index.html + libs 网页与本地依赖库
@@ -34,8 +34,8 @@ README_TEXT = """# 户型装修设计 · Linux 版
 
 ## 运行
 ```bash
-tar xzf FloorPlanDesigner-linux-*.tar.gz
-cd FloorPlanDesigner-linux-*
+tar xzf floorplan3d-*-linux.tar.gz
+cd floorplan3d-*-linux
 chmod +x start.sh && ./start.sh
 # 或手动执行：python3 app.py --port 8765
 ```
@@ -51,27 +51,27 @@ chmod +x start.sh && ./start.sh
 
 
 def pack_linux(version: str) -> None:
-    out = ROOT / f"FloorPlanDesigner-linux-{version}.tar.gz"
+    out = ROOT / f"floorplan3d-{version}-linux.tar.gz"
     with tarfile.open(out, "w:gz") as z:
         for name, text, mode in (("start.sh", SH_TEXT, 0o755),
                                  ("README-linux.md", README_TEXT, 0o644)):
             data = text.encode("utf-8")
-            ti = tarfile.TarInfo(f"FloorPlanDesigner-linux-{version}/{name}")
+            ti = tarfile.TarInfo(f"floorplan3d-{version}-linux/{name}")
             ti.size = len(data)
             ti.mode = mode
             ti.mtime = 0
             z.addfile(ti, io.BytesIO(data))
-        add_file(z, ROOT / "app.py", f"FloorPlanDesigner-linux-{version}/app.py")
+        add_file(z, ROOT / "app.py", f"floorplan3d-{version}-linux/app.py")
         for item in WWW_FILES:
             src = ROOT / item
             if src.is_file():
-                add_file(z, src, f"FloorPlanDesigner-linux-{version}/{item}")
+                add_file(z, src, f"floorplan3d-{version}-linux/{item}")
             elif src.is_dir():
                 for f in sorted(src.rglob("*")):
                     if f.is_file() and not any(p in EXCLUDE for p in f.relative_to(src).parts) \
                             and f.suffix.lower() != ".pyc":
                         add_file(z, f,
-                                 f"FloorPlanDesigner-linux-{version}/{item}/{f.relative_to(src)}")
+                                 f"floorplan3d-{version}-linux/{item}/{f.relative_to(src)}")
     print(f"[ok] 已生成 {out.name}（{out.stat().st_size / 1024 / 1024:.1f} MB）")
     print("[i] Linux 用户解压后执行 ./start.sh 即可运行（需装有 python3）")
 

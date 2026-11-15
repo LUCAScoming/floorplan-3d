@@ -5,7 +5,7 @@
 用官方 fnpack 分别打包 x86 / arm 两个架构。
 
 用法：python pack_fpk.py [版本号]
-产物：floorplan3d-<版本>-x86.fpk / floorplan3d-<版本>-arm.fpk
+产物：floorplan3d-<版本>-fnos-x86.fpk / floorplan3d-<版本>-fnos-arm.fpk
 安装：fnOS 应用中心 → 手动安装 → 按 NAS 架构选择 .fpk
 """
 import hashlib
@@ -367,7 +367,7 @@ def do_pack(version: str) -> None:
             src = ROOT / f"{APPNAME}.fpk"
             if not src.exists():
                 sys.exit(f"[x] 未找到构建产物 {APPNAME}.fpk（{plat}）")
-            out = ROOT / f"{APPNAME}-{version}-{plat}.fpk"
+            out = ROOT / f"{APPNAME}-{version}-fnos-{plat}.fpk"
             shutil.move(str(src), str(out))
             patch_cmd_modes(out)
             md5 = hashlib.md5(out.read_bytes()).hexdigest()
