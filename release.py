@@ -66,7 +66,7 @@ def read_version():
 
 
 def bump_version(ver):
-    """发布成功后：manifest 的 version= 自动叠加一位（patch +1），作为下次发布的默认版本。"""
+    """发布成功后：manifest 的 version= 自动叠加一位（patch +1），作为下次发布的默认版本；网页状态栏的 APP_VER 同步。"""
     m = re.match(r"(\d+)\.(\d+)\.(\d+)$", ver)
     if not m:
         print(f"[提示] 版本号 {ver} 不是三段数字，manifest 版本号不自动叠加")
@@ -75,13 +75,19 @@ def bump_version(ver):
     MANIFEST.write_text(re.sub(r"(?m)^version=.*$", "version=" + nv,
                                MANIFEST.read_text(encoding="utf-8"), count=1),
                         encoding="utf-8")
-    print(f"[版本] manifest 版本号已叠加：{ver} → {nv}")
+    for f in [ROOT / "index.html", ROOT / "app" / "www" / "index.html"]:
+        if f.exists():
+            t = f.read_text(encoding="utf-8")
+            nt = re.sub(r"const APP_VER = '[\d.]+';", f"const APP_VER = '{nv}';", t, count=1)
+            if nt != t:
+                f.write_text(nt, encoding="utf-8")
+    print(f"[版本] manifest 与网页 APP_VER 已叠加：{ver} → {nv}")
     return nv
 
 
 def commit_bump(nv):
-    """把叠加后的 manifest 提交并推送（失败不阻断，留待下次 push.py 一起提交）。"""
-    if run(["git", "add", "manifest"]) != 0:
+    """把叠加后的版本号提交并推送（失败不阻断，留待下次 push.py 一起提交）。"""
+    if run(["git", "add", "manifest", "index.html", "app/www/index.html"]) != 0:
         return
     if run(["git", "commit", "-m", f"chore: 发布完成，manifest 版本号自动叠加至 {nv}"]) != 0:
         return

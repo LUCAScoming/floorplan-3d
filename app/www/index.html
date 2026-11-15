@@ -2020,7 +2020,7 @@
       <span id="hover" class="only2d"></span>
       <span class="spacer"></span>
       <span id="tip"></span>
-      <span class="copy">© 2026 RONGLINC93 · <a href="https://github.com/RONGLINC93/floorplan-3d" target="_blank" rel="noopener" data-en="GitHub">GitHub 仓库</a></span>
+      <span class="copy">v<span id="appVer"></span> · © 2026 RONGLINC93 · <a href="https://github.com/RONGLINC93/floorplan-3d" target="_blank" rel="noopener" data-en="GitHub">GitHub 仓库</a></span>
     </footer>
   </div>
   <div id="toast"></div>
@@ -2031,6 +2031,7 @@
     /* ======================= 多语言（中文 / English，默认中文） ======================= */
     const LANG_KEY = 'huxing-lang';
     const LANGS = ['zh', 'zht', 'en'];             // 简体 / 繁體（台湾用字）/ English
+    const APP_VER = '1.0.4';                       // 应用版本号：release.py 发布后自动同步 manifest 的 version=
     let LANG = (() => { try { const l = localStorage.getItem(LANG_KEY); return LANGS.includes(l) ? l : 'zh'; } catch (e) { return 'zh'; } })();
     // 简 → 繁：先按词替换一字多义的字，再逐字查表（表由 OpenCC s2tw 按本页用到的字生成）
     const S2T_PHRASES = [['布置', '佈置'], ['布局', '佈局'], ['台面', '檯面'], ['复制', '複製']];
@@ -2062,6 +2063,7 @@
     // 静态文案：元素上写 data-en / data-en-title，中文原文首次切换时存进 dataset
     function applyStaticLang() {
       document.documentElement.lang = { zh: 'zh-CN', zht: 'zh-TW', en: 'en' }[LANG];
+      const av = document.querySelector('#appVer'); if (av) av.textContent = APP_VER;   // 状态栏版本号
       syncPlanName();
       document.querySelectorAll('[data-en]').forEach(el => { el.dataset.zh ??= el.textContent; el.textContent = tr(el.dataset.zh, el.dataset.en); });
       document.querySelectorAll('[data-en-title]').forEach(el => { el.dataset.zhTitle ??= el.title; el.title = tr(el.dataset.zhTitle, el.dataset.enTitle); });
