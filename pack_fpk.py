@@ -93,8 +93,9 @@ def manifest_text(version: str) -> str:
 def compose_yaml() -> str:
     return (f"services:\n  {APPNAME}:\n    image: ${{wizard_image:-python:3.12-slim}}\n"
             f"    container_name: {APPNAME}\n    working_dir: /app\n"
-            f"    command: >\n      sh -c \"pip install --no-cache-dir -r requirements.txt &&\n"
-            f"             python app.py\"\n    volumes:\n      - ./:/app:ro\n"
+            f"    command: >\n      sh -c \"pip install --no-index --find-links=/app/deps\n"
+            f"             -r requirements.txt && python app.py\"\n    volumes:\n"
+            f"      - ../:/app:ro\n"
             f"    ports:\n      - \"{PORT}:{PORT}\"\n    restart: unless-stopped\n")
 
 
@@ -171,6 +172,27 @@ def sc_text() -> str:
             f"src.ports=\"{PORT}/tcp\"\ndst.ports=\"{PORT}/tcp\"\n")
 
 
+# ---------------------------------------------------------------- 离线依赖 wheel
+def ensure_deps(dst: Path):
+    """用本机 pip 下载 Linux x86_64 / CPython 3.12 的依赖 wheel，容器内离线安装。
+    缓存在 tools/deps，避免重复下载。"""
+    cache = ROOT / "tools" / "deps"
+    if not cache.exists() or not any(cache.glob("*.whl")):
+        print("[i] 下载 Linux 平台依赖 wheel（首次较慢）...")
+        cache.mkdir(parents=True, exist_ok=True)
+        subprocess.run(
+            [sys.executable, "-m", "pip", "download",
+             "-r", str(ROOT / "requirements.txt"),
+             "--only-binary=:all:",
+             "--python-version", "312",
+             "--platform", "manylinux2014_x86_64",
+             "-d", str(cache)],
+            check=True)
+    dst.mkdir(parents=True, exist_ok=True)
+    for whl in cache.glob("*.whl"):
+        shutil.copy(whl, dst / whl.name)
+
+
 # ---------------------------------------------------------------- 组装 fnpack 工程目录
 def build_project(stage: Path, version: str) -> Path:
     """生成 fnpack 要求的应用工程目录结构。"""
@@ -194,8 +216,9 @@ def build_project(stage: Path, version: str) -> Path:
 
     (app / "docker").mkdir(parents=True, exist_ok=True)
     (app / "docker" / "docker-compose.yaml").write_text(compose_yaml(), encoding="utf-8", newline="\n")
-    for f in ("app.py", "requirements.txt"):      # compose 把工程 app/ 挂载为 /app 运行
+    for f in ("app.py", "requirements.txt"):      # compose 把 app.tgz 解压根（..）挂载为 /app
         (app / f).write_bytes((ROOT / f).read_bytes())
+    ensure_deps(app / "deps")                     # Linux 平台 wheel，容器内离线安装
 
     ui = app / "ui"
     ui.mkdir(parents=True, exist_ok=True)
