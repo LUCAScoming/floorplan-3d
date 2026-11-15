@@ -33,6 +33,7 @@ __pycache__/
 .fpk_stage/
 tools/bin/
 tools/deps/
+*.tar.gz
 
 # 环境变量
 .env
