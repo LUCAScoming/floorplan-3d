@@ -908,6 +908,20 @@
       color: #b3372a
     }
 
+    .plan-card.demo {
+      border-style: dashed;
+      color: var(--teal)
+    }
+
+    .plan-card.demo:hover {
+      border-color: var(--teal);
+      background: var(--paper)
+    }
+
+    .plan-card.demo .pc-nm {
+      color: var(--teal)
+    }
+
     /* 应用内确认弹窗（替代原生 confirm） */
     #askMask {
       position: fixed;
@@ -5325,6 +5339,17 @@
         };
         listEl.appendChild(card);
       }
+      /* 内置示例方案：点击载入画板（不入服务器，可「保存方案」留存） */
+      const demo = document.createElement('div'); demo.className = 'plan-card demo';
+      demo.innerHTML = `<div class="pc-nm"></div><div class="pc-tm"></div>`;
+      demo.querySelector('.pc-nm').textContent = tr('示例：示范户型', 'Demo: sample floor plan');
+      demo.querySelector('.pc-tm').textContent = tr('两居室参考案例，载入后可随意改造', 'A sample two-bedroom — load it and remodel freely');
+      demo.onclick = () => {
+        cloudLoad(defaultState(), '');
+        mask.classList.remove('open');
+        toast(tr('已载入示例方案，用「保存方案」可留存到服务器', 'Demo plan loaded — use "Save plan" to keep it on the server'));
+      };
+      listEl.appendChild(demo);
       const newB = mask.querySelector('#cloudNew'), impB = mask.querySelector('#cloudImport');
       newB.textContent = tr('新建空方案', 'New empty plan');
       impB.textContent = tr('导入方案', 'Import plan');
