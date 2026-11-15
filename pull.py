@@ -10,6 +10,7 @@
 """
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -74,6 +75,17 @@ def remote_has_branch(env: dict) -> bool:
     return BRANCH in r.stdout
 
 
+def countdown(seconds: int = 5):
+    """结束后倒计时，让双击运行的用户看清结果，按 Ctrl+C 可立即退出。"""
+    try:
+        for i in range(seconds, 0, -1):
+            print(f"\r{i} 秒后退出...", end="", flush=True)
+            time.sleep(1)
+        print("\r" + " " * 20, end="\r", flush=True)
+    except KeyboardInterrupt:
+        pass
+
+
 def main():
     env = load_env()
     ensure_repo(env)
@@ -82,6 +94,7 @@ def main():
         return
     git("pull", "--rebase", "origin", BRANCH)
     print(f"[ok] 已从 origin/{BRANCH} 拉取并 rebase")
+    countdown()
 
 
 if __name__ == "__main__":

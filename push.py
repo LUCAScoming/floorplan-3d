@@ -11,6 +11,7 @@
 import json
 import subprocess
 import sys
+import time
 import urllib.request
 from datetime import date
 from pathlib import Path
@@ -125,6 +126,17 @@ def commit_all(message: str) -> bool:
     return True
 
 
+def countdown(seconds: int = 5):
+    """结束后倒计时，让双击运行的用户看清结果，按 Ctrl+C 可立即退出。"""
+    try:
+        for i in range(seconds, 0, -1):
+            print(f"\r{i} 秒后退出...", end="", flush=True)
+            time.sleep(1)
+        print("\r" + " " * 20, end="\r", flush=True)
+    except KeyboardInterrupt:
+        pass
+
+
 def main():
     env = load_env()
     message = " ".join(sys.argv[1:]).strip()
@@ -135,6 +147,7 @@ def main():
         git("pull", "--rebase", "origin", BRANCH)   # 同步远端，避免冲突堆积
     git("push", "-u", "origin", BRANCH)
     print(f"[ok] 已推送到 origin/{BRANCH}" + ("（首次推送）" if first_push else ""))
+    countdown()
 
 
 if __name__ == "__main__":
