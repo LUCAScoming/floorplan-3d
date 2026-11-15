@@ -765,7 +765,10 @@
     .cloud-row {
       display: flex;
       align-items: center;
-      gap: 8px
+      gap: 8px;
+      padding: 4px 6px;
+      border-radius: 8px;
+      cursor: pointer
     }
 
     .cloud-row .nm {
@@ -781,6 +784,184 @@
       font-size: 11px;
       color: var(--muted);
       white-space: nowrap
+    }
+
+    /* 保存方案弹窗：名称输入行 / 底部按钮 / 选中行高亮 */
+    #cloudNameRow {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px
+    }
+
+    #cloudName {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font: inherit;
+      background: var(--paper);
+      color: var(--ink);
+      outline: none
+    }
+
+    #cloudName:focus {
+      border-color: var(--accent)
+    }
+
+    #cloudFoot {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 12px
+    }
+
+    .cloud-row.sel {
+      background: var(--accent-soft)
+    }
+
+    .cloud-row:not(.sel):hover {
+      background: var(--paper)
+    }
+
+    .cloud-row.sel .nm {
+      color: var(--accent)
+    }
+
+    /* 欢迎界面（打开方案弹窗）：品牌标题 + 方案卡片网格 */
+    #cloudBox.welcome {
+      width: min(560px, 94vw)
+    }
+
+    .welcome-sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+      margin-bottom: 10px
+    }
+
+    #cloudList.grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px
+    }
+
+    #cloudList.grid .muted {
+      grid-column: 1 / -1
+    }
+
+    .plan-card {
+      position: relative;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s
+    }
+
+    .plan-card:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft)
+    }
+
+    .plan-card .pc-nm {
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-right: 14px
+    }
+
+    .plan-card.cur .pc-nm {
+      color: var(--accent)
+    }
+
+    .pc-badge {
+      display: inline-block;
+      font-size: 10px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 999px;
+      padding: 1px 6px;
+      margin-left: 6px;
+      vertical-align: 1px
+    }
+
+    .plan-card .pc-tm {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px
+    }
+
+    .plan-card .pc-del {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1;
+      padding: 2px
+    }
+
+    .plan-card .pc-del:hover {
+      color: #b3372a
+    }
+
+    .plan-card.demo {
+      border-style: dashed;
+      color: var(--teal)
+    }
+
+    .plan-card.demo:hover {
+      border-color: var(--teal);
+      background: var(--paper)
+    }
+
+    .plan-card.demo .pc-nm {
+      color: var(--teal)
+    }
+
+    /* 应用内确认弹窗（替代原生 confirm） */
+    #askMask {
+      position: fixed;
+      inset: 0;
+      background: rgba(40, 30, 20, .35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 60
+    }
+
+    #askMask.open {
+      display: flex
+    }
+
+    #askBox {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      width: min(360px, 92vw)
+    }
+
+    #askMsg {
+      white-space: pre-line;
+      line-height: 1.6;
+      font-weight: 500
+    }
+
+    #askFoot {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 14px
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff
     }
 
     /* ---------- 2D / 3D 切换 ---------- */
@@ -1688,6 +1869,7 @@
           <button class="btn" id="newPlan" data-en="New empty plan">新建空方案</button>
           <button class="btn" id="cloudList" data-en="Open plan…">打开方案…</button>
           <button class="btn" id="cloudSave" data-en="Save plan">保存方案</button>
+          <button class="btn" id="closePlan" data-en="Close plan">关闭方案</button>
           <div class="sep"></div>
           <button class="btn" id="importJson" data-en="Import plan">导入方案</button>
           <button class="btn" id="exportJson" data-en="Export plan JSON">导出方案 JSON</button>
@@ -2034,6 +2216,16 @@
       return { furniture: defaultFurniture(), rooms, demolished: [], measures: [], walls: [], openings: [], deletedWalls: [], removedB: [], bover: {}, roomsExtra: [] };
     }
 
+    /* 完全空白方案：隐藏全部内置房间 / 墙体 / 门窗，家具清零（启动默认与「新建空方案」共用） */
+    function blankState() {
+      const s = defaultState();
+      s.furniture = [];
+      s.rooms = {};                                              // 不渲染任何房间地面
+      s.deletedWalls = WALLS.map((w, i) => 'w' + i);             // 移除全部内置墙
+      s.removedB = [...DOORS.map((d, i) => 'd' + i), ...WINS.map((w, i) => 'w' + i), ...SLIDES.map((s, i) => 's' + i)];   // 移除全部原始门窗
+      return s;
+    }
+
     function fixState(s) {
       const d = defaultState();
       s.rooms = (s.rooms && typeof s.rooms === 'object' && !Array.isArray(s.rooms)) ? s.rooms : d.rooms;   // 空对象 = 真正的空方案，原样保留
@@ -2070,7 +2262,7 @@
 
 
     /* ======================= 状态 / 历史 ======================= */
-    let state = defaultState();                    // 方案不再存本地：持久化走「文件 ▾ → 保存方案」
+    let state = blankState();                      // 启动即空白方案；持久化走「文件 ▾ → 保存方案」
     const ui = {
       tool: 'select', drawTool: 'select', sel: null, multi: [], mq: null, mA: null, mCur: null,
       layers: { dims: true, labels: true, furn: true, grid: false, axis: true, bearing: false, wallSnap: true }
@@ -2981,10 +3173,10 @@
       })[b.dataset.a]());
     }
 
-    function clearLayout() {
+    async function clearLayout() {
       const n = state.furniture.length;
       if (!n) return toast(tr('当前没有布置任何家具', 'There is no furniture to clear'));
-      if (!confirm(tr(`确定清空全部 ${n} 件家具 / 家电吗？\n墙体、地面材料和测量线会保留，可点「撤销」恢复。`, `Remove all ${n} furniture / appliance items?\nWalls, flooring and measurements are kept. You can Undo this.`))) return;
+      if (!await uiConfirm(tr(`确定清空全部 ${n} 件家具 / 家电吗？\n墙体、地面材料和测量线会保留，可点「撤销」恢复。`, `Remove all ${n} furniture / appliance items?\nWalls, flooring and measurements are kept. You can Undo this.`))) return;
       ui.sel = null; mutate(() => state.furniture = []);
       toast(tr('已清空布置，可点「撤销」恢复', 'Layout cleared — Undo to restore'));
     }
@@ -4986,16 +5178,12 @@
       });
       e.target.value = '';
     };
-    $('#reset').onclick = () => { if (confirm(tr('恢复为默认设计方案？（可撤销）', 'Reset to the default design? (undoable)'))) { const b = snap(); state = defaultState(); ui.sel = null; commit(b); renderAll(); syncPlanName(''); } };
+    $('#reset').onclick = async () => { if (await uiConfirm(tr('恢复为默认设计方案？（可撤销）', 'Reset to the default design? (undoable)'))) { const b = snap(); state = defaultState(); ui.sel = null; commit(b); renderAll(); syncPlanName(''); } };
 
-    $('#newPlan').onclick = () => {
-      if (!confirm(tr('新建完全空白的方案？（清空房间、墙体、门窗与家具，从零开始；当前布置可 Ctrl+Z 恢复）', 'Create a truly blank plan? (rooms, walls, doors / windows and furniture all cleared; Ctrl+Z restores the current layout)'))) return;
+    $('#newPlan').onclick = async () => {
+      if (!await uiConfirm(tr('新建完全空白的方案？（清空房间、墙体、门窗与家具，从零开始；当前布置可 Ctrl+Z 恢复）', 'Create a truly blank plan? (rooms, walls, doors / windows and furniture all cleared; Ctrl+Z restores the current layout)'))) return;
       const b = snap();
-      state = defaultState();
-      state.furniture = [];
-      state.rooms = {};                                              // 不渲染任何房间地面
-      state.deletedWalls = WALLS.map((w, i) => 'w' + i);             // 移除全部内置墙
-      state.removedB = [...DOORS.map((d, i) => 'd' + i), ...WINS.map((w, i) => 'w' + i), ...SLIDES.map((s, i) => 's' + i)];   // 移除全部原始门窗
+      state = blankState();
       ui.sel = null; commit(b); renderAll(); syncPlanName('');
       toast(tr('已新建空白方案，可用「设计 → 画墙」从零搭建', 'Blank plan created — draw walls in "Design" mode'));
     };
@@ -5021,57 +5209,169 @@
     addEventListener('beforeunload', () => { if (autoSaveT) { clearTimeout(autoSaveT); autoSaveT = null; autoSave(); } });
     document.addEventListener('visibilitychange', () => { if (document.hidden && autoSaveT) { clearTimeout(autoSaveT); autoSaveT = null; autoSave(); } });
 
-    $('#cloudSave').onclick = async () => {
-      const name = (prompt(tr('方案名称：', 'Plan name:'), tr('我的方案', 'My plan')) || '').trim();
-      if (!name) return;
-      try {
-        const r = await fetch(planURL(name), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...state, layers: ui.layers }) });
-        if (!r.ok) throw 0;
-        syncPlanName(name);
-        toast(tr('已保存：' + name, 'Saved: ' + name));
-      } catch (e) { cloudFail(); }
-    };
+    /* 应用内确认弹窗（替代原生 confirm），返回 Promise<boolean>；消息支持 \n 换行 */
+    function uiConfirm(msg, okText, cancelText) {
+      return new Promise(resolve => {
+        let mask = $('#askMask');
+        if (!mask) {
+          mask = document.createElement('div'); mask.id = 'askMask';
+          mask.innerHTML = `<div id="askBox"><div id="askMsg"></div><div id="askFoot"><button class="btn" id="askCancel"></button><button class="btn primary" id="askOk"></button></div></div>`;
+          document.body.appendChild(mask);
+        }
+        const done = v => { mask.classList.remove('open'); resolve(v); };
+        mask.querySelector('#askMsg').textContent = msg;
+        const okB = mask.querySelector('#askOk'), cB = mask.querySelector('#askCancel');
+        okB.textContent = okText || tr('确定', 'OK');
+        cB.textContent = cancelText || tr('取消', 'Cancel');
+        okB.onclick = () => done(true);
+        cB.onclick = () => done(false);
+        mask.onclick = e => { if (e.target === mask) done(false); };
+        mask.classList.add('open');
+        okB.focus();
+      });
+    }
 
-    $('#cloudList').onclick = async () => {
-      let plans;
-      try { const r = await fetch('/api/plans'); if (!r.ok) throw 0; plans = await r.json(); }
-      catch (e) { cloudFail(); return; }
+    /* 方案弹窗骨架：标题 + 副标题 + 可选名称输入行 + 方案列表 + 底部按钮；mode: 'save' | 'open' */
+    function cloudMask(mode) {
       let mask = $('#cloudMask');
       if (!mask) {
         mask = document.createElement('div'); mask.id = 'cloudMask';
-        mask.innerHTML = `<div id="cloudBox"><b id="cloudTitle"></b><div id="cloudList"></div><button class="btn" id="cloudClose"></button></div>`;
+        mask.innerHTML = `<div id="cloudBox"><b id="cloudTitle"></b><div id="cloudSub" class="welcome-sub"></div><div id="cloudNameRow"><input id="cloudName" maxlength="80" autocomplete="off"></div><div id="cloudList"></div><div id="cloudFoot"><button class="btn" id="cloudNew"></button><button class="btn" id="cloudImport"></button><button class="btn" id="cloudOk"></button><button class="btn" id="cloudClose"></button></div></div>`;
         document.body.appendChild(mask);
       }
       mask.onclick = e => { if (e.target === mask || e.target.id === 'cloudClose') mask.classList.remove('open'); };
-      $('#cloudTitle').textContent = tr('已保存的方案', 'Saved plans');
-      $('#cloudClose').textContent = tr('关闭', 'Close');
+      const save = mode === 'save';
+      mask.querySelector('#cloudBox').classList.toggle('welcome', !save);
+      mask.querySelector('#cloudList').classList.toggle('grid', !save);
+      mask.querySelector('#cloudSub').style.display = save ? 'none' : '';
+      mask.querySelector('#cloudNameRow').style.display = save ? 'flex' : 'none';
+      mask.querySelector('#cloudOk').style.display = save ? '' : 'none';
+      mask.querySelector('#cloudNew').style.display = save ? 'none' : '';
+      mask.querySelector('#cloudImport').style.display = save ? 'none' : '';
+      return mask;
+    }
+
+    /* 保存方案：弹窗内输入名称，点选已有方案行即为覆盖（同名时二次确认） */
+    $('#cloudSave').onclick = async () => {
+      let plans;
+      try { const r = await fetch('/api/plans'); if (!r.ok) throw 0; plans = await r.json(); }
+      catch (e) { cloudFail(); return; }
+      const mask = cloudMask('save');
+      mask.querySelector('#cloudTitle').textContent = tr('保存方案', 'Save plan');
+      const nameEl = mask.querySelector('#cloudName');
+      nameEl.value = planName && planName !== AUTO_NAME ? planName : tr('我的方案', 'My plan');
       const listEl = mask.querySelector('#cloudList');
-      const empty = () => { listEl.innerHTML = `<div class="muted">${tr('还没有保存的方案', 'No saved plans yet')}</div>`; };
+      const others = plans.filter(p => p.name !== AUTO_NAME);
+      listEl.innerHTML = '';
+      if (!others.length) listEl.innerHTML = `<div class="muted">${tr('还没有保存过方案，输入名称即可保存为新方案', 'No plans yet — type a name to save a new one')}</div>`;
+      for (const p of others) {
+        const row = document.createElement('div'); row.className = 'cloud-row';
+        row.innerHTML = `<span class="nm"></span><span class="tm"></span>`;
+        row.querySelector('.nm').textContent = p.name;
+        row.querySelector('.tm').textContent = new Date(p.mtime * 1000).toLocaleString();
+        if (p.name === planName) row.classList.add('sel');
+        row.onclick = () => {
+          listEl.querySelectorAll('.cloud-row.sel').forEach(x => x.classList.remove('sel'));
+          row.classList.add('sel');
+          nameEl.value = p.name;
+        };
+        listEl.appendChild(row);
+      }
+      const okB = mask.querySelector('#cloudOk');
+      okB.textContent = tr('保存', 'Save');
+      mask.querySelector('#cloudClose').textContent = tr('取消', 'Cancel');
+      okB.onclick = async () => {
+        const name = nameEl.value.trim();
+        if (!name) { toast(tr('请输入方案名称', 'Please enter a plan name')); return; }
+        if (name === AUTO_NAME) { toast(tr('该名称保留给自动保存，请换一个', 'Reserved for autosave — pick another')); return; }
+        if (plans.some(p => p.name === name) && name !== planName &&
+            !await uiConfirm(tr('已存在同名方案「' + name + '」，覆盖它？', 'A plan named "' + name + '" already exists. Overwrite?'), tr('覆盖', 'Overwrite'))) return;
+        try {
+          const r = await fetch(planURL(name), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...state, layers: ui.layers }) });
+          if (!r.ok) throw 0;
+        } catch (e) { cloudFail(); return; }
+        syncPlanName(name);
+        mask.classList.remove('open');
+        toast(tr('已保存：' + name, 'Saved: ' + name));
+      };
+      nameEl.onkeydown = e => { if (e.key === 'Enter') okB.onclick(); };
+      mask.classList.add('open');
+      nameEl.focus(); nameEl.select();
+    };
+
+    /* 关闭方案：回到空白画板；服务器上已保存的方案不受影响，可随时「打开方案」载回 */
+    $('#closePlan').onclick = async () => {
+      if ((planName || state.furniture.length || state.walls.length || Object.keys(state.rooms).length) &&
+          !await uiConfirm(tr('关闭当前方案并回到空白画板？\n服务器上已保存的方案不受影响；尚未保存的修改会丢失。', 'Close the current plan and return to a blank canvas?\nSaved plans on the server are not affected; unsaved changes will be lost.'))) return;
+      state = blankState();
+      ui.sel = null;
+      undoStack.length = 0; redoStack.length = 0;   // 关闭后无可撤销内容，撤销栈清空
+      autoSaved = '';
+      renderAll(); syncPlanName('');
+      toast(tr('已关闭方案', 'Plan closed'));
+    };
+
+    /* 欢迎界面：方案卡片网格 + 新建/导入入口；silent=true 时不弹错误提示（用于启动时） */
+    async function showWelcome(silent = false) {
+      let plans;
+      try { const r = await fetch('/api/plans'); if (!r.ok) throw 0; plans = await r.json(); }
+      catch (e) { if (!silent) cloudFail(); return; }
+      const mask = cloudMask('open');
+      mask.querySelector('#cloudTitle').textContent = tr('户型装修设计', 'Floor Plan Designer');
+      mask.querySelector('#cloudSub').textContent = tr('欢迎回来！选择一个方案继续创作，或从空白开始', 'Welcome back — pick a plan to continue, or start from scratch');
+      const listEl = mask.querySelector('#cloudList');
+      const empty = () => { listEl.innerHTML = `<div class="muted">${tr('还没有保存的方案，点击下方「新建空方案」开始设计吧', 'No saved plans yet — hit "New empty plan" below to start designing')}</div>`; };
       listEl.innerHTML = '';
       if (!plans.length) { empty(); }
       for (const p of plans) {
-        const row = document.createElement('div'); row.className = 'cloud-row';
-        row.innerHTML = `<span class="nm"></span><span class="tm"></span><button class="btn"></button><button class="btn danger"></button>`;
-        row.querySelector('.nm').textContent = p.name;
-        row.querySelector('.tm').textContent = new Date(p.mtime * 1000).toLocaleString();
-        const [openB, delB] = row.querySelectorAll('button');
-        openB.textContent = tr('打开', 'Open'); delB.textContent = tr('删除', 'Delete');
-        openB.onclick = async () => {
+        const draft = p.name === AUTO_NAME;
+        const card = document.createElement('div'); card.className = 'plan-card';
+        card.innerHTML = `<div class="pc-del"></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
+        card.querySelector('.pc-nm').textContent = draft ? tr('自动保存（草稿）', 'Autosave (draft)') : p.name;
+        if (p.name === planName) {
+          card.classList.add('cur');
+          const b = document.createElement('span'); b.className = 'pc-badge';
+          b.textContent = tr('当前', 'Current');
+          card.querySelector('.pc-nm').appendChild(b);
+        }
+        card.querySelector('.pc-tm').textContent = new Date(p.mtime * 1000).toLocaleString();
+        card.querySelector('.pc-del').textContent = '×';
+        card.querySelector('.pc-del').onclick = async ev => {
+          ev.stopPropagation();
+          if (!await uiConfirm(tr('确定删除方案「' + p.name + '」？此操作不可恢复。', 'Delete plan "' + p.name + '"? This cannot be undone.'), tr('删除', 'Delete'))) return;
+          try { const r = await fetch(planURL(p.name), { method: 'DELETE' }); if (!r.ok) throw 0; }
+          catch (e) { toast(tr('删除失败', 'Failed to delete')); return; }
+          card.remove(); toast(tr('已删除', 'Deleted'));
+          if (!listEl.querySelector('.plan-card')) empty();
+        };
+        card.onclick = async () => {
           try {
             const r = await fetch(planURL(p.name)); if (!r.ok) throw 0;
             cloudLoad(await r.json(), p.name); mask.classList.remove('open');
           } catch (e) { toast(tr('读取失败', 'Failed to load')); }
         };
-        delB.onclick = async () => {
-          try { const r = await fetch(planURL(p.name), { method: 'DELETE' }); if (!r.ok) throw 0; }
-          catch (e) { toast(tr('删除失败', 'Failed to delete')); return; }
-          row.remove(); toast(tr('已删除', 'Deleted'));
-          if (!listEl.querySelector('.cloud-row')) empty();
-        };
-        listEl.appendChild(row);
+        listEl.appendChild(card);
       }
+      /* 内置示例方案：点击载入画板（不入服务器，可「保存方案」留存） */
+      const demo = document.createElement('div'); demo.className = 'plan-card demo';
+      demo.innerHTML = `<div class="pc-nm"></div><div class="pc-tm"></div>`;
+      demo.querySelector('.pc-nm').textContent = tr('示例：示范户型', 'Demo: sample floor plan');
+      demo.querySelector('.pc-tm').textContent = tr('两居室参考案例，载入后可随意改造', 'A sample two-bedroom — load it and remodel freely');
+      demo.onclick = () => {
+        cloudLoad(defaultState(), '');
+        mask.classList.remove('open');
+        toast(tr('已载入示例方案，用「保存方案」可留存到服务器', 'Demo plan loaded — use "Save plan" to keep it on the server'));
+      };
+      listEl.appendChild(demo);
+      const newB = mask.querySelector('#cloudNew'), impB = mask.querySelector('#cloudImport');
+      newB.textContent = tr('新建空方案', 'New empty plan');
+      impB.textContent = tr('导入方案', 'Import plan');
+      newB.onclick = () => { mask.classList.remove('open'); $('#newPlan').click(); };
+      impB.onclick = () => { mask.classList.remove('open'); $('#importJson').click(); };
+      mask.querySelector('#cloudClose').textContent = tr('关闭', 'Close');
       mask.classList.add('open');
-    };
+    }
+    $('#cloudList').onclick = () => showWelcome();
     // 横竖屏切换、表头换行等都会改变画布尺寸；尺寸从 0 恢复（如首次布局）时重新适应窗口
     // 其余尺寸变化（收起 / 展开面板等）保持画面中心不动
     let lastW = 0, lastH = 0;
@@ -5095,32 +5395,13 @@
     buildDefs(); buildLib(); renderOpenings(); renderDims();
     $('#tip').textContent = TIPS()['2d'];
 
-    /* 启动时先取服务器上最近保存的方案，取完再首次绘制（避免先闪一下默认方案再换成自己的方案） */
+    /* 启动：不自动加载任何方案（默认设计方案待命），首次绘制后弹出欢迎界面让用户自己选择 */
     (async () => {
-      let loadedName = '';
-      const guard = setTimeout(() => $('#stage').classList.remove('loading'), 3000);   // 服务器无响应也不至于一直空白
-      try {
-        const r = await fetch('/api/plans');
-        if (r.ok) {
-          const plans = await r.json();
-          if (Array.isArray(plans) && plans.length) {
-            const p = await fetch('/api/plans/' + encodeURIComponent(plans[0].name));
-            if (p.ok) {
-              const s = await p.json();
-              if (s && Array.isArray(s.furniture)) {
-                applyLayers(s);                    // 还原上次保存时的图层开关
-                state = fixState(s); ui.sel = null;
-                undoStack.length = 0; redoStack.length = 0;   // 载入的是全新方案，撤销栈清空
-                loadedName = plans[0].name;
-              }
-            }
-          }
-        }
-      } catch (e) { }   // 离线 / 服务器未启动：静默保持默认方案
+      const guard = setTimeout(() => $('#stage').classList.remove('loading'), 3000);
       fitView(); renderAll();
       clearTimeout(guard);
       if (svg.clientWidth) $('#stage').classList.remove('loading');   // 第一次绘制完成后再显示画板（尺寸未就绪时交给 ResizeObserver）
-      if (loadedName) { syncPlanName(loadedName); toast(tr('已载入方案：' + loadedName, 'Loaded plan: ' + loadedName)); }
+      showWelcome(true);   // 服务器不可达时静默跳过
     })();
   </script>
   <script type="module">
