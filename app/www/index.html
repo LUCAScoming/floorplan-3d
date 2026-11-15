@@ -2538,6 +2538,11 @@
       $('#gWalls').innerHTML = builtIn + drawn;
     }
 
+    /* 窗花（窗扇分格线）开关：用户门窗存 o.grille；未设置时落地窗默认有（3D 田字格），其余默认无 */
+    const openGrille = o => o.grille ?? (o.kind === 'fwin');
+    /* 内置窗存 state.bover['w'+i].grille；未设置时默认有（原始户型自带分格线） */
+    const winBovGrille = i => (state.bover['w' + i] || {}).grille !== false;
+
     function renderOpenings() {
       const WS = 'stroke="#4f7394" stroke-width="1" vector-effect="non-scaling-stroke"';
       let s = '';
@@ -2547,8 +2552,10 @@
         const [x0, y0, x1, y1] = r, w = x1 - x0, h = y1 - y0;
         s += `<g class="open" data-bopen="w${i}">`;
         s += `<rect x="${x0}" y="${y0}" width="${w}" height="${h}" fill="#f7fbfd" ${WS}/>`;
-        if (w >= h) [1 / 3, 2 / 3].forEach(t => s += `<line x1="${x0}" y1="${y0 + h * t}" x2="${x1}" y2="${y0 + h * t}" ${WS}/>`);
-        else[1 / 3, 2 / 3].forEach(t => s += `<line x1="${x0 + w * t}" y1="${y0}" x2="${x0 + w * t}" y2="${y1}" ${WS}/>`);
+        if (winBovGrille(i)) {   // 窗花：三等分格线（属性面板可开关）
+          if (w >= h) [1 / 3, 2 / 3].forEach(t => s += `<line x1="${x0}" y1="${y0 + h * t}" x2="${x1}" y2="${y0 + h * t}" ${WS}/>`);
+          else[1 / 3, 2 / 3].forEach(t => s += `<line x1="${x0 + w * t}" y1="${y0}" x2="${x0 + w * t}" y2="${y1}" ${WS}/>`);
+        }
         s += `</g>`;
       });
       const DS = 'stroke="#3d3a34" stroke-width="1" vector-effect="non-scaling-stroke"';
@@ -2594,6 +2601,12 @@
             const a = [P0[0] + n[0] * off, P0[1] + n[1] * off], b = [P1[0] + n[0] * off, P1[1] + n[1] * off];
             s += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" ${WS} ${NE}/>`;
           });
+          if (openGrille(o)) {                               // 窗花：沿窗宽三等分的分格线（横跨墙厚）
+            [1 / 3, 2 / 3].forEach(t => {
+              const a = [P0[0] + dx * L * t - n[0] * T / 2, P0[1] + dy * L * t - n[1] * T / 2];
+              s += `<line x1="${a[0]}" y1="${a[1]}" x2="${a[0] + n[0] * T}" y2="${a[1] + n[1] * T}" ${WS} ${NE}/>`;
+            });
+          }
         } else if (o.kind === 'slid') {                      // 落地推拉门：窗符号 + 中缝线（表示双扇）
           const SS = 'stroke="#2e6e8e" stroke-width="1" vector-effect="non-scaling-stroke"';
           s += shape(`fill="#f7fbfd" ${SS}`);
@@ -2631,6 +2644,10 @@
             const a = [Pm[0] + n[0] * off, Pm[1] + n[1] * off], b = [P1[0] + n[0] * off, P1[1] + n[1] * off];
             s += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" ${WS2} ${NE}/>`;
           });
+          if (openGrille(o)) {                               // 窗花：窗段中缝分格线
+            const gm = [(Pm[0] + P1[0]) / 2, (Pm[1] + P1[1]) / 2];
+            s += `<line x1="${gm[0] - n[0] * T / 2}" y1="${gm[1] - n[1] * T / 2}" x2="${gm[0] + n[0] * T / 2}" y2="${gm[1] + n[1] * T / 2}" ${WS2} ${NE}/>`;
+          }
           const side3 = o.flip ? -1 : 1, ov3 = [n[0] * side3, n[1] * side3], Tt3 = 40;
           const oP = [P0[0] + ov3[0] * dW, P0[1] + ov3[1] * dW], cP = [P0[0] + u[0] * dW, P0[1] + u[1] * dW];
           const sweep3 = ov3[0] * u[1] - ov3[1] * u[0] > 0 ? 1 : 0;
@@ -3424,6 +3441,7 @@
             : tr('宽度改动以中心对齐；位置为相对原始位置的沿墙偏移，拖动符号可沿墙滑动。', 'Width is center-aligned; position is the along-wall offset from the original spot; drag the symbol to slide it.'))
           : tr('飘窗为整体结构，不支持改宽；位置可沿墙微调。', 'Bay windows are one piece: width fixed, position can be nudged along the wall.')}</div>
     ${t === 'd' ? `<div class="actions"><button class="btn" id="boDir" title="点击循环切换开启方式：左开 → 右开 → 左开反向 → 右开反向">${tr('改变开门方向', 'Change swing')}</button></div>` : ''}
+    ${t === 'w' ? `<div class="actions"><button class="btn" id="boGrille" title="窗扇上的分格线条，2D/3D 同步显示">${tr('窗花：', 'Grille: ')}${(bov(id).grille !== false) ? tr('有', 'On') : tr('无', 'Off')}</button></div>` : ''}
     <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
     }
     function bindBopenPanel(id) {
@@ -3434,6 +3452,12 @@
         o.d = hz ? [Math.round(v / 10) * 10, o.d?.[1] || 0] : [o.d?.[0] || 0, Math.round(v / 10) * 10];
         state.bover[id] = o;
       });
+      const bg = $('#boGrille');                                     // 内置窗窗花开关
+      if (bg) bg.onclick = () => {
+        const now = !(bov(id).grille !== false);
+        mutate(() => { state.bover[id] = { ...bov(id), grille: now }; });
+        toast(tr('窗花已', 'Grille ') + (now ? tr('开启', 'turned on') : tr('关闭', 'turned off')));
+      };
       const bd = $('#boDir');                                        // 开启方式单按钮：循环 左开 → 右开 → 左开反向 → 右开反向
       if (bd) bd.onclick = () => {
         const st = (doorDirState(id) + 1) % 4;
@@ -3454,6 +3478,7 @@
       <label>${tr('距墙起点', 'From wall start')} (mm)<input type="number" id="oC" value="${Math.round(o.c)}" step="10"></label>
     </div>
     ${(o.kind === 'window' || o.kind === 'hwin') ? `<div class="form"><label>${tr('窗台高', 'Sill height')} (mm)<input type="number" id="oSill" value="${Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : 900))}" min="0" max="2200" step="50"></label></div>` : ''}
+    ${['window', 'hwin', 'fwin', 'dwin'].includes(o.kind) ? `<div class="actions"><button class="btn" id="oGrille" title="窗扇上的分格线条，2D/3D 同步显示">${tr('窗花：', 'Grille: ')}${openGrille(o) ? tr('有', 'On') : tr('无', 'Off')}</button></div>` : ''}
     ${['door', 'dble', 'zimu', 'yak', 'dwin', 'slid', 'elev', 'roller'].includes(o.kind) ? `<div class="form"><label title="${tr(`墙高 ${wallH} − 门槛 ${sillMM} = 最大 ${maxDh} mm`, `Wall ${wallH} − threshold ${sillMM} = max ${maxDh} mm`)}">${tr('门高', 'Door height')} (mm · ≤ ${maxDh})<input type="number" id="oDh" value="${dhMM}" min="300" max="${maxDh}" step="50"></label><label>${tr('门槛高（门洞下沿离地）', 'Threshold height')} (mm)<input type="number" id="oBase" value="${sillMM}" min="0" max="${Math.max(0, wallH - dhMM)}" step="10"></label></div>` : ''}
     <div class="muted" style="margin-top:8px">${tr('在 2D 里拖动门窗可沿墙滑动。', 'Drag the opening in 2D to slide it along its wall.')}${(o.kind === 'window' || o.kind === 'hwin') ? tr(' 3D 里点窗户可左右推拉开合。', ' Click the window in 3D to slide it open.') : ''}</div>
     ${o.kind === 'elev' ? `<div class="form"><label>${tr('呼叫按钮位置', 'Call button side')}<select id="oBtn"><option value="r" ${(o.btn || 'r') === 'r' ? 'selected' : ''}>${tr('门右侧', 'Right of door')}</option><option value="l" ${o.btn === 'l' ? 'selected' : ''}>${tr('门左侧', 'Left of door')}</option></select></label></div>` : ''}
@@ -3482,6 +3507,12 @@
       if (os) os.onchange = e => {
         const v = parseFloat(e.target.value); if (isNaN(v)) return;
         mutate(() => { const g = state.openings.find(x => x.id === o.id); if (g) g.sill = Math.max(0, Math.min(2200, Math.round(v / 10) * 10)); });
+      };
+      const ogr = $('#oGrille');                                     // 窗花开关（窗类门窗）
+      if (ogr) ogr.onclick = () => {
+        const now = !openGrille(o);
+        mutate(() => { const g = state.openings.find(x => x.id === o.id); if (g) g.grille = now; });
+        toast(tr('窗花已', 'Grille ') + (now ? tr('开启', 'turned on') : tr('关闭', 'turned off')));
       };
       const odh = $('#oDh');                                         // 门高：上限 = 墙高 − 门槛高（墙高可在墙属性里单独设）
       if (odh) odh.onchange = e => {
@@ -6415,11 +6446,18 @@
         const pane = new THREE.Mesh(new THREE.BoxGeometry(L, top, .01), glassMat);
         pane.position.set(mx, top / 2, mz); pane.rotation.y = rot; archUp.add(pane);
         const dx = (wx(P1[0]) - wx(P0[0])) / L, dz = (wz(P1[1]) - wz(P0[1])) / L;
-        [-L / 2 + .025, 0, L / 2 - .025].forEach(off => {    // 左右端竖梃 + 中竖
+        [-L / 2 + .025, L / 2 - .025].forEach(off => {       // 左右端竖梃（固定）
           const mu = new THREE.Mesh(new THREE.BoxGeometry(.06, top, .06), frameMat);
           mu.position.set(mx + dx * off, top / 2, mz + dz * off); mu.castShadow = true; archUp.add(mu);
         });
-        [.03, top / 2, top - .03].forEach(y => {             // 下 / 中 / 上横梃 → 田字
+        const fg = o.grille ?? true;                         // 窗花：默认有（田字格），可关
+        if (fg) {
+          const mu = new THREE.Mesh(new THREE.BoxGeometry(.06, top, .06), frameMat);   // 中竖
+          mu.position.set(mx, top / 2, mz); mu.castShadow = true; archUp.add(mu);
+          const bar = new THREE.Mesh(new THREE.BoxGeometry(L, .06, .06), frameMat);    // 中横
+          bar.position.set(mx, top / 2, mz); bar.rotation.y = rot; bar.castShadow = true; archUp.add(bar);
+        }
+        [.03, top - .03].forEach(y => {                      // 下 / 上横梃（固定）
           const bar = new THREE.Mesh(new THREE.BoxGeometry(L, .06, .06), frameMat);
           bar.position.set(mx, y, mz); bar.rotation.y = rot; bar.castShadow = true; archUp.add(bar);
         });
@@ -6490,6 +6528,12 @@
         const bar = new THREE.Mesh(new THREE.BoxGeometry(.05, gh, .06), frameMat);
         bar.position.set(mx + dx * off, cy, mz + dz * off); bar.rotation.y = rot; archUp.add(bar);
       });
+      if (o.grille === true) {                               // 窗花：玻璃上十字分格（固定不随窗扇滑动）
+        const mu = new THREE.Mesh(new THREE.BoxGeometry(.045, gh, .055), frameMat);
+        mu.position.set(mx, cy, mz); mu.rotation.y = rot; mu.castShadow = true; archUp.add(mu);
+        const hb = new THREE.Mesh(new THREE.BoxGeometry(L, .045, .055), frameMat);
+        hb.position.set(mx, cy, mz); hb.rotation.y = rot; hb.castShadow = true; archUp.add(hb);
+      }
       pushWallCollider(P0, P1, T);                           // 窗下不能穿行
     }
     function shapeOf(poly, flip) { const s = new THREE.Shape(); poly.forEach(([x, y], i) => s[i ? 'lineTo' : 'moveTo'](wx(x), flip ? wz(y) : -wz(y))); return s; }
@@ -6676,7 +6720,7 @@
         const [x0, y0, x1, y1] = r, hz = (x1 - x0) >= (y1 - y0), L = M(hz ? x1 - x0 : y1 - y0), gh = gTop - sill, cx = wx((x0 + x1) / 2), cz = wz((y0 + y1) / 2);
         const pane = new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .01, gh, hz ? .01 : L), glassMat); pane.position.set(cx, sill + gh / 2, cz); archUp.add(pane);
         const n = Math.max(1, Math.round(L / .9));
-        for (let k = 0; k <= n; k++) {
+        if ((state.bover['w' + i] || {}).grille !== false) for (let k = 0; k <= n; k++) {   // 窗花：竖向分格，可关
           const t = -L / 2 + k * L / n, mu = new THREE.Mesh(new THREE.BoxGeometry(hz ? .04 : .06, gh, hz ? .06 : .04), frameMat);
           mu.position.set(cx + (hz ? t : 0), sill + gh / 2, cz + (hz ? 0 : t)); mu.castShadow = true; archUp.add(mu);
         }
