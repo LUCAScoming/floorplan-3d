@@ -765,7 +765,10 @@
     .cloud-row {
       display: flex;
       align-items: center;
-      gap: 8px
+      gap: 8px;
+      padding: 4px 6px;
+      border-radius: 8px;
+      cursor: pointer
     }
 
     .cloud-row .nm {
@@ -814,19 +817,11 @@
     }
 
     .cloud-row.sel {
-      background: var(--accent-soft);
-      border-radius: 8px;
-      padding: 4px 6px;
-      margin: -4px -6px;
-      cursor: pointer
+      background: var(--accent-soft)
     }
 
     .cloud-row:not(.sel):hover {
-      background: var(--paper);
-      border-radius: 8px;
-      padding: 4px 6px;
-      margin: -4px -6px;
-      cursor: pointer
+      background: var(--paper)
     }
 
     .cloud-row.sel .nm {
