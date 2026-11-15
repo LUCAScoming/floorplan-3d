@@ -1,579 +1,510 @@
 {
-  "furniture": [
-    {
-      "id": "fmwi326j247",
-      "type": "bed",
-      "name": "双人床",
-      "cx": 8300,
-      "cy": 1000,
-      "w": 1800,
-      "d": 2000,
-      "rot": 0,
-      "color": "#c9d6df"
-    },
-    {
-      "id": "fmwi326j248",
-      "type": "nightstand",
-      "name": "床头柜",
-      "cx": 7150,
-      "cy": 220,
-      "w": 450,
-      "d": 400,
-      "rot": 0,
-      "color": "#e8dccb"
-    },
-    {
-      "id": "fmwi326j249",
-      "type": "nightstand",
-      "name": "床头柜",
-      "cx": 9450,
-      "cy": 220,
-      "w": 450,
-      "d": 400,
-      "rot": 0,
-      "color": "#e8dccb"
-    },
-    {
-      "id": "fmwi326j250",
-      "type": "wardrobe",
-      "name": "衣柜",
-      "cx": 8800,
-      "cy": 3070,
-      "w": 2400,
-      "d": 600,
-      "rot": 180,
-      "color": "#efe6d8"
-    },
-    {
-      "id": "fmwi326j251",
-      "type": "baycushion",
-      "name": "飘窗垫",
-      "cx": 10770,
-      "cy": 1705,
-      "w": 520,
-      "d": 1800,
-      "rot": 0,
-      "color": "#e7dccd"
-    },
-    {
-      "id": "fmwi326j252",
-      "type": "shower",
-      "name": "淋浴房",
-      "cx": 5270,
-      "cy": 450,
-      "w": 900,
-      "d": 900,
-      "rot": 0,
-      "color": "#e4edf2"
-    },
-    {
-      "id": "fmwi326j253",
-      "type": "toilet",
-      "name": "马桶",
-      "cx": 5170,
-      "cy": 1500,
-      "w": 400,
-      "d": 700,
-      "rot": 270,
-      "color": "#ffffff"
-    },
-    {
-      "id": "fmwi326j254",
-      "type": "vanity",
-      "name": "浴室柜",
-      "cx": 6110,
-      "cy": 700,
-      "w": 800,
-      "d": 500,
-      "rot": 90,
-      "color": "#eef1f3"
-    },
-    {
-      "id": "fmwi326j255",
-      "type": "bed",
-      "name": "单人床",
-      "cx": 2420,
-      "cy": 1000,
-      "w": 1200,
-      "d": 2000,
-      "rot": 0,
-      "color": "#e8d5b5"
-    },
-    {
-      "id": "fmwi326j256",
-      "type": "desk",
-      "name": "书桌",
-      "cx": 2120,
-      "cy": 2700,
-      "w": 1200,
-      "d": 600,
-      "rot": 270,
-      "color": "#e2cfb4"
-    },
-    {
-      "id": "fmwi326j257",
-      "type": "chair",
-      "name": "椅子",
-      "cx": 2700,
-      "cy": 2700,
-      "w": 450,
-      "d": 480,
-      "rot": 90,
-      "color": "#cfc6b8"
-    },
-    {
-      "id": "fmwi326j258",
-      "type": "wardrobe",
-      "name": "衣柜",
-      "cx": 4280,
-      "cy": 1000,
-      "w": 1600,
-      "d": 600,
-      "rot": 90,
-      "color": "#efe6d8"
-    },
-    {
-      "id": "fmwi326j259",
-      "type": "bookshelf",
-      "name": "书架",
-      "cx": 3500,
-      "cy": 150,
-      "w": 800,
-      "d": 300,
-      "rot": 0,
-      "color": "#e2cfb4"
-    },
-    {
-      "id": "fmwi326j260",
-      "type": "shower",
-      "name": "淋浴区",
-      "cx": 2870,
-      "cy": 4280,
-      "w": 900,
-      "d": 1340,
-      "rot": 0,
-      "color": "#e4edf2"
-    },
-    {
-      "id": "fmwi326j261",
-      "type": "toilet",
-      "name": "马桶",
-      "cx": 3560,
-      "cy": 3960,
-      "w": 400,
-      "d": 700,
-      "rot": 0,
-      "color": "#ffffff"
-    },
-    {
-      "id": "fmwi326j262",
-      "type": "vanity",
-      "name": "浴室柜",
-      "cx": 4150,
-      "cy": 3850,
-      "w": 700,
-      "d": 480,
-      "rot": 0,
-      "color": "#eef1f3"
-    },
-    {
-      "id": "fmwi326j263",
-      "type": "washer",
-      "name": "洗衣机",
-      "cx": 300,
-      "cy": 3960,
-      "w": 600,
-      "d": 600,
-      "rot": 270,
-      "color": "#e6ebee"
-    },
-    {
-      "id": "fmwi326j264",
-      "type": "vanity",
-      "name": "洗衣池",
-      "cx": 250,
-      "cy": 4600,
-      "w": 600,
-      "d": 500,
-      "rot": 270,
-      "color": "#eef1f3"
-    },
-    {
-      "id": "fmwi326j265",
-      "type": "counter",
-      "name": "橱柜台面",
-      "cx": 300,
-      "cy": 6575,
-      "w": 2770,
-      "d": 600,
-      "rot": 270,
-      "color": "#e9e5de"
-    },
-    {
-      "id": "fmwi326j266",
-      "type": "counter",
-      "name": "橱柜台面",
-      "cx": 1390,
-      "cy": 7660,
-      "w": 1580,
-      "d": 600,
-      "rot": 180,
-      "color": "#e9e5de"
-    },
-    {
-      "id": "fmwi326j267",
-      "type": "stove",
-      "name": "燃气灶",
-      "cx": 300,
-      "cy": 6200,
-      "w": 750,
-      "d": 450,
-      "rot": 270,
-      "color": "#dcdcdc"
-    },
-    {
-      "id": "fmwi326j268",
-      "type": "ksink",
-      "name": "水槽",
-      "cx": 1400,
-      "cy": 7680,
-      "w": 800,
-      "d": 450,
-      "rot": 180,
-      "color": "#e1e6ea"
-    },
-    {
-      "id": "fmwi326j269",
-      "type": "fridge",
-      "name": "冰箱",
-      "cx": 2770,
-      "cy": 5540,
-      "w": 700,
-      "d": 700,
-      "rot": 0,
-      "color": "#dfe4e8"
-    },
-    {
-      "id": "fmwi326j270",
-      "type": "table",
-      "name": "餐桌",
-      "cx": 3600,
-      "cy": 6650,
-      "w": 1400,
-      "d": 800,
-      "rot": 90,
-      "color": "#e2cfb4"
-    },
-    {
-      "id": "fmwi326j271",
-      "type": "chair",
-      "name": "餐椅",
-      "cx": 2940,
-      "cy": 6320,
-      "w": 450,
-      "d": 480,
-      "rot": 270,
-      "color": "#cfc6b8"
-    },
-    {
-      "id": "fmwi326j272",
-      "type": "chair",
-      "name": "餐椅",
-      "cx": 2940,
-      "cy": 6980,
-      "w": 450,
-      "d": 480,
-      "rot": 270,
-      "color": "#cfc6b8"
-    },
-    {
-      "id": "fmwi326j273",
-      "type": "chair",
-      "name": "餐椅",
-      "cx": 4260,
-      "cy": 6320,
-      "w": 450,
-      "d": 480,
-      "rot": 90,
-      "color": "#cfc6b8"
-    },
-    {
-      "id": "fmwi326j274",
-      "type": "chair",
-      "name": "餐椅",
-      "cx": 4260,
-      "cy": 6980,
-      "w": 450,
-      "d": 480,
-      "rot": 90,
-      "color": "#cfc6b8"
-    },
-    {
-      "id": "fmwi326j275",
-      "type": "cabinet",
-      "name": "餐边柜",
-      "cx": 3500,
-      "cy": 7785,
-      "w": 1600,
-      "d": 350,
-      "rot": 180,
-      "color": "#efe6d8"
-    },
-    {
-      "id": "fmwi326j276",
-      "type": "rug",
-      "name": "地毯",
-      "cx": 7600,
-      "cy": 8950,
-      "w": 2600,
-      "d": 1800,
-      "rot": 0,
-      "color": "#d9cbb8"
-    },
-    {
-      "id": "fmwi326j277",
-      "type": "tvstand",
-      "name": "电视柜",
-      "cx": 7600,
-      "cy": 6810,
-      "w": 2400,
-      "d": 400,
-      "rot": 0,
-      "color": "#e2cfb4"
-    },
-    {
-      "id": "fmwi326j278",
-      "type": "sofa",
-      "name": "三人沙发",
-      "cx": 7600,
-      "cy": 10110,
-      "w": 3000,
-      "d": 900,
-      "rot": 180,
-      "color": "#b7c4b0"
-    },
-    {
-      "id": "fmwi326j279",
-      "type": "coffeetable",
-      "name": "茶几",
-      "cx": 7600,
-      "cy": 8900,
-      "w": 1300,
-      "d": 650,
-      "rot": 0,
-      "color": "#e8dccb"
-    },
-    {
-      "id": "fmwi326j280",
-      "type": "armchair",
-      "name": "单人沙发",
-      "cx": 9500,
-      "cy": 8900,
-      "w": 850,
-      "d": 850,
-      "rot": 90,
-      "color": "#d6b99a"
-    },
-    {
-      "id": "fmwi326j281",
-      "type": "shoecab",
-      "name": "鞋柜",
-      "cx": 4995,
-      "cy": 9900,
-      "w": 1000,
-      "d": 350,
-      "rot": 270,
-      "color": "#efe6d8"
-    },
-    {
-      "id": "fmwi326j282",
-      "type": "plant",
-      "name": "绿植",
-      "cx": 9950,
-      "cy": 10250,
-      "w": 500,
-      "d": 500,
-      "rot": 0,
-      "color": "#a9c39b"
-    },
-    {
-      "id": "fmwi326j283",
-      "type": "plant",
-      "name": "绿植",
-      "cx": 5250,
-      "cy": 7050,
-      "w": 500,
-      "d": 500,
-      "rot": 0,
-      "color": "#a9c39b"
-    },
-    {
-      "id": "fmwi326j284",
-      "type": "bed",
-      "name": "双人床",
-      "cx": 7323,
-      "cy": 5500,
-      "w": 1500,
-      "d": 2000,
-      "rot": 270,
-      "color": "#d8c7dc"
-    },
-    {
-      "id": "fmwi326j285",
-      "type": "wardrobe",
-      "name": "衣柜",
-      "cx": 8500,
-      "cy": 3910,
-      "w": 2000,
-      "d": 600,
-      "rot": 0,
-      "color": "#efe6d8"
-    },
-    {
-      "id": "fmwi326j286",
-      "type": "desk",
-      "name": "书桌",
-      "cx": 9500,
-      "cy": 6070,
-      "w": 1200,
-      "d": 600,
-      "rot": 180,
-      "color": "#e2cfb4"
-    },
-    {
-      "id": "fmwi326j287",
-      "type": "chair",
-      "name": "椅子",
-      "cx": 9500,
-      "cy": 5480,
-      "w": 450,
-      "d": 480,
-      "rot": 0,
-      "color": "#cfc6b8"
-    },
-    {
-      "id": "fmwi326j288",
-      "type": "baycushion",
-      "name": "飘窗垫",
-      "cx": 10770,
-      "cy": 4997,
-      "w": 520,
-      "d": 1575,
-      "rot": 0,
-      "color": "#e7dccd"
-    },
-    {
-      "id": "fmwi326j289",
-      "type": "roundtable",
-      "name": "茶桌",
-      "cx": 11180,
-      "cy": 8200,
-      "w": 600,
-      "d": 600,
-      "rot": 0,
-      "color": "#e2cfb4"
-    },
-    {
-      "id": "fmwi326j290",
-      "type": "armchair",
-      "name": "休闲椅",
-      "cx": 11180,
-      "cy": 7520,
-      "w": 750,
-      "d": 750,
-      "rot": 0,
-      "color": "#d6b99a"
-    },
-    {
-      "id": "fmwi326j291",
-      "type": "armchair",
-      "name": "休闲椅",
-      "cx": 11180,
-      "cy": 8880,
-      "w": 750,
-      "d": 750,
-      "rot": 180,
-      "color": "#d6b99a"
-    },
-    {
-      "id": "fmwi326j292",
-      "type": "plant",
-      "name": "绿植",
-      "cx": 11550,
-      "cy": 10250,
-      "w": 500,
-      "d": 500,
-      "rot": 0,
-      "color": "#a9c39b"
-    }
-  ],
+  "furniture": [],
   "rooms": {
-    "master": {
-      "name": "主卧室",
-      "mat": "wood"
+    "__t2": {
+      "name": "tmp2",
+      "mat": "tile800"
     },
-    "mbath": {
-      "name": "主卫浴",
+    "Xfmwhw1vn293": {
+      "name": "电梯井",
+      "mat": "tile800"
+    },
+    "Xfmwhw2q5o94": {
+      "name": "楼梯间",
+      "mat": "tile800"
+    },
+    "Xfmwhw4py093": {
+      "name": "大厅",
+      "mat": "tile800"
+    },
+    "Xfmwhw5jrc94": {
+      "name": "厕所",
       "mat": "antislip"
     },
-    "kid": {
-      "name": "小孩房",
-      "mat": "wood"
-    },
-    "gbath": {
-      "name": "客卫浴",
-      "mat": "antislip"
-    },
-    "laundry": {
-      "name": "洗衣阳台",
-      "mat": "antislip"
-    },
-    "child": {
-      "name": "子女房",
-      "mat": "wood"
-    },
-    "kitchen": {
-      "name": "厨房",
+    "Xfmwhw9gqy95": {
+      "name": "过道",
       "mat": "tile600"
     },
-    "dining": {
-      "name": "餐厅",
-      "mat": "tile800"
-    },
-    "hall": {
-      "name": "过道",
-      "mat": "tile800"
-    },
-    "living": {
-      "name": "客厅",
-      "mat": "tile800"
-    },
-    "balcony": {
-      "name": "休闲阳台",
-      "mat": "walnut"
-    },
-    "bay1": {
-      "name": "主卧飘窗",
-      "mat": "marble"
-    },
-    "bay2": {
-      "name": "子女房飘窗",
-      "mat": "marble"
+    "Xfmwhwa57596": {
+      "name": "厨房",
+      "mat": "terrazzo"
     }
   },
   "demolished": [],
   "measures": [],
-  "walls": [],
-  "openings": [],
-  "deletedWalls": [],
-  "removedB": [],
+  "walls": [
+    {
+      "id": "fmwhqg1hn185",
+      "a": [
+        -60,
+        2110
+      ],
+      "b": [
+        13090,
+        2110
+      ]
+    },
+    {
+      "id": "fmwhqg4po186",
+      "a": [
+        13250,
+        2070
+      ],
+      "b": [
+        13250,
+        6890
+      ]
+    },
+    {
+      "id": "fmwhqg7q7187",
+      "a": [
+        13100,
+        6820
+      ],
+      "b": [
+        -50,
+        6820
+      ]
+    },
+    {
+      "id": "fmwhqg9wc188",
+      "a": [
+        -250,
+        6890
+      ],
+      "b": [
+        -250,
+        2010
+      ]
+    },
+    {
+      "id": "fmwhqizs2191",
+      "a": [
+        8714,
+        2260
+      ],
+      "b": [
+        8714,
+        4320
+      ]
+    },
+    {
+      "id": "fmwhqj7n7192",
+      "a": [
+        7110,
+        4320
+      ],
+      "b": [
+        13100,
+        4320
+      ]
+    },
+    {
+      "id": "fmwhqkgdw95",
+      "a": [
+        13100,
+        5577
+      ],
+      "b": [
+        10600,
+        5577
+      ]
+    },
+    {
+      "id": "fmwhqknzq97",
+      "a": [
+        10600,
+        5780
+      ],
+      "b": [
+        10600,
+        6720
+      ]
+    },
+    {
+      "id": "fmwhqtknh93",
+      "a": [
+        7110,
+        4230
+      ],
+      "b": [
+        7106,
+        2260
+      ]
+    }
+  ],
+  "openings": [
+    {
+      "id": "fmwhug5fj93",
+      "wall": "CWfmwhqg1hn185",
+      "c": 3176.578857421875,
+      "w": 1200,
+      "kind": "window",
+      "flip": true
+    },
+    {
+      "id": "fmwhuh0jy93",
+      "wall": "CWfmwhqg1hn185",
+      "c": 5717.18798828125,
+      "w": 900,
+      "kind": "door",
+      "flip": false
+    },
+    {
+      "id": "fmwhuhdjx94",
+      "wall": "CWfmwhqg7q7187",
+      "c": 11579.357727050781,
+      "w": 1200,
+      "kind": "hwin",
+      "flip": false,
+      "sill": 1400
+    },
+    {
+      "id": "fmwhui0o493",
+      "wall": "CWfmwhqg1hn185",
+      "c": 273.24237060546886,
+      "w": 1200,
+      "kind": "window",
+      "flip": false
+    },
+    {
+      "id": "fmwhuigxc93",
+      "wall": "CWfmwhqg7q7187",
+      "c": 424.2587890625,
+      "w": 1200,
+      "kind": "hwin",
+      "flip": true,
+      "sill": 1400
+    },
+    {
+      "id": "fmwhuwbzv93",
+      "wall": "CWfmwhqizs2191",
+      "c": 499.061279296875,
+      "w": 900,
+      "kind": "elev",
+      "flip": false,
+      "dh": 2400,
+      "sill": 1200,
+      "btn": "l"
+    },
+    {
+      "id": "fmwhuwh9z94",
+      "wall": "CWfmwhqj7n7192",
+      "c": 4985.55078125,
+      "w": 900,
+      "kind": "door",
+      "flip": false,
+      "hflip": true
+    },
+    {
+      "id": "fmwhuwjk895",
+      "wall": "CWfmwhqg4po186",
+      "c": 253.628662109375,
+      "w": 900,
+      "kind": "door",
+      "flip": false
+    },
+    {
+      "id": "fmwhuwl6x96",
+      "wall": "CWfmwhqkgdw95",
+      "c": 1405.017578125,
+      "w": 900,
+      "kind": "door",
+      "flip": true,
+      "hflip": true
+    },
+    {
+      "id": "fmwhuwujj98",
+      "wall": "CWfmwhqg9wc188",
+      "c": 577.76904296875,
+      "w": 3800,
+      "kind": "roller",
+      "flip": false,
+      "dh": 3500
+    },
+    {
+      "id": "fmwhw7ghu93",
+      "wall": "CWfmwhqg7q7187",
+      "c": 8726.12744140625,
+      "w": 1200,
+      "kind": "window",
+      "flip": false
+    },
+    {
+      "id": "fmwhw7jdp94",
+      "wall": "CWfmwhqg7q7187",
+      "c": 4073.8720703125,
+      "w": 1200,
+      "kind": "window",
+      "flip": true
+    }
+  ],
+  "deletedWalls": [
+    "w1",
+    "w2",
+    "w3",
+    "w4",
+    "w5",
+    "w6",
+    "w7",
+    "w8",
+    "w9",
+    "w10",
+    "w11",
+    "w12",
+    "w13",
+    "w14",
+    "w15",
+    "w16",
+    "w17",
+    "w18",
+    "w19",
+    "w20",
+    "w21",
+    "w22",
+    "w23",
+    "w24",
+    "w25",
+    "w26",
+    "w27",
+    "w28",
+    "w29",
+    "w30",
+    "w31",
+    "w32",
+    "w33",
+    "w34",
+    "w35",
+    "w36",
+    "w37",
+    "w38",
+    "w39",
+    "w40",
+    "w41",
+    "w42",
+    "w43",
+    "w44",
+    "w45",
+    "w46",
+    "w47",
+    "w0"
+  ],
+  "removedB": [
+    "d0",
+    "d1",
+    "d2",
+    "d3",
+    "d4",
+    "d5",
+    "w0",
+    "w1",
+    "w2",
+    "w3",
+    "w4",
+    "w5",
+    "w6",
+    "w7",
+    "w8",
+    "w9",
+    "w10",
+    "w11",
+    "s0",
+    "s1"
+  ],
   "bover": {},
-  "roomsExtra": [],
+  "roomsExtra": [
+    {
+      "id": "__t",
+      "poly": [
+        [
+          1460,
+          8770
+        ],
+        [
+          3260,
+          8770
+        ],
+        [
+          3260,
+          10570
+        ],
+        [
+          1460,
+          10570
+        ]
+      ],
+      "mat": "tile800"
+    },
+    {
+      "id": "Xfmwhw1vn293",
+      "poly": [
+        [
+          7220,
+          2260
+        ],
+        [
+          8600,
+          2260
+        ],
+        [
+          8600,
+          4230
+        ],
+        [
+          7220,
+          4230
+        ]
+      ],
+      "mat": "tile800"
+    },
+    {
+      "id": "Xfmwhw2q5o94",
+      "poly": [
+        [
+          8850,
+          2260
+        ],
+        [
+          13090,
+          2260
+        ],
+        [
+          13100,
+          4230
+        ],
+        [
+          8860,
+          4230
+        ]
+      ],
+      "mat": "tile800"
+    },
+    {
+      "id": "Xfmwhw4py093",
+      "poly": [
+        [
+          -160,
+          2260
+        ],
+        [
+          7010,
+          2260
+        ],
+        [
+          6970,
+          6720
+        ],
+        [
+          -160,
+          6720
+        ]
+      ],
+      "mat": "tile800"
+    },
+    {
+      "id": "Xfmwhw5jrc94",
+      "poly": [
+        [
+          10710,
+          5680
+        ],
+        [
+          13100,
+          5680
+        ],
+        [
+          13090,
+          6720
+        ],
+        [
+          10730,
+          6720
+        ]
+      ],
+      "mat": "tile800"
+    },
+    {
+      "id": "Xfmwhw9gqy95",
+      "poly": [
+        [
+          10450,
+          4440
+        ],
+        [
+          13100,
+          4440
+        ],
+        [
+          13100,
+          5450
+        ],
+        [
+          10480,
+          5450
+        ]
+      ],
+      "mat": "tile800"
+    },
+    {
+      "id": "Xfmwhwa57596",
+      "poly": [
+        [
+          6990,
+          4460
+        ],
+        [
+          10440,
+          4470
+        ],
+        [
+          10500,
+          6720
+        ],
+        [
+          6980,
+          6720
+        ]
+      ],
+      "mat": "tile800"
+    }
+  ],
+  "entryDoor": "Ofmwhuwjk895",
+  "pillars": [],
+  "stairs": [
+    {
+      "id": "fmwhu2zzr93",
+      "x": 10980,
+      "y": 3210,
+      "w": 900,
+      "len": 4250,
+      "dir": 0,
+      "rise": 4200,
+      "runs": 3,
+      "stack": true,
+      "flipX": true,
+      "steps": [
+        7,
+        9,
+        9
+      ]
+    }
+  ],
+  "wallH": {
+    "CWfmwhqg1hn185": 4200,
+    "CWfmwhqg4po186": 4200,
+    "CWfmwhqj7n7192": 4200,
+    "CWfmwhqizs2191": 4200,
+    "CWfmwhqtknh93": 4200,
+    "CWfmwhqkgdw95": 4200,
+    "CWfmwhqknzq97": 4200,
+    "CWfmwhqg7q7187": 4200,
+    "CWfmwhqg9wc188": 4200
+  },
   "layers": {
     "dims": true,
     "labels": true,
     "furn": true,
-    "grid": false,
+    "grid": true,
     "axis": true,
     "bearing": false,
     "wallSnap": true
