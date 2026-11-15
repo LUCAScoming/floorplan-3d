@@ -62,14 +62,16 @@ def ensure_repo(env: dict):
     url = remote_url(env)
     r = git("remote", "get-url", "origin", check=False, show=False)
     if r.returncode != 0:
-        git("remote", "add", "origin", url)
+        git("remote", "add", "origin", url, show=False)      # 带令牌的地址不回显
     else:
-        git("remote", "set-url", "origin", url)   # 令牌更换后同步更新
+        git("remote", "set-url", "origin", url, show=False)  # 令牌更换后同步更新
 
 
 def remote_has_branch(env: dict) -> bool:
     r = git("ls-remote", "--heads", "origin", BRANCH, check=False, show=False)
-    return r.returncode == 0 and BRANCH in r.stdout
+    if r.returncode != 0:
+        sys.exit("[x] 无法访问远端仓库，请检查 GITHUB_REPO_URL 是否正确、令牌是否有该仓库权限")
+    return BRANCH in r.stdout
 
 
 def main():

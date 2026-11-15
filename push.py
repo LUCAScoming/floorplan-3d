@@ -8,8 +8,10 @@
     - 仓库未初始化时自动 git init（分支 main）、关联 origin、完成首次提交与首次推送
     - 远端还没有 main 分支时（首次推送场景）自动跳过 pull --rebase
 """
+import json
 import subprocess
 import sys
+import urllib.request
 from datetime import date
 from pathlib import Path
 
@@ -63,14 +65,53 @@ def ensure_repo(env: dict):
     url = remote_url(env)
     r = git("remote", "get-url", "origin", check=False, show=False)
     if r.returncode != 0:
-        git("remote", "add", "origin", url)
+        git("remote", "add", "origin", url, show=False)      # 带令牌的地址不回显
     else:
-        git("remote", "set-url", "origin", url)   # 令牌更换后同步更新
+        git("remote", "set-url", "origin", url, show=False)  # 令牌更换后同步更新
+
+
+def create_repo_if_missing(env: dict):
+    """远端仓库不存在时，用令牌调用 GitHub API 自动创建（私有）。"""
+    url = env["GITHUB_REPO_URL"].rstrip("/")
+    repo = url.split("github.com/", 1)[1]
+    if repo.endswith(".git"):
+        repo = repo[:-4]
+    if "/" not in repo:
+        print("[i] GITHUB_REPO_URL 不是 owner/repo 形式，跳过自动建仓")
+        return
+    name = repo.split("/")[-1]
+    print(f"[i] 远端仓库 {repo} 不存在，尝试用 GitHub API 自动创建 ...")
+    req = urllib.request.Request(
+        "https://api.github.com/user/repos",
+        data=json.dumps({"name": name, "private": True}).encode("utf-8"),
+        headers={
+            "Authorization": f"token {env['GITHUB_TOKEN']}",
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "push.py",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req) as resp:
+            body = json.loads(resp.read().decode("utf-8"))
+        print(f"[ok] 已创建仓库 {body.get('full_name', repo)}（私有），可到 GitHub 网页上改为公开")
+    except urllib.error.HTTPError as e:
+        if e.code == 422:
+            print("[i] 远端仓库已存在（422），继续推送")
+        else:
+            sys.exit(f"[x] 创建仓库失败（HTTP {e.code}）：{e.read().decode('utf-8', 'replace')[:300]}")
+    except urllib.error.URLError as e:
+        sys.exit(f"[x] 无法访问 GitHub API：{e.reason}")
 
 
 def remote_has_branch(env: dict) -> bool:
     r = git("ls-remote", "--heads", "origin", BRANCH, check=False, show=False)
-    return r.returncode == 0 and BRANCH in r.stdout
+    if r.returncode != 0:                       # 仓库不存在 / 无权限
+        create_repo_if_missing(env)
+        r = git("ls-remote", "--heads", "origin", BRANCH, check=False, show=False)
+        if r.returncode != 0:
+            sys.exit("[x] 无法访问远端仓库，请检查 GITHUB_REPO_URL 与令牌权限（需要 repo 权限）")
+    return BRANCH in r.stdout
 
 
 def commit_all(message: str) -> bool:
