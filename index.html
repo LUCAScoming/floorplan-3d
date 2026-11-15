@@ -485,6 +485,21 @@
       font-variant-numeric: tabular-nums
     }
 
+    footer .copy {
+      flex: none;
+      margin-left: 10px;
+      color: var(--muted)
+    }
+
+    footer .copy a {
+      color: var(--teal, #3a7ca5);
+      text-decoration: none
+    }
+
+    footer .copy a:hover {
+      text-decoration: underline
+    }
+
     #tip {
       overflow: hidden;
       text-overflow: ellipsis
@@ -2005,6 +2020,7 @@
       <span id="hover" class="only2d"></span>
       <span class="spacer"></span>
       <span id="tip"></span>
+      <span class="copy">© 2026 RONGLINC93 · <a href="https://github.com/RONGLINC93/floorplan-3d" target="_blank" rel="noopener" data-en="GitHub">GitHub 仓库</a></span>
     </footer>
   </div>
   <div id="toast"></div>
