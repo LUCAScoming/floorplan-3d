@@ -5239,6 +5239,7 @@
         document.body.appendChild(mask);
       }
       // 点弹窗外部不关闭，只能通过按钮退出
+      mask.querySelector('#cloudClose').onclick = () => mask.classList.remove('open');
       const save = mode === 'save';
       mask.querySelector('#cloudBox').classList.toggle('welcome', !save);
       mask.querySelector('#cloudList').classList.toggle('grid', !save);
