@@ -783,6 +783,98 @@
       white-space: nowrap
     }
 
+    /* 保存方案弹窗：名称输入行 / 底部按钮 / 选中行高亮 */
+    #cloudNameRow {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px
+    }
+
+    #cloudName {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font: inherit;
+      background: var(--paper);
+      color: var(--ink);
+      outline: none
+    }
+
+    #cloudName:focus {
+      border-color: var(--accent)
+    }
+
+    #cloudFoot {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 12px
+    }
+
+    .cloud-row.sel {
+      background: var(--accent-soft);
+      border-radius: 8px;
+      padding: 4px 6px;
+      margin: -4px -6px;
+      cursor: pointer
+    }
+
+    .cloud-row:not(.sel):hover {
+      background: var(--paper);
+      border-radius: 8px;
+      padding: 4px 6px;
+      margin: -4px -6px;
+      cursor: pointer
+    }
+
+    .cloud-row.sel .nm {
+      color: var(--accent)
+    }
+
+    /* 应用内确认弹窗（替代原生 confirm） */
+    #askMask {
+      position: fixed;
+      inset: 0;
+      background: rgba(40, 30, 20, .35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 60
+    }
+
+    #askMask.open {
+      display: flex
+    }
+
+    #askBox {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      width: min(360px, 92vw)
+    }
+
+    #askMsg {
+      white-space: pre-line;
+      line-height: 1.6;
+      font-weight: 500
+    }
+
+    #askFoot {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 14px
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff
+    }
+
     /* ---------- 2D / 3D 切换 ---------- */
     .seg {
       position: relative;
@@ -2981,10 +3073,10 @@
       })[b.dataset.a]());
     }
 
-    function clearLayout() {
+    async function clearLayout() {
       const n = state.furniture.length;
       if (!n) return toast(tr('当前没有布置任何家具', 'There is no furniture to clear'));
-      if (!confirm(tr(`确定清空全部 ${n} 件家具 / 家电吗？\n墙体、地面材料和测量线会保留，可点「撤销」恢复。`, `Remove all ${n} furniture / appliance items?\nWalls, flooring and measurements are kept. You can Undo this.`))) return;
+      if (!await uiConfirm(tr(`确定清空全部 ${n} 件家具 / 家电吗？\n墙体、地面材料和测量线会保留，可点「撤销」恢复。`, `Remove all ${n} furniture / appliance items?\nWalls, flooring and measurements are kept. You can Undo this.`))) return;
       ui.sel = null; mutate(() => state.furniture = []);
       toast(tr('已清空布置，可点「撤销」恢复', 'Layout cleared — Undo to restore'));
     }
@@ -4986,10 +5078,10 @@
       });
       e.target.value = '';
     };
-    $('#reset').onclick = () => { if (confirm(tr('恢复为默认设计方案？（可撤销）', 'Reset to the default design? (undoable)'))) { const b = snap(); state = defaultState(); ui.sel = null; commit(b); renderAll(); syncPlanName(''); } };
+    $('#reset').onclick = async () => { if (await uiConfirm(tr('恢复为默认设计方案？（可撤销）', 'Reset to the default design? (undoable)'))) { const b = snap(); state = defaultState(); ui.sel = null; commit(b); renderAll(); syncPlanName(''); } };
 
-    $('#newPlan').onclick = () => {
-      if (!confirm(tr('新建完全空白的方案？（清空房间、墙体、门窗与家具，从零开始；当前布置可 Ctrl+Z 恢复）', 'Create a truly blank plan? (rooms, walls, doors / windows and furniture all cleared; Ctrl+Z restores the current layout)'))) return;
+    $('#newPlan').onclick = async () => {
+      if (!await uiConfirm(tr('新建完全空白的方案？（清空房间、墙体、门窗与家具，从零开始；当前布置可 Ctrl+Z 恢复）', 'Create a truly blank plan? (rooms, walls, doors / windows and furniture all cleared; Ctrl+Z restores the current layout)'))) return;
       const b = snap();
       state = defaultState();
       state.furniture = [];
@@ -5021,30 +5113,97 @@
     addEventListener('beforeunload', () => { if (autoSaveT) { clearTimeout(autoSaveT); autoSaveT = null; autoSave(); } });
     document.addEventListener('visibilitychange', () => { if (document.hidden && autoSaveT) { clearTimeout(autoSaveT); autoSaveT = null; autoSave(); } });
 
+    /* 应用内确认弹窗（替代原生 confirm），返回 Promise<boolean>；消息支持 \n 换行 */
+    function uiConfirm(msg, okText, cancelText) {
+      return new Promise(resolve => {
+        let mask = $('#askMask');
+        if (!mask) {
+          mask = document.createElement('div'); mask.id = 'askMask';
+          mask.innerHTML = `<div id="askBox"><div id="askMsg"></div><div id="askFoot"><button class="btn" id="askCancel"></button><button class="btn primary" id="askOk"></button></div></div>`;
+          document.body.appendChild(mask);
+        }
+        const done = v => { mask.classList.remove('open'); resolve(v); };
+        mask.querySelector('#askMsg').textContent = msg;
+        const okB = mask.querySelector('#askOk'), cB = mask.querySelector('#askCancel');
+        okB.textContent = okText || tr('确定', 'OK');
+        cB.textContent = cancelText || tr('取消', 'Cancel');
+        okB.onclick = () => done(true);
+        cB.onclick = () => done(false);
+        mask.onclick = e => { if (e.target === mask) done(false); };
+        mask.classList.add('open');
+        okB.focus();
+      });
+    }
+
+    /* 方案弹窗骨架（保存 / 打开共用）：标题 + 可选名称输入行 + 方案列表 + 底部按钮 */
+    function cloudMask(withName) {
+      let mask = $('#cloudMask');
+      if (!mask) {
+        mask = document.createElement('div'); mask.id = 'cloudMask';
+        mask.innerHTML = `<div id="cloudBox"><b id="cloudTitle"></b><div id="cloudNameRow"><input id="cloudName" maxlength="80" autocomplete="off"></div><div id="cloudList"></div><div id="cloudFoot"><button class="btn" id="cloudOk"></button><button class="btn" id="cloudClose"></button></div></div>`;
+        document.body.appendChild(mask);
+      }
+      mask.onclick = e => { if (e.target === mask || e.target.id === 'cloudClose') mask.classList.remove('open'); };
+      mask.querySelector('#cloudNameRow').style.display = withName ? 'flex' : 'none';
+      mask.querySelector('#cloudOk').style.display = withName ? '' : 'none';
+      return mask;
+    }
+
+    /* 保存方案：弹窗内输入名称，点选已有方案行即为覆盖（同名时二次确认） */
     $('#cloudSave').onclick = async () => {
-      const name = (prompt(tr('方案名称：', 'Plan name:'), tr('我的方案', 'My plan')) || '').trim();
-      if (!name) return;
-      try {
-        const r = await fetch(planURL(name), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...state, layers: ui.layers }) });
-        if (!r.ok) throw 0;
+      let plans;
+      try { const r = await fetch('/api/plans'); if (!r.ok) throw 0; plans = await r.json(); }
+      catch (e) { cloudFail(); return; }
+      const mask = cloudMask(true);
+      mask.querySelector('#cloudTitle').textContent = tr('保存方案', 'Save plan');
+      const nameEl = mask.querySelector('#cloudName');
+      nameEl.value = planName && planName !== AUTO_NAME ? planName : tr('我的方案', 'My plan');
+      const listEl = mask.querySelector('#cloudList');
+      const others = plans.filter(p => p.name !== AUTO_NAME);
+      listEl.innerHTML = '';
+      if (!others.length) listEl.innerHTML = `<div class="muted">${tr('还没有保存过方案，输入名称即可保存为新方案', 'No plans yet — type a name to save a new one')}</div>`;
+      for (const p of others) {
+        const row = document.createElement('div'); row.className = 'cloud-row';
+        row.innerHTML = `<span class="nm"></span><span class="tm"></span>`;
+        row.querySelector('.nm').textContent = p.name;
+        row.querySelector('.tm').textContent = new Date(p.mtime * 1000).toLocaleString();
+        if (p.name === planName) row.classList.add('sel');
+        row.onclick = () => {
+          listEl.querySelectorAll('.cloud-row.sel').forEach(x => x.classList.remove('sel'));
+          row.classList.add('sel');
+          nameEl.value = p.name;
+        };
+        listEl.appendChild(row);
+      }
+      const okB = mask.querySelector('#cloudOk');
+      okB.textContent = tr('保存', 'Save');
+      mask.querySelector('#cloudClose').textContent = tr('取消', 'Cancel');
+      okB.onclick = async () => {
+        const name = nameEl.value.trim();
+        if (!name) { toast(tr('请输入方案名称', 'Please enter a plan name')); return; }
+        if (name === AUTO_NAME) { toast(tr('该名称保留给自动保存，请换一个', 'Reserved for autosave — pick another')); return; }
+        if (plans.some(p => p.name === name) && name !== planName &&
+            !await uiConfirm(tr('已存在同名方案「' + name + '」，覆盖它？', 'A plan named "' + name + '" already exists. Overwrite?'), tr('覆盖', 'Overwrite'))) return;
+        try {
+          const r = await fetch(planURL(name), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...state, layers: ui.layers }) });
+          if (!r.ok) throw 0;
+        } catch (e) { cloudFail(); return; }
         syncPlanName(name);
+        mask.classList.remove('open');
         toast(tr('已保存：' + name, 'Saved: ' + name));
-      } catch (e) { cloudFail(); }
+      };
+      nameEl.onkeydown = e => { if (e.key === 'Enter') okB.onclick(); };
+      mask.classList.add('open');
+      nameEl.focus(); nameEl.select();
     };
 
     $('#cloudList').onclick = async () => {
       let plans;
       try { const r = await fetch('/api/plans'); if (!r.ok) throw 0; plans = await r.json(); }
       catch (e) { cloudFail(); return; }
-      let mask = $('#cloudMask');
-      if (!mask) {
-        mask = document.createElement('div'); mask.id = 'cloudMask';
-        mask.innerHTML = `<div id="cloudBox"><b id="cloudTitle"></b><div id="cloudList"></div><button class="btn" id="cloudClose"></button></div>`;
-        document.body.appendChild(mask);
-      }
-      mask.onclick = e => { if (e.target === mask || e.target.id === 'cloudClose') mask.classList.remove('open'); };
-      $('#cloudTitle').textContent = tr('已保存的方案', 'Saved plans');
-      $('#cloudClose').textContent = tr('关闭', 'Close');
+      const mask = cloudMask(false);
+      mask.querySelector('#cloudTitle').textContent = tr('已保存的方案', 'Saved plans');
+      mask.querySelector('#cloudClose').textContent = tr('关闭', 'Close');
       const listEl = mask.querySelector('#cloudList');
       const empty = () => { listEl.innerHTML = `<div class="muted">${tr('还没有保存的方案', 'No saved plans yet')}</div>`; };
       listEl.innerHTML = '';
