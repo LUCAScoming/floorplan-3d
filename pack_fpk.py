@@ -167,9 +167,29 @@ def build_app_tgz(stage: Path) -> str:
     for f in ("app.py", "requirements.txt"):      # compose 把 .. 挂载为 /app 运行
         (app / f).write_bytes((ROOT / f).read_bytes())
 
-    with tarfile.open(stage / "app.tgz", "w:gz") as z:
-        z.add(app, arcname=".")
+    add_tree_tar(stage / "app.tgz", app, exec_names=set())
     return hashlib.md5((stage / "app.tgz").read_bytes()).hexdigest()
+
+
+def add_tree_tar(out: Path, src_root: Path, exec_names: set):
+    """把目录打成 tar.gz：目录 755、普通文件 644、exec_names 中的文件 755（fnOS 要求脚本可执行）。"""
+    with tarfile.open(out, "w:gz") as z:
+        ti = z.gettarinfo(src_root, arcname=".")
+        ti.uid = ti.gid = 0
+        ti.uname = ti.gname = "root"
+        ti.mode = 0o755
+        z.addfile(ti)
+        for f in sorted(src_root.rglob("*")):
+            rel = f.relative_to(src_root).as_posix()
+            ti = z.gettarinfo(f, arcname="./" + rel)
+            ti.uid = ti.gid = 0
+            ti.uname = ti.gname = "root"
+            ti.mode = 0o755 if (f.is_dir() or rel in exec_names) else 0o644
+            if f.is_file():
+                with open(f, "rb") as fh:
+                    z.addfile(ti, fh)
+            else:
+                z.addfile(ti)
 
 
 def do_pack(version: str) -> None:
@@ -203,9 +223,8 @@ def do_pack(version: str) -> None:
     (stage / f"{APPNAME}.sc").write_text(sc_text(), encoding="utf-8", newline="\n")
     (stage / "health.json").write_text(health_json(), encoding="utf-8", newline="\n")
 
-    print("[4/4] 打包 .fpk（tar.gz）...")
-    with tarfile.open(out, "w:gz") as z:
-        z.add(stage, arcname=".")
+    print("[4/4] 打包 .fpk（tar.gz，cmd/main 加可执行权限）...")
+    add_tree_tar(out, stage, exec_names={"cmd/main"})
     shutil.rmtree(stage)
     print(f"[ok] 已生成 {out.name}（{out.stat().st_size / 1024 / 1024:.1f} MB，app.tgz MD5 {md5[:8]}...）")
     print("[i] 安装：fnOS 应用中心 → 手动安装 → 选择该 .fpk（需先开启 Docker）")
