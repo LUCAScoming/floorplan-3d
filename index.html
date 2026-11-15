@@ -5225,7 +5225,6 @@
         cB.textContent = cancelText || tr('取消', 'Cancel');
         okB.onclick = () => done(true);
         cB.onclick = () => done(false);
-        mask.onclick = e => { if (e.target === mask) done(false); };
         mask.classList.add('open');
         okB.focus();
       });
@@ -5239,7 +5238,7 @@
         mask.innerHTML = `<div id="cloudBox"><b id="cloudTitle"></b><div id="cloudSub" class="welcome-sub"></div><div id="cloudNameRow"><input id="cloudName" maxlength="80" autocomplete="off"></div><div id="cloudList"></div><div id="cloudFoot"><button class="btn" id="cloudNew"></button><button class="btn" id="cloudImport"></button><button class="btn" id="cloudOk"></button><button class="btn" id="cloudClose"></button></div></div>`;
         document.body.appendChild(mask);
       }
-      mask.onclick = e => { if (e.target === mask || e.target.id === 'cloudClose') mask.classList.remove('open'); };
+      // 点弹窗外部不关闭，只能通过按钮退出
       const save = mode === 'save';
       mask.querySelector('#cloudBox').classList.toggle('welcome', !save);
       mask.querySelector('#cloudList').classList.toggle('grid', !save);
