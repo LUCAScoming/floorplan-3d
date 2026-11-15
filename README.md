@@ -118,7 +118,8 @@ app.py              Python 本地服务器（网页托管 + 方案存取 API）
 plans/              服务器端保存的方案 JSON
 启动服务器.bat       Windows 一键启动脚本
 requirements.txt    Python 依赖
-push.py             Git 推送 / 拉取脚本（python push.py push / pull / status）
+push.py             Git 推送脚本（python push.py [提交说明]）
+pull.py             Git 拉取脚本（python pull.py，rebase 方式）
 ```
 
 ## 自定义户型

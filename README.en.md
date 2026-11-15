@@ -118,7 +118,8 @@ app.py              Python local server (web hosting + plan storage API)
 plans/              Plans saved on the server (JSON)
 启动服务器.bat       One-click launch script for Windows
 requirements.txt    Python dependencies
-push.py             Git push / pull script (python push.py push / pull / status)
+push.py             Git push script (python push.py [commit message])
+pull.py             Git pull script (python pull.py, rebase-based)
 ```
 
 ## Customizing the Floor Plan
