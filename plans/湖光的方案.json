@@ -140,7 +140,8 @@
       "c": 3176.578857421875,
       "w": 1200,
       "kind": "window",
-      "flip": true
+      "flip": true,
+      "grille": true
     },
     {
       "id": "fmwhuh0jy93",
@@ -151,21 +152,13 @@
       "flip": false
     },
     {
-      "id": "fmwhuhdjx94",
-      "wall": "CWfmwhqg7q7187",
-      "c": 11579.357727050781,
-      "w": 1200,
-      "kind": "hwin",
-      "flip": false,
-      "sill": 1400
-    },
-    {
       "id": "fmwhui0o493",
       "wall": "CWfmwhqg1hn185",
       "c": 273.24237060546886,
       "w": 1200,
       "kind": "window",
-      "flip": false
+      "flip": false,
+      "grille": true
     },
     {
       "id": "fmwhuigxc93",
@@ -228,7 +221,8 @@
       "c": 8726.12744140625,
       "w": 1200,
       "kind": "window",
-      "flip": false
+      "flip": false,
+      "grille": true
     },
     {
       "id": "fmwhw7jdp94",
@@ -236,7 +230,17 @@
       "c": 4073.8720703125,
       "w": 1200,
       "kind": "window",
-      "flip": true
+      "flip": true,
+      "grille": true
+    },
+    {
+      "id": "fmwi5rhn593",
+      "wall": "CWfmwhqg7q7187",
+      "c": 11619.89404296875,
+      "w": 1200,
+      "kind": "window",
+      "flip": true,
+      "grille": true
     }
   ],
   "deletedWalls": [
