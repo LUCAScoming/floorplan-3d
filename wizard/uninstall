@@ -4,7 +4,27 @@
     "items": [
       {
         "type": "tips",
-        "helpText": "⚠️ 卸载时如勾选「清除本地数据」，服务器端保存的所有装修方案将一并删除，请先在应用内导出备份。"
+        "helpText": "您即将卸载户型装修设计。请选择如何处理服务器上保存的装修方案："
+      },
+      {
+        "type": "radio",
+        "field": "wizard_delete_data",
+        "label": "数据保留选项",
+        "initValue": "false",
+        "options": [
+          {
+            "label": "保留数据（推荐）- 重新安装后可恢复所有方案",
+            "value": "false"
+          },
+          {
+            "label": "删除所有方案数据 - 此操作不可恢复！",
+            "value": "true"
+          }
+        ]
+      },
+      {
+        "type": "tips",
+        "helpText": "<strong>警告：</strong> 选择删除后，所有装修方案将永久丢失，建议先在应用内导出备份。"
       }
     ]
   }

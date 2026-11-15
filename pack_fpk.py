@@ -193,10 +193,22 @@ fi
 echo "python3 环境检查通过: $(command -v python3)"
 exit 0
 """
+    # 卸载向导的 wizard_delete_data=true 时清空应用数据目录（装修方案）；false 则保留
+    uninstall_callback = SHEBANG + """# 卸载后处理：按用户在卸载向导中的选择决定是否删除装修方案数据
+if [ "${wizard_delete_data}" = "true" ]; then
+    if [ -d "${TRIM_PKGVAR}/plans" ]; then
+        find "${TRIM_PKGVAR}/plans" -mindepth 1 -delete 2>/dev/null || true
+    fi
+    echo "已删除所有装修方案数据"
+else
+    echo "已保留装修方案数据（重新安装同版本后可继续使用）"
+fi
+exit 0
+"""
     return {"main": cmd_main_text(),
             "install_init": install_init, "install_callback": stub,
             "upgrade_init": stub, "upgrade_callback": stub,
-            "uninstall_init": stub, "uninstall_callback": stub,
+            "uninstall_init": stub, "uninstall_callback": uninstall_callback,
             "config_init": stub, "config_callback": stub}
 
 
@@ -281,9 +293,23 @@ def build_project(version: str):
     (wiz / "config").write_text(wizard_json(f"{DISPLAY_NAME} 设置", [
         "本应用无需额外配置。方案数据保存在应用数据目录（卸载时勾选「清除本地数据」会一并删除）。",
     ]), encoding="utf-8", newline="\n")
-    (wiz / "uninstall").write_text(wizard_json(f"卸载{DISPLAY_NAME}", [
-        "⚠️ 卸载时如勾选「清除本地数据」，服务器端保存的所有装修方案将一并删除，请先在应用内导出备份。",
-    ]), encoding="utf-8", newline="\n")
+    # 卸载向导：radio 选择数据去留（与 fnmonitorpro 同款交互）
+    (wiz / "uninstall").write_text(json.dumps([{
+        "stepTitle": f"卸载{DISPLAY_NAME}",
+        "items": [
+            {"type": "tips",
+             "helpText": f"您即将卸载{DISPLAY_NAME}。请选择如何处理服务器上保存的装修方案："},
+            {"type": "radio", "field": "wizard_delete_data", "label": "数据保留选项",
+             "initValue": "false",
+             "options": [
+                 {"label": "保留数据（推荐）- 重新安装后可恢复所有方案", "value": "false"},
+                 {"label": "删除所有方案数据 - 此操作不可恢复！", "value": "true"},
+             ]},
+            {"type": "tips",
+             "helpText": "<strong>警告：</strong> 选择删除后，所有装修方案将永久丢失，"
+                         "建议先在应用内导出备份。"},
+        ],
+    }], ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
 
     (ROOT / "manifest").write_text(manifest_text(version, "x86"),
                                    encoding="utf-8", newline="\n")

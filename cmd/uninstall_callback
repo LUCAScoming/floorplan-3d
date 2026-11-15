@@ -1,3 +1,11 @@
 #!/bin/bash
-# 系统会先调用 main stop / start，此处无需额外操作
+# 卸载后处理：按用户在卸载向导中的选择决定是否删除装修方案数据
+if [ "${wizard_delete_data}" = "true" ]; then
+    if [ -d "${TRIM_PKGVAR}/plans" ]; then
+        find "${TRIM_PKGVAR}/plans" -mindepth 1 -delete 2>/dev/null || true
+    fi
+    echo "已删除所有装修方案数据"
+else
+    echo "已保留装修方案数据（重新安装同版本后可继续使用）"
+fi
 exit 0
