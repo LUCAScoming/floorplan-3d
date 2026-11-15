@@ -2201,6 +2201,16 @@
       return { furniture: defaultFurniture(), rooms, demolished: [], measures: [], walls: [], openings: [], deletedWalls: [], removedB: [], bover: {}, roomsExtra: [] };
     }
 
+    /* 完全空白方案：隐藏全部内置房间 / 墙体 / 门窗，家具清零（启动默认与「新建空方案」共用） */
+    function blankState() {
+      const s = defaultState();
+      s.furniture = [];
+      s.rooms = {};                                              // 不渲染任何房间地面
+      s.deletedWalls = WALLS.map((w, i) => 'w' + i);             // 移除全部内置墙
+      s.removedB = [...DOORS.map((d, i) => 'd' + i), ...WINS.map((w, i) => 'w' + i), ...SLIDES.map((s, i) => 's' + i)];   // 移除全部原始门窗
+      return s;
+    }
+
     function fixState(s) {
       const d = defaultState();
       s.rooms = (s.rooms && typeof s.rooms === 'object' && !Array.isArray(s.rooms)) ? s.rooms : d.rooms;   // 空对象 = 真正的空方案，原样保留
@@ -2237,7 +2247,7 @@
 
 
     /* ======================= 状态 / 历史 ======================= */
-    let state = defaultState();                    // 方案不再存本地：持久化走「文件 ▾ → 保存方案」
+    let state = blankState();                      // 启动即空白方案；持久化走「文件 ▾ → 保存方案」
     const ui = {
       tool: 'select', drawTool: 'select', sel: null, multi: [], mq: null, mA: null, mCur: null,
       layers: { dims: true, labels: true, furn: true, grid: false, axis: true, bearing: false, wallSnap: true }
@@ -5158,11 +5168,7 @@
     $('#newPlan').onclick = async () => {
       if (!await uiConfirm(tr('新建完全空白的方案？（清空房间、墙体、门窗与家具，从零开始；当前布置可 Ctrl+Z 恢复）', 'Create a truly blank plan? (rooms, walls, doors / windows and furniture all cleared; Ctrl+Z restores the current layout)'))) return;
       const b = snap();
-      state = defaultState();
-      state.furniture = [];
-      state.rooms = {};                                              // 不渲染任何房间地面
-      state.deletedWalls = WALLS.map((w, i) => 'w' + i);             // 移除全部内置墙
-      state.removedB = [...DOORS.map((d, i) => 'd' + i), ...WINS.map((w, i) => 'w' + i), ...SLIDES.map((s, i) => 's' + i)];   // 移除全部原始门窗
+      state = blankState();
       ui.sel = null; commit(b); renderAll(); syncPlanName('');
       toast(tr('已新建空白方案，可用「设计 → 画墙」从零搭建', 'Blank plan created — draw walls in "Design" mode'));
     };
