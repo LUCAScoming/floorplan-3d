@@ -5351,33 +5351,13 @@
     buildDefs(); buildLib(); renderOpenings(); renderDims();
     $('#tip').textContent = TIPS()['2d'];
 
-    /* 启动时先取服务器上最近保存的方案，取完再首次绘制（避免先闪一下默认方案再换成自己的方案） */
+    /* 启动：不自动加载任何方案（默认设计方案待命），首次绘制后弹出欢迎界面让用户自己选择 */
     (async () => {
-      let loadedName = '';
-      const guard = setTimeout(() => $('#stage').classList.remove('loading'), 3000);   // 服务器无响应也不至于一直空白
-      try {
-        const r = await fetch('/api/plans');
-        if (r.ok) {
-          const plans = await r.json();
-          if (Array.isArray(plans) && plans.length) {
-            const p = await fetch('/api/plans/' + encodeURIComponent(plans[0].name));
-            if (p.ok) {
-              const s = await p.json();
-              if (s && Array.isArray(s.furniture)) {
-                applyLayers(s);                    // 还原上次保存时的图层开关
-                state = fixState(s); ui.sel = null;
-                undoStack.length = 0; redoStack.length = 0;   // 载入的是全新方案，撤销栈清空
-                loadedName = plans[0].name;
-              }
-            }
-          }
-        }
-      } catch (e) { }   // 离线 / 服务器未启动：静默保持默认方案
+      const guard = setTimeout(() => $('#stage').classList.remove('loading'), 3000);
       fitView(); renderAll();
       clearTimeout(guard);
       if (svg.clientWidth) $('#stage').classList.remove('loading');   // 第一次绘制完成后再显示画板（尺寸未就绪时交给 ResizeObserver）
-      if (loadedName) { syncPlanName(loadedName); toast(tr('已载入方案：' + loadedName, 'Loaded plan: ' + loadedName)); }
-      showWelcome(true);   // 页面打开即弹出欢迎界面（服务器不可达时静默跳过）
+      showWelcome(true);   // 服务器不可达时静默跳过
     })();
   </script>
   <script type="module">
