@@ -1,0 +1,7 @@
+{
+    "defaults": {
+        "run-as": "package"
+    },
+    "username": "floorplan3d",
+    "groupname": "floorplan3d"
+}

@@ -1,0 +1,3 @@
+#!/bin/bash
+# 系统会先调用 main stop / start，此处无需额外操作
+exit 0
