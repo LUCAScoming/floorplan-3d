@@ -94,7 +94,7 @@ def create_repo_if_missing(env: dict):
     try:
         with urllib.request.urlopen(req) as resp:
             body = json.loads(resp.read().decode("utf-8"))
-        print(f"[ok] 已创建仓库 {body.get('full_name', repo)}（私有），可到 GitHub 网页上改为公开")
+        print(f"[ok] 已创建仓库 {body.get('full_name', repo)}（私有），如需公开请到 GitHub 仓库 Settings 里修改，或运行一次“改为公开”的 API 请求")
     except urllib.error.HTTPError as e:
         if e.code == 422:
             print("[i] 远端仓库已存在（422），继续推送")
