@@ -742,6 +742,7 @@
     }
 
     #cloudBox {
+      position: relative;
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 12px;
@@ -826,6 +827,25 @@
 
     .cloud-row.sel .nm {
       color: var(--accent)
+    }
+
+    /* 弹窗右上角 X 关闭按钮 */
+    #cloudX {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1;
+      padding: 2px 6px;
+      cursor: pointer;
+      font-family: inherit
+    }
+
+    #cloudX:hover {
+      color: var(--ink)
     }
 
     /* 欢迎界面（打开方案弹窗）：品牌标题 + 方案卡片网格 */
@@ -5235,11 +5255,11 @@
       let mask = $('#cloudMask');
       if (!mask) {
         mask = document.createElement('div'); mask.id = 'cloudMask';
-        mask.innerHTML = `<div id="cloudBox"><b id="cloudTitle"></b><div id="cloudSub" class="welcome-sub"></div><div id="cloudNameRow"><input id="cloudName" maxlength="80" autocomplete="off"></div><div id="cloudList"></div><div id="cloudFoot"><button class="btn" id="cloudNew"></button><button class="btn" id="cloudImport"></button><button class="btn" id="cloudOk"></button><button class="btn" id="cloudClose"></button></div></div>`;
+        mask.innerHTML = `<div id="cloudBox"><button id="cloudX" title="关闭">×</button><b id="cloudTitle"></b><div id="cloudSub" class="welcome-sub"></div><div id="cloudNameRow"><input id="cloudName" maxlength="80" autocomplete="off"></div><div id="cloudList"></div><div id="cloudFoot"><button class="btn" id="cloudNew"></button><button class="btn" id="cloudImport"></button><button class="btn" id="cloudOk"></button></div></div>`;
         document.body.appendChild(mask);
       }
       // 点弹窗外部不关闭，只能通过按钮退出
-      mask.querySelector('#cloudClose').onclick = () => mask.classList.remove('open');
+      mask.querySelector('#cloudX').onclick = () => mask.classList.remove('open');
       const save = mode === 'save';
       mask.querySelector('#cloudBox').classList.toggle('welcome', !save);
       mask.querySelector('#cloudList').classList.toggle('grid', !save);
@@ -5279,7 +5299,6 @@
       }
       const okB = mask.querySelector('#cloudOk');
       okB.textContent = tr('保存', 'Save');
-      mask.querySelector('#cloudClose').textContent = tr('取消', 'Cancel');
       okB.onclick = async () => {
         const name = nameEl.value.trim();
         if (!name) { toast(tr('请输入方案名称', 'Please enter a plan name')); return; }
@@ -5368,7 +5387,6 @@
       impB.textContent = tr('导入方案', 'Import plan');
       newB.onclick = () => { mask.classList.remove('open'); $('#newPlan').click(); };
       impB.onclick = () => { mask.classList.remove('open'); $('#importJson').click(); };
-      mask.querySelector('#cloudClose').textContent = tr('关闭', 'Close');
       mask.classList.add('open');
     }
     $('#cloudList').onclick = () => showWelcome();
