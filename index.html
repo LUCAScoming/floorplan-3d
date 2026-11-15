@@ -1869,6 +1869,7 @@
           <button class="btn" id="newPlan" data-en="New empty plan">新建空方案</button>
           <button class="btn" id="cloudList" data-en="Open plan…">打开方案…</button>
           <button class="btn" id="cloudSave" data-en="Save plan">保存方案</button>
+          <button class="btn" id="closePlan" data-en="Close plan">关闭方案</button>
           <div class="sep"></div>
           <button class="btn" id="importJson" data-en="Import plan">导入方案</button>
           <button class="btn" id="exportJson" data-en="Export plan JSON">导出方案 JSON</button>
@@ -5296,6 +5297,18 @@
       nameEl.onkeydown = e => { if (e.key === 'Enter') okB.onclick(); };
       mask.classList.add('open');
       nameEl.focus(); nameEl.select();
+    };
+
+    /* 关闭方案：回到空白画板；服务器上已保存的方案不受影响，可随时「打开方案」载回 */
+    $('#closePlan').onclick = async () => {
+      if ((planName || state.furniture.length || state.walls.length || Object.keys(state.rooms).length) &&
+          !await uiConfirm(tr('关闭当前方案并回到空白画板？\n服务器上已保存的方案不受影响；尚未保存的修改会丢失。', 'Close the current plan and return to a blank canvas?\nSaved plans on the server are not affected; unsaved changes will be lost.'))) return;
+      state = blankState();
+      ui.sel = null;
+      undoStack.length = 0; redoStack.length = 0;   // 关闭后无可撤销内容，撤销栈清空
+      autoSaved = '';
+      renderAll(); syncPlanName('');
+      toast(tr('已关闭方案', 'Plan closed'));
     };
 
     /* 欢迎界面：方案卡片网格 + 新建/导入入口；silent=true 时不弹错误提示（用于启动时） */
