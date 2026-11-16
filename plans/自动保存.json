@@ -532,6 +532,9 @@
       "dir": 0
     }
   ],
+  "balconies": [],
+  "planters": [],
+  "flues": [],
   "layers": {
     "dims": true,
     "labels": true,
