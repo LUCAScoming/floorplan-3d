@@ -1558,9 +1558,11 @@
       box-shadow: 0 8px 26px rgba(40, 30, 20, .16);
       z-index: 4;
       transition: transform .2s, opacity .2s;
+      width: 222px;
       max-width: calc(100% - 24px);
       max-height: calc(100% - 24px);
-      overflow-y: auto
+      overflow-y: auto;
+      scrollbar-width: thin
     }
 
     #wallLenBox {
@@ -1749,6 +1751,36 @@
       height: 15px;
       flex: none;
       display: block
+    }
+
+    /* 分组：每组标题占整行，按钮两列排布 */
+    #designTools .dtg {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px
+    }
+
+    #designTools .dth {
+      grid-column: 1/-1;
+      padding: 6px 6px 1px;
+      margin-top: 2px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.5;
+      letter-spacing: .8px
+    }
+
+    #designTools .dtg:first-of-type .dth {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0
+    }
+
+    #designTools .dtg .btn {
+      width: 100%;
+      min-width: 0;
+      padding: 4px 6px
     }
 
     /* ---------- 触屏漫游摇杆 ---------- */
@@ -2119,75 +2151,86 @@
       <div class="modehint" id="modehint"></div>
       <div id="fab"></div>
       <div id="designTools" style="display:none">
-        <button class="btn chip on" data-dt="select"
+        <div class="dtg"><div class="dth">基础</div>
+          <button class="btn chip on" data-dt="select"
           title="点选墙 / 门 / 窗 / 家具：拖动、改尺寸、删除；在空白处 / 房间内按住左键拖出矩形可框选家具、楼梯、柱子、自画墙（Ctrl+D 复制、Delete 删除；按住 Alt 拖动可从任意位置起手）"
           data-en-title="Click to edit; drag on empty space or inside a room to marquee-select furniture / stairs / columns / walls (Ctrl+D duplicates, Delete removes, Alt+drag starts anywhere)"><i
-            data-lucide="mouse-pointer-2"></i>选择</button>
-        <button class="btn chip" data-dt="wall" title="点击两点画一段墙，可连续画；也可先点起点，输入长度后回车"><i
-            data-lucide="brick-wall"></i>画墙</button>
-        <button class="btn chip" data-dt="door" title="点击墙上的位置放一个 900mm 房门"><i data-lucide="door-open"></i>房门</button>
-        <button class="btn chip" data-dt="yak" title="点击墙上的位置开一个 1200mm 垭口（只有门洞和门套，没有门扇，可直接通行）"><i data-lucide="rectangle-horizontal"></i>垭口</button>
-        <button class="btn chip" data-dt="dble" title="点击墙上的位置放一个 1500mm 双开门（两扇对开，3D 中点击可开合）"><i data-lucide="columns-2"></i>双开门</button>
-        <button class="btn chip" data-dt="zimu" title="点击墙上的位置放一个 1200mm 子母门（大扇 + 小扇，3D 中点击可开合）"><i data-lucide="panel-left"></i>子母门</button>
-        <button class="btn chip" data-dt="win" title="点击墙上的位置放一个 1200mm 窗户"><i data-lucide="blinds"></i>窗户</button>
-        <button class="btn chip" data-dt="hwin" title="点击墙上的位置放一个 1200mm 高窗（窗台抬高，默认 1400mm，适合卫生间 / 楼梯间）"><i data-lucide="panel-top"></i>高窗</button>
-        <button class="btn chip" data-dt="louver" title="点击墙上的位置放一个 1200mm 百叶窗（倾斜叶片，3D 中不可开启）"><i data-lucide="align-justify"></i>百叶窗</button>
-        <button class="btn chip" data-dt="cwin" title="点击墙上的位置放一个 900mm 圆窗（圆形洞口，窗台默认 900mm）"><i data-lucide="circle"></i>圆窗</button>
-        <button class="btn chip" data-dt="bay" title="点击墙上的位置放一个 1500mm 飘窗（窗台 500，向外凸出 600，进深与朝向可改）"><i data-lucide="app-window"></i>飘窗</button>
-        <button class="btn chip" data-dt="dwin" title="点击墙上的位置放一个 1500mm 门连窗（左侧门扇 + 右侧固定窗）"><i data-lucide="gallery-vertical-end"></i>门连窗</button>
-        <button class="btn chip" data-dt="roller" title="点击墙上的位置开一个 1800mm 卷帘门（车库 / 店铺，3D 中常闭不可穿行）"><i
-            data-lucide="panel-top"></i>卷帘门</button>
-        <button class="btn chip" data-dt="elev" title="点击墙上的位置开一个 900mm 电梯门（金属中分双扇，3D 中点击可开合）"><i
-            data-lucide="door-closed"></i>电梯门</button>
-        <button class="btn chip" data-dt="fwin" title="点击墙上的位置放一个 1800mm 落地窗（通顶玻璃）"><i
-            data-lucide="rectangle-vertical"></i>落地窗</button>
-        <button class="btn chip" data-dt="slid" title="点击墙上的位置放一个 2400mm 落地推拉门（通顶玻璃双扇，3D 中点击可开合）"><i
-            data-lucide="arrow-left-right"></i>落地推拉门</button>
-        <button class="btn chip" data-dt="sd" title="点击墙上的位置放一个 900mm 单扇推拉门（室内用，3D 中点击门扇可推开）"><i
-            data-lucide="panel-right-close"></i>单扇推拉门</button>
-        <button class="btn chip" data-dt="fold" title="点击墙上的位置放一个 1800mm 折叠门（多扇折叠，3D 中显示为折起状态，可直接通行）"><i
-            data-lucide="panel-right-open"></i>折叠门</button>
-        <button class="btn chip" data-dt="text" title="点击平面图放置文字标注；选中后可在右侧改文字、字号与位置"><i
-            data-lucide="type"></i>文字标注</button>
-        <button class="btn chip" data-dt="dim" title="尺寸标注：第一次点起点，第二次点终点，自动标出两点距离；可选中拖动 / 删除"><i
-            data-lucide="ruler"></i>尺寸标注</button>
-        <button class="btn chip" data-dt="room" title="点击两个对角点拉出一个矩形房间（地面区域），可在属性面板改名称与地面材料"><i
-            data-lucide="square"></i>房间</button>
-        <button class="btn chip" data-dt="paint" title="材质刷：先用「选择」点一个房间作为样板（或在右侧选好材料），再点其他房间逐个刷地面材料"><i
-            data-lucide="paint-bucket"></i>材质刷</button>
-        <button class="btn chip" data-dt="entry" title="点击一个门洞（原始门洞或自画的门），把它设为入户门（全局唯一；再次点击其它门洞即转移）"><i
-            data-lucide="log-in"></i>入户</button>
-        <button class="btn chip" data-dt="pillar" title="点击放置一根柱子（默认方柱 400mm，通顶并占位挡路；右侧可改圆/方与尺寸，可直接拖动）"><i
-            data-lucide="columns-3"></i>柱子</button>
-        <button class="btn chip" data-dt="stair" title="点击放置一部直跑楼梯（默认 1000×4000，升 2800；方向/尺寸可在右侧改，漫游可走上去）"><i
-            data-lucide="arrow-up-narrow-wide"></i>楼梯</button>
-        <button class="btn chip" data-dt="stair2" title="点击放置双跑（U 形折返）楼梯：两跑并行、端部带休息平台，默认 1000×4000 升 2800"><i
-            data-lucide="corner-up-left"></i>双跑楼梯</button>
-        <button class="btn chip" data-dt="stair3" title="点击放置三跑楼梯：折返两次、三跑并排、中间两块休息平台，默认 1000×5000 升 2800"><i
-            data-lucide="route"></i>三跑楼梯</button>
-        <button class="btn chip" data-dt="stair3s" title="点击放置正三跑楼梯：第三跑叠在第一跑正上方，平面只占两跑宽（1000×4000 升 2800）"><i
-            data-lucide="layers"></i>正三跑</button>
-        <button class="btn chip" data-dt="ramp" title="点击放置一段坡道（默认 1200×4000 升 600，坡度 / 方向可在右侧改）"><i
-            data-lucide="trending-up"></i>坡道</button>
-        <button class="btn chip" data-dt="steps" title="点击放置一组台阶（默认 1200 宽 × 1200 长，3 级共升 450，级数 / 方向可在右侧改）"><i
-            data-lucide="chevrons-up"></i>台阶</button>
-        <button class="btn chip" data-dt="rail" title="栏杆：第一次点起点，第二次点终点；默认 1000 高直杆，可换玻璃栏板，长度 / 高度可调"><i
-            data-lucide="fence"></i>栏杆</button>
-        <button class="btn chip" data-dt="beam" title="梁：第一次点起点，第二次点终点；默认 200 宽 × 300 高、底标高 2400，可在右侧调"><i
-            data-lucide="rectangle-horizontal"></i>梁</button>
-        <button class="btn chip" data-dt="level" title="标高：点击位置放一个标高符号，可改标高值与文字；可拖动 / 删除"><i
-            data-lucide="triangle"></i>标高</button>
-        <button class="btn chip" data-dt="slab" title="楼板 / 挑板：两次点击对角点生成矩形板；板厚、底标高可改（底标高改 0 即落地楼板）"><i
-            data-lucide="box"></i>楼板</button>
-        <button class="btn chip" data-dt="parapet" title="女儿墙：第一次点起点，第二次点终点；默认 120 厚 × 900 高、带压顶，长度 / 厚 / 高 / 底标高可改"><i
-            data-lucide="fence"></i>女儿墙</button>
-        <button class="btn chip" data-dt="canopy" title="雨棚：第一次点起点，第二次点终点；默认挑出 800、板厚 100、底标高 2400，可翻转挑出方向"><i
-            data-lucide="panel-top"></i>雨棚</button>
-        <button class="btn chip" data-dt="north" title="指北针：点击放置或移动位置，朝向角度可在右侧改"><i
-            data-lucide="compass"></i>指北针</button>
-        <button class="btn chip" data-dt="lift" title="电梯：点击放置（默认 2000×2000，门宽 900）；宽 / 深 / 高 / 停靠高度 / 门宽 / 开门方向可改，3D 为井道 + 可点击开合的双扇门"><i
-            data-lucide="arrow-up-down"></i>电梯</button>
-      </div>
+          data-lucide="mouse-pointer-2"></i>选择</button>
+          <button class="btn chip" data-dt="wall" title="点击两点画一段墙，可连续画；也可先点起点，输入长度后回车"><i
+          data-lucide="brick-wall"></i>画墙</button>
+          <button class="btn chip" data-dt="room" title="点击两个对角点拉出一个矩形房间（地面区域），可在属性面板改名称与地面材料"><i
+          data-lucide="square"></i>房间</button>
+          <button class="btn chip" data-dt="paint" title="材质刷：先用「选择」点一个房间作为样板（或在右侧选好材料），再点其他房间逐个刷地面材料"><i
+          data-lucide="paint-bucket"></i>材质刷</button>
+        </div>
+        <div class="dtg"><div class="dth">门</div>
+          <button class="btn chip" data-dt="door" title="点击墙上的位置放一个 900mm 房门"><i data-lucide="door-open"></i>房门</button>
+          <button class="btn chip" data-dt="dble" title="点击墙上的位置放一个 1500mm 双开门（两扇对开，3D 中点击可开合）"><i data-lucide="columns-2"></i>双开门</button>
+          <button class="btn chip" data-dt="zimu" title="点击墙上的位置放一个 1200mm 子母门（大扇 + 小扇，3D 中点击可开合）"><i data-lucide="panel-left"></i>子母门</button>
+          <button class="btn chip" data-dt="yak" title="点击墙上的位置开一个 1200mm 垭口（只有门洞和门套，没有门扇，可直接通行）"><i data-lucide="rectangle-horizontal"></i>垭口</button>
+          <button class="btn chip" data-dt="sd" title="点击墙上的位置放一个 900mm 单扇推拉门（室内用，3D 中点击门扇可推开）"><i
+          data-lucide="panel-right-close"></i>单扇推拉门</button>
+          <button class="btn chip" data-dt="fold" title="点击墙上的位置放一个 1800mm 折叠门（多扇折叠，3D 中显示为折起状态，可直接通行）"><i
+          data-lucide="panel-right-open"></i>折叠门</button>
+          <button class="btn chip" data-dt="slid" title="点击墙上的位置放一个 2400mm 落地推拉门（通顶玻璃双扇，3D 中点击可开合）"><i
+          data-lucide="arrow-left-right"></i>落地推拉门</button>
+          <button class="btn chip" data-dt="elev" title="点击墙上的位置开一个 900mm 电梯门（金属中分双扇，3D 中点击可开合）"><i
+          data-lucide="door-closed"></i>电梯门</button>
+          <button class="btn chip" data-dt="roller" title="点击墙上的位置开一个 1800mm 卷帘门（车库 / 店铺，3D 中常闭不可穿行）"><i
+          data-lucide="panel-top"></i>卷帘门</button>
+          <button class="btn chip" data-dt="entry" title="点击一个门洞（原始门洞或自画的门），把它设为入户门（全局唯一；再次点击其它门洞即转移）"><i
+          data-lucide="log-in"></i>入户</button>
+        </div>
+        <div class="dtg"><div class="dth">窗</div>
+          <button class="btn chip" data-dt="win" title="点击墙上的位置放一个 1200mm 窗户"><i data-lucide="blinds"></i>窗户</button>
+          <button class="btn chip" data-dt="hwin" title="点击墙上的位置放一个 1200mm 高窗（窗台抬高，默认 1400mm，适合卫生间 / 楼梯间）"><i data-lucide="panel-top"></i>高窗</button>
+          <button class="btn chip" data-dt="fwin" title="点击墙上的位置放一个 1800mm 落地窗（通顶玻璃）"><i
+          data-lucide="rectangle-vertical"></i>落地窗</button>
+          <button class="btn chip" data-dt="dwin" title="点击墙上的位置放一个 1500mm 门连窗（左侧门扇 + 右侧固定窗）"><i data-lucide="gallery-vertical-end"></i>门连窗</button>
+          <button class="btn chip" data-dt="bay" title="点击墙上的位置放一个 1500mm 飘窗（窗台 500，向外凸出 600，进深与朝向可改）"><i data-lucide="app-window"></i>飘窗</button>
+          <button class="btn chip" data-dt="louver" title="点击墙上的位置放一个 1200mm 百叶窗（倾斜叶片，3D 中不可开启）"><i data-lucide="align-justify"></i>百叶窗</button>
+          <button class="btn chip" data-dt="cwin" title="点击墙上的位置放一个 900mm 圆窗（圆形洞口，窗台默认 900mm）"><i data-lucide="circle"></i>圆窗</button>
+        </div>
+        <div class="dtg"><div class="dth">楼梯 · 坡道</div>
+          <button class="btn chip" data-dt="stair" title="点击放置一部直跑楼梯（默认 1000×4000，升 2800；方向/尺寸可在右侧改，漫游可走上去）"><i
+          data-lucide="arrow-up-narrow-wide"></i>楼梯</button>
+          <button class="btn chip" data-dt="stair2" title="点击放置双跑（U 形折返）楼梯：两跑并行、端部带休息平台，默认 1000×4000 升 2800"><i
+          data-lucide="corner-up-left"></i>双跑楼梯</button>
+          <button class="btn chip" data-dt="stair3" title="点击放置三跑楼梯：折返两次、三跑并排、中间两块休息平台，默认 1000×5000 升 2800"><i
+          data-lucide="route"></i>三跑楼梯</button>
+          <button class="btn chip" data-dt="stair3s" title="点击放置正三跑楼梯：第三跑叠在第一跑正上方，平面只占两跑宽（1000×4000 升 2800）"><i
+          data-lucide="layers"></i>正三跑</button>
+          <button class="btn chip" data-dt="ramp" title="点击放置一段坡道（默认 1200×4000 升 600，坡度 / 方向可在右侧改）"><i
+          data-lucide="trending-up"></i>坡道</button>
+          <button class="btn chip" data-dt="steps" title="点击放置一组台阶（默认 1200 宽 × 1200 长，3 级共升 450，级数 / 方向可在右侧改）"><i
+          data-lucide="chevrons-up"></i>台阶</button>
+        </div>
+        <div class="dtg"><div class="dth">结构 · 构件</div>
+          <button class="btn chip" data-dt="pillar" title="点击放置一根柱子（默认方柱 400mm，通顶并占位挡路；右侧可改圆/方与尺寸，可直接拖动）"><i
+          data-lucide="columns-3"></i>柱子</button>
+          <button class="btn chip" data-dt="beam" title="梁：第一次点起点，第二次点终点；默认 200 宽 × 300 高、底标高 2400，可在右侧调"><i
+          data-lucide="rectangle-horizontal"></i>梁</button>
+          <button class="btn chip" data-dt="slab" title="楼板 / 挑板：两次点击对角点生成矩形板；板厚、底标高可改（底标高改 0 即落地楼板）"><i
+          data-lucide="box"></i>楼板</button>
+          <button class="btn chip" data-dt="parapet" title="女儿墙：第一次点起点，第二次点终点；默认 120 厚 × 900 高、带压顶，长度 / 厚 / 高 / 底标高可改"><i
+          data-lucide="fence"></i>女儿墙</button>
+          <button class="btn chip" data-dt="rail" title="栏杆：第一次点起点，第二次点终点；默认 1000 高直杆，可换玻璃栏板，长度 / 高度可调"><i
+          data-lucide="fence"></i>栏杆</button>
+          <button class="btn chip" data-dt="canopy" title="雨棚：第一次点起点，第二次点终点；默认挑出 800、板厚 100、底标高 2400，可翻转挑出方向"><i
+          data-lucide="panel-top"></i>雨棚</button>
+          <button class="btn chip" data-dt="lift" title="电梯：点击放置（默认 2000×2000，门宽 900）；宽 / 深 / 高 / 停靠高度 / 门宽 / 开门方向可改，3D 为井道 + 可点击开合的双扇门"><i
+          data-lucide="arrow-up-down"></i>电梯</button>
+        </div>
+        <div class="dtg"><div class="dth">标注</div>
+          <button class="btn chip" data-dt="dim" title="尺寸标注：第一次点起点，第二次点终点，自动标出两点距离；可选中拖动 / 删除"><i
+          data-lucide="ruler"></i>尺寸标注</button>
+          <button class="btn chip" data-dt="level" title="标高：点击位置放一个标高符号，可改标高值与文字；可拖动 / 删除"><i
+          data-lucide="triangle"></i>标高</button>
+          <button class="btn chip" data-dt="text" title="点击平面图放置文字标注；选中后可在右侧改文字、字号与位置"><i
+          data-lucide="type"></i>文字标注</button>
+          <button class="btn chip" data-dt="north" title="指北针：点击放置或移动位置，朝向角度可在右侧改"><i
+          data-lucide="compass"></i>指北针</button>
+        </div>
       <div id="wallLenBox"><input id="wallLen" type="number" min="10" step="10" placeholder="长度"><span>mm</span><span
           class="muted">Enter 确认 · Esc 取消</span></div>
     </main>
@@ -4845,6 +4888,7 @@
       renderMeasure();
       renderNotes();
     }
+    let hintTimer = 0;
     function syncModeHint() {
       const hints = {
         select: COARSE ? tr('预览模式：拖动平移 / 双指缩放 · 点击房间查看面积与地面 · 编辑请进「设计」', 'Preview: pan / pinch to zoom · tap a room for area & flooring · switch to "Design" to edit')
@@ -4854,7 +4898,11 @@
         draw: COARSE ? tr('子工具「选择」= 点选编辑：选中后 Delete 或底部按钮删除（内置墙=标记拆除）· 空白处拖动可框选（双指缩放 / 平移）· 画墙（点两点）/ 房门 / 窗户（点墙上的位置）', '"Select" edits: Delete or the bottom bar removes (original walls are marked for removal) · drag on empty space to marquee-select (two fingers to pan / zoom) · draw walls, add doors / windows')
           : tr('子工具「选择」= 点选墙 / 门 / 窗 / 家具编辑，在空白处 / 房间内拖出矩形可框选家具 / 楼梯 / 柱子 / 自画墙（Ctrl+D 复制、Delete 删除；按住 Alt 拖动可从任意位置起手），Delete 删除（内置墙 = 标记拆除，点拆除残留可恢复，黑色承重墙不可拆）· 画墙 = 点两点（吸附 0°/90°/45°，Shift 锁轴，右键 / Esc 取消，靠近旧墙自动吸上融合；也可点起点后直接输入长度回车）· 房门 / 垭口 / 双开门 / 子母门 / 卷帘门 / 电梯门 / 落地窗 / 落地推拉门 / 单扇推拉门 / 折叠门 / 窗户 / 高窗 / 门连窗 / 飘窗 = 点墙上的位置 · 文字标注 = 点位置放文字（右侧改内容/字号，可拖动）· 台阶 = 点位置放一组台阶（级数可改）· 栏杆 = 点起点再点终点（高度 / 直杆或玻璃可改）· 梁 = 点起点再点终点（宽 / 高 / 底标高可改）· 标高 = 点位置放标高符号 · 尺寸标注 = 点起点再点终点 · 材质刷 = 点房间刷地面材料（先用「选择」点一个样板房间换材料）· 入户 = 点一个门洞设为唯一入户门 · 柱子 / 楼梯（直跑 · 双跑 · 三跑 · 正三跑）= 点任意位置放置（可拖动）· 楼板 = 点两个对角点（板厚 / 底标高可改）· 女儿墙 = 点起点再点终点（厚 / 高 / 底标高可改）· 雨棚 = 点起点再点终点（挑出 / 板厚 / 底标高可改）· 指北针 = 点位置放置（全局唯一，角度可改）· 电梯 = 点位置放置（宽 / 深 / 停靠高度 / 门宽 / 开门方向可改）', '"Select" = click walls / doors / windows / furniture to edit; drag on empty space or inside a room to marquee-select furniture / stairs / columns / walls (Ctrl+D duplicates, Alt+drag starts anywhere); Delete removes (original walls = mark for removal, click the dashed remains to restore, black load-bearing walls protected) · Draw = two points (snaps, Shift locks axis, right-click / Esc cancels, snaps onto existing walls to fuse; or click the start point and type a length, Enter to confirm) · Door / Roller / Elevator / Window = click a wall · Entry = click a door opening to set the unique entry · Railing / beam / parapet / canopy = click two points · Slab = two opposite corners · North arrow / elevator = click to place · Level / dimension = click to place')
       };
-      const h = $('#modehint'); h.textContent = hints[ui.tool]; h.classList.toggle('show', !!hints[ui.tool]);
+      const h = $('#modehint'); h.textContent = hints[ui.tool] || '';
+      clearTimeout(hintTimer);
+      if (!hints[ui.tool]) { h.classList.remove('show'); return; }
+      h.classList.add('show');
+      hintTimer = setTimeout(() => h.classList.remove('show'), 4000);   // 4 秒后自动淡出，避免常显挡住工具栏
     }
 
     /* ======================= 视图 ======================= */
