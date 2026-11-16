@@ -2311,8 +2311,8 @@
           data-lucide="rotate-cw"></i>旋转</button>
           <button class="btn chip" data-dt="wall" title="点击两点画一段墙，可连续画；也可先点起点，输入长度后回车。方向约束（直角 / 自由）在画板下方切换"><i
           data-lucide="brick-wall"></i>画墙</button>
-          <button class="btn chip" data-dt="room" title="点击两个对角点拉出一个矩形房间（地面区域），可在属性面板改名称与地面材料"><i
-          data-lucide="square"></i>房间</button>
+          <button class="btn chip" data-dt="room" title="区域：点击两个对角点拉出一个矩形区域（地面），可用来定义客厅、卧室、厕所、过道、阳台等；可在属性面板改名称与地面材料"><i
+          data-lucide="square"></i>区域</button>
           <button class="btn chip" data-dt="paint" title="材质刷：先用「选择」点一个房间作为样板（或在右侧选好材料），再点其他房间逐个刷地面材料"><i
           data-lucide="paint-bucket"></i>材质刷</button>
         </div>
@@ -2341,6 +2341,7 @@
           data-lucide="rectangle-vertical"></i>落地窗</button>
           <button class="btn chip" data-dt="dwin" title="点击墙上的位置放一个 1500mm 门连窗（左侧门扇 + 右侧固定窗）"><i data-lucide="gallery-vertical-end"></i>门连窗</button>
           <button class="btn chip" data-dt="bay" title="点击墙上的位置放一个 1500mm 飘窗（窗台 500，向外凸出 600，进深与朝向可改）"><i data-lucide="app-window"></i>飘窗</button>
+          <button class="btn chip" data-dt="lbay" title="L 型飘窗：点击两面墙的直角转角处，生成一个整体的 L 型飘窗（两段默认各 1200mm，进深 600、窗台 500、窗高 1200；窗台 / 窗高 / 进深两段共用，第二段宽度可单独改）"><i data-lucide="corner-up-right"></i>L飘窗</button>
           <button class="btn chip" data-dt="louver" title="点击墙上的位置放一个 1200mm 百叶窗（倾斜叶片，3D 中不可开启）"><i data-lucide="align-justify"></i>百叶窗</button>
           <button class="btn chip" data-dt="cwin" title="点击墙上的位置放一个 900mm 圆窗（圆形洞口，窗台默认 900mm）"><i data-lucide="circle"></i>圆窗</button>
         </div>
@@ -2369,13 +2370,13 @@
           data-lucide="fence"></i>女儿墙</button>
           <button class="btn chip" data-dt="rail" title="栏杆：第一次点起点，第二次点终点；默认 1000 高直杆，可换玻璃栏板，长度 / 高度可调"><i
           data-lucide="fence"></i>栏杆</button>
-          <button class="btn chip" data-dt="canopy" title="雨棚：第一次点起点，第二次点终点；默认挑出 800、板厚 100、底标高 2400，可翻转挑出方向"><i
+          <button class="btn chip" data-dt="canopy" title="雨棚：点击墙上的位置放置（默认沿墙 1500 宽、挑出 800、板厚 100、底标高 2400），朝点击的一侧挑出，长度 / 挑出 / 板厚 / 底标高可改"><i
           data-lucide="panel-top"></i>雨棚</button>
-          <button class="btn chip" data-dt="lift" title="电梯：点击放置（默认 2000×2000，门宽 900）；宽 / 深 / 高 / 停靠高度 / 门宽 / 开门方向可改，3D 为井道 + 可点击开合的双扇门"><i
+          <button class="btn chip" data-dt="lift" title="电梯：点击放置（默认 2000×2000，门宽 900，门高 2100）；宽 / 深 / 高 / 停靠高度 / 门宽 / 门高 / 门位置 / 开门方向可改，3D 为井道 + 可点击开合的双扇门"><i
           data-lucide="arrow-up-down"></i>电梯</button>
         </div>
         <div class="dtg"><div class="dth">室外 · 设备</div>
-          <button class="btn chip" data-dt="balcony" title="阳台：两次点击对角点拉出矩形；板厚 / 底标高 / 栏板高 / 栏板样式与哪几条边做栏板可在右侧改"><i
+          <button class="btn chip" data-dt="balcony" title="阳台：点击墙上的位置放置（默认沿墙 1500、进深 1200），自动贴住墙面，靠墙的一边不做栏板；板厚 / 底标高 / 栏板高 / 栏板样式与栏板边可在右侧改"><i
           data-lucide="land-plot"></i>阳台</button>
           <button class="btn chip" data-dt="planter" title="花坛 / 种植池：两次点击对角点；壁厚 / 高 / 底标高可改，3D 中带种植土并占位挡路"><i
           data-lucide="sprout"></i>花坛</button>
@@ -2455,9 +2456,9 @@
       <div id="rotAngleBox"><span>角度</span><input id="rotAngle" type="number" step="1" placeholder="0"><span>°</span>
         <span class="muted">Enter 确认 · Esc 取消</span><button class="btn" id="rotOk">应用</button></div>
       <div id="dirPad" class="only2d" hidden>
-        <button class="btn on" id="wallOrtho" title="直角：两点绘制时线段只走水平或垂直（适合大多数户型）；按住 Shift 同效"><i
+        <button class="btn on" id="wallOrtho" title="直角：绘制线段与拖动对象都只走水平或垂直（适合大多数户型）；按住 Shift 同效"><i
             data-lucide="corner-down-right"></i>直角</button>
-        <button class="btn" id="wallFree" title="自由：两点绘制时可任意角度；按住 Shift 临时锁水平 / 垂直"><i
+        <button class="btn" id="wallFree" title="自由：绘制与拖动可任意方向；按住 Shift 临时锁水平 / 垂直"><i
             data-lucide="pencil-line"></i>自由</button>
       </div>
     </main>
@@ -3101,8 +3102,61 @@
         else { const L = x1 - x0, m = (y0 + y1) / 2; s += `<rect x="${x0}" y="${m - 45}" width="${L * .55}" height="40" fill="#fff" ${DS}/><rect x="${x1 - L * .55}" y="${m + 5}" width="${L * .55}" height="40" fill="#fff" ${DS}/>`; }
         s += `</g>`;
       });
+      // L 型飘窗（一个对象两段）：整体按一条连续的 L 形窗带绘制，转角处两段的窗线、墙面线都用斜接（miter）连起来，
+      // 不再各段自己封边，避免转角出现一条竖线 / 白块，看起来像中间有根柱子。
+      const bayL2D = (o, legs) => {
+        const dep = Math.max(150, +(o.bayDepth ?? 600));
+        const BS = 'stroke="#2e6e8e" stroke-width="1.2" vector-effect="non-scaling-stroke"', NE = 'pointer-events="none"';
+        const P = q => `${+q[0].toFixed(1)},${+q[1].toFixed(1)}`;
+        const lerp = (p, q, t) => [p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t];
+        const meet = (A, uA, B, uB) => {                            // 两条直线的交点：转角处的斜接点
+          const cr = uA[0] * uB[1] - uA[1] * uB[0];
+          if (Math.abs(cr) < 1e-6) return null;
+          const wx = B[0] - A[0], wy = B[1] - A[1], t = (wx * uB[1] - wy * uB[0]) / cr;
+          return isFinite(t) ? [A[0] + uA[0] * t, A[1] + uA[1] * t] : null;
+        };
+        const info = legs.map(leg => {
+          const wg = openingWallGeom(leg.wall); if (!wg) return null;
+          const [P0, P1] = segPts(wg.A, wg.B, leg.c - leg.w / 2, leg.c + leg.w / 2);   // leg.c 为段中心
+          const dx = P1[0] - P0[0], dy = P1[1] - P0[1], L = Math.hypot(dx, dy) || 1;
+          const u = [dx / L, dy / L], n = [-u[1], u[0]], side = leg.flip ? -1 : 1, ov = [n[0] * side, n[1] * side];
+          const Pc = leg.lc === -1 ? P0 : P1, Pf = leg.lc === -1 ? P1 : P0, h = wg.T / 2;   // Pc 转角端，Pf 远端
+          const at = (p, d) => [p[0] + ov[0] * d, p[1] + ov[1] * d];
+          return { u, ov, T: wg.T,
+            Ic: at(Pc, -h), If: at(Pf, -h),                        // 靠房间一侧的墙面
+            Wc: at(Pc, h), Wf: at(Pf, h),                          // 靠窗一侧的墙面
+            Qc: at(Pc, dep), Qf: at(Pf, dep) };                    // 外沿窗线
+        });
+        if (info.some(x => !x) || info.length < 2) return '';
+        const a = info[0], b = info[1];
+        const IC = meet(a.Ic, a.u, b.Ic, b.u), OC = meet(a.Wc, a.u, b.Wc, b.u), X = meet(a.Qc, a.u, b.Qc, b.u);
+        if (!IC || !OC || !X) return '';
+        let out = `<polygon points="${[a.If, IC, b.If, b.Wf, OC, a.Wf].map(P).join(' ')}" fill="#f7fbfd" ${BS} ${NE}/>`;
+        out += `<polygon points="${[a.Wf, a.Qf, X, b.Qf, b.Wf, OC].map(P).join(' ')}" fill="#f7fbfd" fill-opacity=".7" ${BS} ${NE}/>`;
+        const inF = 70, gap = Math.max(a.T, b.T) / 6;              // 三道窗线沿转角连续绕过去
+        [-1, 0, 1].forEach(k => {
+          const d = inF + k * gap;
+          const A0 = [a.Qf[0] - a.ov[0] * d, a.Qf[1] - a.ov[1] * d], A1 = [a.Qc[0] - a.ov[0] * d, a.Qc[1] - a.ov[1] * d];
+          const B0 = [b.Qf[0] - b.ov[0] * d, b.Qf[1] - b.ov[1] * d], B1 = [b.Qc[0] - b.ov[0] * d, b.Qc[1] - b.ov[1] * d];
+          const M = meet(A1, a.u, B1, b.u); if (!M) return;
+          out += `<polyline points="${P(A0)} ${P(M)} ${P(B0)}" fill="none" ${BS} ${k ? 'stroke-width=".8"' : ''} ${NE}/>`;
+        });
+        info.forEach(g => {
+          [1 / 3, 2 / 3].forEach(t => {                            // 窗线分格（从玻璃线到外沿）
+            const p = lerp(g.Qf, g.Qc, t);
+            out += `<line x1="${p[0].toFixed(1)}" y1="${p[1].toFixed(1)}" x2="${(p[0] - g.ov[0] * inF).toFixed(1)}" y2="${(p[1] - g.ov[1] * inF).toFixed(1)}" ${BS} stroke-width=".8" ${NE}/>`;
+          });
+        });
+        return out;
+      };
       // 自己开的门 / 窗（data-open 使其可选中；整组可拖动沿墙滑动）
       state.openings.forEach(o => {
+        if (o.kind === 'lbay') {
+          s += `<g class="open" data-open="${o.id}">`;
+          s += bayL2D(o, o.legs || []);
+          s += `</g>`;
+          return;
+        }
         const wg = openingWallGeom(o.wall); if (!wg) return;
         const { A, B, T } = wg;
         const [P0, P1] = segPts(A, B, o.c, o.c + o.w);
@@ -3287,17 +3341,18 @@
       return (state.lifts || []).map(l => {
         const on = ui.sel?.kind === 'lift' && ui.sel.id === l.id;
         const w = Math.max(800, l.w ?? 2000), d = Math.max(800, l.d ?? 2000);
-        const dw = Math.max(400, Math.min(w - 300, l.dw ?? 900)), hf = dw / 2;
+        const dw = Math.max(400, Math.min(w - 300, d - 300, l.dw ?? 900)), hf = dw / 2;
+        const doff = Math.max(-(d - dw) / 2, Math.min((d - dw) / 2, l.dpos ?? 0));   // 门洞沿门面偏移
         const col = on ? '#b5653a' : '#5f574b';
         const ln = `stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke" stroke-dasharray="60 45"`;
         return `<g data-lift="${l.id}" style="cursor:move" transform="translate(${l.x} ${l.y}) rotate(${l.dir || 0})">
           <rect x="${-w / 2}" y="${-d / 2}" width="${w}" height="${d}" fill="#f1ede4" stroke="${col}" stroke-width="${on ? 2 : 1.2}" vector-effect="non-scaling-stroke"/>
           <line x1="${-w / 2}" y1="${-d / 2}" x2="${w / 2}" y2="${d / 2}" ${ln}/>
           <line x1="${-w / 2}" y1="${d / 2}" x2="${w / 2}" y2="${-d / 2}" ${ln}/>
-          <line x1="${w / 2}" y1="${-d / 2}" x2="${w / 2}" y2="${-hf}" stroke="${col}" stroke-width="2.6" vector-effect="non-scaling-stroke"/>
-          <line x1="${w / 2}" y1="${hf}" x2="${w / 2}" y2="${d / 2}" stroke="${col}" stroke-width="2.6" vector-effect="non-scaling-stroke"/>
-          <line x1="${w / 2}" y1="${-hf}" x2="${w / 2 + 90}" y2="${-hf}" stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke"/>
-          <line x1="${w / 2}" y1="${hf}" x2="${w / 2 + 90}" y2="${hf}" stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <line x1="${w / 2}" y1="${-d / 2}" x2="${w / 2}" y2="${doff - hf}" stroke="${col}" stroke-width="2.6" vector-effect="non-scaling-stroke"/>
+          <line x1="${w / 2}" y1="${doff + hf}" x2="${w / 2}" y2="${d / 2}" stroke="${col}" stroke-width="2.6" vector-effect="non-scaling-stroke"/>
+          <line x1="${w / 2}" y1="${doff - hf}" x2="${w / 2 + 90}" y2="${doff - hf}" stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <line x1="${w / 2}" y1="${doff + hf}" x2="${w / 2 + 90}" y2="${doff + hf}" stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke"/>
         </g>
         <text x="${l.x}" y="${l.y + 70}" font-size="220" text-anchor="middle" fill="${col}" font-weight="600"
           stroke="#fbf9f4" stroke-width="45" paint-order="stroke" pointer-events="none">${tr('电梯', 'Lift')}</text>` +
@@ -3664,7 +3719,6 @@
       if (ui.railA && ui.railCur) s += one(ui.railA, ui.railCur, '#6a6256');
       if (ui.beamA && ui.beamCur) s += one(ui.beamA, ui.beamCur, '#a86b44');
       if (ui.parapetA && ui.parapetCur) s += one(ui.parapetA, ui.parapetCur, '#8a7f6d');
-      if (ui.canopyA && ui.canopyCur) s += one(ui.canopyA, ui.canopyCur, '#6d7a6c');
       if (ui.slabA && ui.slabCur) {                               // 楼板拖对角点预览
         const mx = Math.min(ui.slabA.x, ui.slabCur.x), my = Math.min(ui.slabA.y, ui.slabCur.y);
         const w = Math.abs(ui.slabCur.x - ui.slabA.x), h = Math.abs(ui.slabCur.y - ui.slabA.y);
@@ -4090,7 +4144,17 @@
           }
         }
       } else if (ui.sel?.kind === 'open') {
-        const o = state.openings.find(x => x.id === ui.sel.id), wg = o && openingWallGeom(o.wall);
+        const o = state.openings.find(x => x.id === ui.sel.id);
+        if (o?.kind === 'lbay') {                                   // L 型飘窗：两段都画选中框，不给拖宽手柄
+          (o.legs || []).forEach(leg => {
+            const lg = openingWallGeom(leg.wall); if (!lg) return;
+            const [Q0, Q1] = segPts(lg.A, lg.B, leg.c - leg.w / 2, leg.c + leg.w / 2), gg = cwGeom([Q0[0], Q0[1], Q1[0], Q1[1]]);
+            s += gg.rot
+              ? `<rect x="${-gg.len / 2}" y="${-lg.T / 2}" width="${gg.len}" height="${lg.T}" fill="none" stroke="#b5653a" vector-effect="non-scaling-stroke" stroke-width="1.5" pointer-events="none" transform="translate(${gg.cx} ${gg.cy}) rotate(${gg.rot})"/>`
+              : `<rect x="${gg.x}" y="${gg.y}" width="${gg.w}" height="${gg.h}" fill="none" stroke="#b5653a" vector-effect="non-scaling-stroke" stroke-width="1.5" pointer-events="none"/>`;
+          });
+        } else {
+        const wg = o && openingWallGeom(o.wall);
         if (wg) {
           const [P0, P1] = segPts(wg.A, wg.B, o.c, o.c + o.w), g = cwGeom([P0[0], P0[1], P1[0], P1[1]]);
           s += g.rot
@@ -4099,6 +4163,7 @@
           if (ui.tool === 'draw' && ui.drawTool === 'select')   // 设计模式：两端手柄拖动调宽
             s += `<circle data-handle="openEnd" data-end="0" cx="${P0[0]}" cy="${P0[1]}" r="${8 * k}" fill="#fff" stroke="#b5653a" vector-effect="non-scaling-stroke" stroke-width="1.5"><title>${tr('拖动调整门窗宽度', 'Drag to resize opening')}</title></circle>
               <circle data-handle="openEnd" data-end="1" cx="${P1[0]}" cy="${P1[1]}" r="${8 * k}" fill="#fff" stroke="#b5653a" vector-effect="non-scaling-stroke" stroke-width="1.5"><title>${tr('拖动调整门窗宽度', 'Drag to resize opening')}</title></circle>`;
+        }
         }
       } else if (ui.sel?.kind === 'bopen') {
         const r = bopenRect(ui.sel.id);
@@ -4149,8 +4214,12 @@
         const c = (state.canopies || []).find(x => x.id === ui.sel.id);
         if (c) {
           const A = 'stroke="#b5653a" vector-effect="non-scaling-stroke"';
+          const [ax, ay] = c.a, [bx, by] = c.b, L = Math.hypot(bx - ax, by - ay) || 1;
+          const sd = c.side === -1 ? -1 : 1, dep = Math.max(100, c.depth ?? 800);
+          const ux = (bx - ax) / L, uy = (by - ay) / L, ox = (ax + bx) / 2 - uy * sd * dep, oy = (ay + by) / 2 + ux * sd * dep;
           s += `<circle data-handle="canopyEnd" data-end="0" cx="${c.a[0]}" cy="${c.a[1]}" r="${8 * k}" fill="#fff" ${A} stroke-width="1.5"><title>${tr('拖动调整起点', 'Drag start point')}</title></circle>
-            <circle data-handle="canopyEnd" data-end="1" cx="${c.b[0]}" cy="${c.b[1]}" r="${8 * k}" fill="#fff" ${A} stroke-width="1.5"><title>${tr('拖动调整终点', 'Drag end point')}</title></circle>`;
+            <circle data-handle="canopyEnd" data-end="1" cx="${c.b[0]}" cy="${c.b[1]}" r="${8 * k}" fill="#fff" ${A} stroke-width="1.5"><title>${tr('拖动调整终点', 'Drag end point')}</title></circle>
+            <circle data-handle="canopyDepth" cx="${ox}" cy="${oy}" r="${8 * k}" fill="#fff" ${A} stroke-width="1.5"><title>${tr('拖动调整挑出深度（基线保持贴墙）', 'Drag to change projection (keeps the base on the wall)')}</title></circle>`;
           s += `<text x="${(c.a[0] + c.b[0]) / 2}" y="${(c.a[1] + c.b[1]) / 2 - 14 * k}" font-size="${12 * k}" text-anchor="middle" fill="#b5653a" font-weight="600" pointer-events="none"
             stroke="#fff" stroke-width="${3 * k}" paint-order="stroke">${Math.round(Math.hypot(c.b[0] - c.a[0], c.b[1] - c.a[1]))} mm</text>`;
         }
@@ -4235,7 +4304,6 @@
       $('#nY').onchange = e => { const v = Math.round((+e.target.value || 0) / 10) * 10; mutate(() => n.y = v); };
       $('#aDel').onclick = () => { ui.sel = { kind: 'note', id: n.id }; deleteSel(); };
       $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
-      requestAnimationFrame(() => { const el = $('#nText'); if (el) { el.focus(); el.select(); } });
     }
 
     function dimPanel(d) {
@@ -4428,6 +4496,88 @@
       $('#aDel').onclick = () => { ui.sel = { kind: 'parapet', id }; deleteSel(); };
       $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
     }
+    // 找离点最近的墙（雨棚拖拽 / 翻转时贴墙用）
+    function nearestWall(m) {
+      let best = null, bd = Infinity;
+      const consider = (a, b, T) => {
+        const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy); if (L < 1) return;
+        let t = ((m[0] - a[0]) * dx + (m[1] - a[1]) * dy) / (L * L); t = Math.max(0, Math.min(1, t));
+        const d = Math.hypot(m[0] - a[0] - dx * t, m[1] - a[1] - dy * t);
+        if (d < bd) { bd = d; best = { a, b, T, L, d }; }
+      };
+      WALLS.forEach((w, i) => {
+        const id = 'w' + i;
+        if (state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
+        const s = builtinSeg(i); consider(s.A, s.B, s.T);
+      });
+      state.walls.forEach(w => {
+        const id = 'CW' + w.id;
+        if (state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
+        consider(w.a, w.b, cwT(w));
+      });
+      return best;
+    }
+    // 点位于墙的哪一侧（与雨棚 side 同义：1 = 沿 [-uy, ux] 方向）
+    function wallSideOf(m, wall) {
+      const dx = wall.b[0] - wall.a[0], dy = wall.b[1] - wall.a[1], L = Math.hypot(dx, dy);
+      let t = ((m[0] - wall.a[0]) * dx + (m[1] - wall.a[1]) * dy) / (L * L); t = Math.max(0, Math.min(1, t));
+      const nx = -dy / L, ny = dx / L;
+      return ((m[0] - wall.a[0] - dx * t) * nx + (m[1] - wall.a[1] - dy * t) * ny) >= 0 ? 1 : -1;
+    }
+    // 把点贴到指定一侧的墙面（沿墙方向投影，限制在墙长内）
+    function snapPointToWall(P, wall, side) {
+      const dx = wall.b[0] - wall.a[0], dy = wall.b[1] - wall.a[1], L = Math.hypot(dx, dy);
+      const ux = dx / L, uy = dy / L, nx = -uy, ny = ux;
+      let t = (P[0] - wall.a[0]) * ux + (P[1] - wall.a[1]) * uy;
+      t = Math.max(0, Math.min(L, t));
+      return [Math.round((wall.a[0] + ux * t + nx * side * wall.T / 2) / 10) * 10,
+              Math.round((wall.a[1] + uy * t + ny * side * wall.T / 2) / 10) * 10];
+    }
+    // 阳台贴墙：靠近墙时把矩形贴到墙面，并取消靠墙边的栏板
+    function fitBalconyWall(b) {
+      const w = Math.max(200, b.w || 200), d = Math.max(200, b.d || 200);
+      const wall = nearestWall([b.x, b.y]);
+      if (!wall || wall.d > wall.T / 2 + Math.max(w, d) / 2 + 600) return;   // 离墙太远：自由摆放
+      if (wall.L < 400) return;
+      const hz = Math.abs(wall.b[0] - wall.a[0]) >= Math.abs(wall.b[1] - wall.a[1]);
+      let edge;
+      if (hz) {
+        const x0 = Math.min(wall.a[0], wall.b[0]), x1 = Math.max(wall.a[0], wall.b[0]), cy = wall.a[1];
+        b.x = (x0 + w / 2 <= x1 - w / 2) ? Math.max(x0 + w / 2, Math.min(x1 - w / 2, b.x)) : (x0 + x1) / 2;
+        b.y = Math.round(cy + (b.y >= cy ? 1 : -1) * (wall.T / 2 + d / 2));
+        edge = b.y > cy ? 't' : 'b';
+      } else {
+        const y0 = Math.min(wall.a[1], wall.b[1]), y1 = Math.max(wall.a[1], wall.b[1]), cx = wall.a[0];
+        b.y = (y0 + d / 2 <= y1 - d / 2) ? Math.max(y0 + d / 2, Math.min(y1 - d / 2, b.y)) : (y0 + y1) / 2;
+        b.x = Math.round(cx + (b.x >= cx ? 1 : -1) * (wall.T / 2 + w / 2));
+        edge = b.x > cx ? 'l' : 'r';
+      }
+      b.sides = (b.sides || ['l', 't', 'r', 'b']).filter(e => e !== edge);
+    }
+    // 翻转阳台：贴墙的阳台翻到墙的另一面（中心关于墙中线镜像），并更新靠墙边
+    function flipBalcony(b) {
+      const w = Math.max(200, b.w || 200), d = Math.max(200, b.d || 200);
+      const wall = nearestWall([b.x, b.y]);
+      if (!wall || wall.d > wall.T / 2 + Math.max(w, d) / 2 + 600) return;
+      const A = wall.a, B = wall.b, dx = B[0] - A[0], dy = B[1] - A[1], L2 = dx * dx + dy * dy;
+      const t = ((b.x - A[0]) * dx + (b.y - A[1]) * dy) / L2;
+      const cx = A[0] + dx * t, cy = A[1] + dy * t;
+      b.x = Math.round(2 * cx - b.x); b.y = Math.round(2 * cy - b.y);
+      fitBalconyWall(b);                                     // 贴到另一侧墙面并取消新的靠墙边
+    }
+    // 翻转雨棚：贴墙的雨棚翻到墙的另一面（基线镜像到另一侧墙面），否则只翻转挑出方向
+    function flipCanopy(c) {
+      const wall = nearestWall([(c.a[0] + c.b[0]) / 2, (c.a[1] + c.b[1]) / 2]);
+      if (wall && wall.d <= wall.T / 2 + 400) {                    // 贴墙：基线镜像到墙的另一面
+        const A = wall.a, B = wall.b, dx = B[0] - A[0], dy = B[1] - A[1], L2 = dx * dx + dy * dy;
+        const mirror = P => {
+          const t = ((P[0] - A[0]) * dx + (P[1] - A[1]) * dy) / L2, C = [A[0] + dx * t, A[1] + dy * t];
+          return [Math.round((2 * C[0] - P[0]) / 10) * 10, Math.round((2 * C[1] - P[1]) / 10) * 10];
+        };
+        c.a = mirror(c.a); c.b = mirror(c.b);
+      }
+      c.side = c.side === -1 ? 1 : -1;
+    }
     function canopyPanel(c) {
       const L = Math.round(seg2(c.a, c.b));
       return `<section><h3>${tr('雨棚', 'Canopy')}</h3>
@@ -4438,7 +4588,7 @@
       <label>${tr('底标高', 'Bottom')} (mm)<input type="number" id="cpZ" value="${Math.round(c.z ?? 2400)}" min="-5000" max="20000" step="50"></label>
     </div>
     <div class="actions"><button class="btn" id="cpFlip">${tr('翻转挑出方向', 'Flip side')}</button></div>
-    <div class="muted" style="margin-top:8px">${tr('沿基线向一侧挑出板体；改长度时起点不动、终点沿原方向伸缩，可直接在图上拖动。', 'The slab projects to one side of the baseline. Length keeps the start point; drag on the plan to move.')}</div>
+    <div class="muted" style="margin-top:8px">${tr('贴在点击的那面墙上，基线只能沿墙调整；拖外侧手柄可自由调整挑出深度。长度 / 挑出 / 板厚 / 底标高也可在右侧改。', 'Sits against the clicked wall; the base only slides along the wall while the outer handle freely adjusts the projection. Length / projection / thickness / elevation can also be edited here.')}</div>
     <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
     }
     function bindCanopyPanel(id) {
@@ -4461,7 +4611,7 @@
         });
       };
       const fl = $('#cpFlip');
-      if (fl) fl.onclick = () => mutate(() => { const c = (state.canopies || []).find(x => x.id === id); if (c) c.side = (c.side === -1 ? 1 : -1); });
+      if (fl) fl.onclick = () => mutate(() => { const c = (state.canopies || []).find(x => x.id === id); if (c) flipCanopy(c); });
       $('#aDel').onclick = () => { ui.sel = { kind: 'canopy', id }; deleteSel(); };
       $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
     }
@@ -4488,8 +4638,8 @@
       <label class="chk"><input type="checkbox" id="bcR" ${has('r') ? 'checked' : ''}>${tr('右', 'Right')}</label>
       <label class="chk"><input type="checkbox" id="bcB" ${has('b') ? 'checked' : ''}>${tr('下', 'Bottom')}</label>
     </div>
-    <div class="muted" style="margin-top:8px">${tr('两次点击拉出矩形阳台；勾选哪几条边做栏板（靠墙的一边可取消）。3D 中按板厚 + 栏板样式生成挑板与栏板。', 'Click two opposite corners. Tick the sides that get a parapet (untick the wall side). 3D builds the slab and parapets.')}</div>
-    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    <div class="muted" style="margin-top:8px">${tr('点击墙体生成，阳台自动贴住墙面、靠墙的一边不做栏板；拖动时同样贴墙滑动。3D 中按板厚 + 栏板样式生成挑板与栏板。', 'Click a wall to place it. The balcony snaps against the wall and the wall side gets no parapet; dragging also stays on the wall. 3D builds the slab and parapets.')}</div>
+    <div class="actions"><button class="btn" id="bcFlip">${tr('翻到墙另一面', 'Flip to other side')}</button><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
     }
     function bindBalconyPanel(id) {
       const num = (k, min, max, step, fn) => {
@@ -4516,6 +4666,8 @@
           b.sides = el.checked ? [...new Set([...sd, side])] : sd.filter(x => x !== side);
         });
       });
+      const fl = $('#bcFlip');
+      if (fl) fl.onclick = () => mutate(() => { const b = (state.balconies || []).find(x => x.id === id); if (b) flipBalcony(b); });
       $('#aDel').onclick = () => { ui.sel = { kind: 'balcony', id }; deleteSel(); };
       $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
     }
@@ -4590,11 +4742,13 @@
       <label>${tr('停靠高度', 'Stop level')} (mm)<input type="number" id="lfStop" value="${Math.round(l.stop ?? 0)}" min="0" max="20000" step="50"></label>
       <label>${tr('轿厢高', 'Height')} (mm)<input type="number" id="lfH" value="${Math.round(l.h ?? 2400)}" min="1800" max="4000" step="50"></label>
       <label>${tr('门宽', 'Door width')} (mm)<input type="number" id="lfDW" value="${Math.round(l.dw ?? 900)}" min="500" max="2000" step="50"></label>
+      <label>${tr('门高', 'Door height')} (mm)<input type="number" id="lfDH" value="${Math.round(l.dh ?? 2100)}" min="1200" max="3000" step="50"></label>
+      <label>${tr('门位置', 'Door offset')} (mm)<input type="number" id="lfDP" value="${Math.round(l.dpos ?? 0)}" step="50"></label>
       <label>${tr('开门方向', 'Doors face')}<select id="lfDir">${dirs.map(([v, t]) => `<option value="${v}" ${(+l.dir || 0) === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
       <label>X (mm)<input type="number" id="lfX" value="${Math.round(l.x)}" step="10"></label>
       <label>Y (mm)<input type="number" id="lfY" value="${Math.round(l.y)}" step="10"></label>
     </div>
-    <div class="muted" style="margin-top:8px">${tr('2D 中可直接拖动；3D 从「停靠高度」向上生成井道与金属双扇门，切到 3D 后点击门扇（或门边呼叫面板）即可开合，门朝「开门方向」一侧（门宽自动限制在梯宽内）。', 'Drag on the plan. In 3D the shaft is built from the stop level upward; click a door leaf (or the call panel beside it) to open/close. Door width is clamped to the shaft.')}</div>
+    <div class="muted" style="margin-top:8px">${tr('2D 中可直接拖动；3D 从「停靠高度」向上生成井道与金属双扇门，切到 3D 后点击门扇（或门边呼叫面板）即可开合，门朝「开门方向」一侧。「门位置」为门洞沿门面向左 / 右偏移的距离（正数朝开门方向的右侧），门宽 / 门高 / 门位置都会自动限制在进深与轿厢高之内。', 'Drag on the plan. In 3D the shaft is built from the stop level upward; click a leaf (or the call panel) to open/close. "Door offset" shifts the opening along the door face; width / height / offset are clamped to the shaft.')}</div>
     <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
     }
     function bindLiftPanel(id) {
@@ -4605,11 +4759,15 @@
           mutate(() => { const l = (state.lifts || []).find(x => x.id === id); if (!l) return; fn(l, Math.max(min, Math.min(max, Math.round(v / step) * step))); });
         };
       };
-      num('lfW', 800, 6000, 10, (l, v) => { l.w = v; l.dw = Math.min(l.dw ?? 900, v - 300); });
-      num('lfD', 800, 6000, 10, (l, v) => l.d = v);
+      const maxOff = l => Math.max(0, ((l.d ?? 2000) - (l.dw ?? 900)) / 2);   // 门洞在门面上可偏移的极限
+      const fitDoor = l => { l.dw = Math.min(l.dw ?? 900, Math.min(l.w ?? 2000, l.d ?? 2000) - 300); l.dpos = Math.max(-maxOff(l), Math.min(maxOff(l), l.dpos ?? 0)); };
+      num('lfW', 800, 6000, 10, (l, v) => { l.w = v; fitDoor(l); });
+      num('lfD', 800, 6000, 10, (l, v) => { l.d = v; fitDoor(l); });
       num('lfStop', 0, 20000, 10, (l, v) => l.stop = v);
-      num('lfH', 1800, 4000, 10, (l, v) => l.h = v);
-      num('lfDW', 500, 2000, 10, (l, v) => l.dw = Math.min(v, (l.w ?? 2000) - 300));
+      num('lfH', 1800, 4000, 10, (l, v) => { l.h = v; l.dh = Math.min(l.dh ?? 2100, v - 100); });
+      num('lfDW', 500, 2000, 10, (l, v) => { l.dw = v; fitDoor(l); });
+      num('lfDH', 1200, 3000, 10, (l, v) => l.dh = Math.min(v, (l.h ?? 2400) - 100));
+      num('lfDP', -3000, 3000, 10, (l, v) => l.dpos = Math.max(-maxOff(l), Math.min(maxOff(l), v)));
       num('lfX', -1e6, 1e6, 10, (l, v) => l.x = v);
       num('lfY', -1e6, 1e6, 10, (l, v) => l.y = v);
       const dEl = $('#lfDir');
@@ -5047,19 +5205,19 @@
       const sillDef = Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : o.kind === 'bay' ? 500 : 900));
       const whDef = Math.round(o.wh ?? (o.kind === 'louver' ? 1200 : o.kind === 'bay' ? 1200 : Math.max(300, 2400 - sillDef)));
       const whMax = Math.max(300, wallH - sillDef);
-      return `<section><h3>${o.kind === 'door' ? tr('房门', 'Door') : o.kind === 'roller' ? tr('卷帘门', 'Roller shutter') : o.kind === 'elev' ? tr('电梯门', 'Elevator door') : o.kind === 'fwin' ? tr('落地窗', 'Floor-to-ceiling window') : o.kind === 'slid' ? tr('落地推拉门', 'Sliding glass door') : o.kind === 'sd' ? tr('单扇推拉门', 'Single sliding door') : o.kind === 'fold' ? tr('折叠门', 'Folding door') : o.kind === 'yak' ? tr('垭口', 'Cased opening') : o.kind === 'dble' ? tr('双开门', 'Double door') : o.kind === 'zimu' ? tr('子母门', 'Unequal double door') : o.kind === 'hwin' ? tr('高窗', 'High window') : o.kind === 'louver' ? tr('百叶窗', 'Louver window') : o.kind === 'cwin' ? tr('圆窗', 'Round window') : o.kind === 'bay' ? tr('飘窗', 'Bay window') : o.kind === 'dwin' ? tr('门连窗', 'Door + window') : tr('窗户', 'Window')}</h3>
+      return `<section><h3>${o.kind === 'door' ? tr('房门', 'Door') : o.kind === 'roller' ? tr('卷帘门', 'Roller shutter') : o.kind === 'elev' ? tr('电梯门', 'Elevator door') : o.kind === 'fwin' ? tr('落地窗', 'Floor-to-ceiling window') : o.kind === 'slid' ? tr('落地推拉门', 'Sliding glass door') : o.kind === 'sd' ? tr('单扇推拉门', 'Single sliding door') : o.kind === 'fold' ? tr('折叠门', 'Folding door') : o.kind === 'yak' ? tr('垭口', 'Cased opening') : o.kind === 'dble' ? tr('双开门', 'Double door') : o.kind === 'zimu' ? tr('子母门', 'Unequal double door') : o.kind === 'hwin' ? tr('高窗', 'High window') : o.kind === 'louver' ? tr('百叶窗', 'Louver window') : o.kind === 'cwin' ? tr('圆窗', 'Round window') : o.kind === 'bay' ? tr('飘窗', 'Bay window') : o.kind === 'lbay' ? tr('L 型飘窗', 'L-shaped bay') : o.kind === 'dwin' ? tr('门连窗', 'Door + window') : tr('窗户', 'Window')}</h3>
     <div class="form">
       <label>${tr('宽度', 'Width')} (mm)<input type="number" id="oW" value="${Math.round(o.w)}" min="300" step="50"></label>
       <label>${tr('距墙起点', 'From wall start')} (mm)<input type="number" id="oC" value="${Math.round(o.c)}" step="10"></label>
     </div>
-    ${(o.kind === 'window' || o.kind === 'hwin' || o.kind === 'louver' || o.kind === 'bay') ? `<div class="form"><label>${tr('窗台高', 'Sill height')} (mm)<input type="number" id="oSill" value="${sillDef}" min="0" max="2200" step="50"></label><label title="${tr(`窗台 ${sillDef} + 窗高 ≤ 墙高 ${wallH}`, `Sill ${sillDef} + window height ≤ wall ${wallH}`)}">${tr('窗户高度', 'Window height')} (mm)<input type="number" id="oWh" value="${whDef}" min="300" max="${whMax}" step="50"></label></div>` : ''}
-    ${o.kind === 'bay' ? `<div class="form"><label title="${tr('向外凸出的进深（垂直于墙面）', 'Depth protruding from the wall')}">${tr('外凸进深', 'Depth')} (mm)<input type="number" id="oBayD" value="${Math.round(o.bayDepth ?? 600)}" min="150" max="1500" step="50"></label></div>
+    ${(o.kind === 'window' || o.kind === 'hwin' || o.kind === 'louver' || o.kind === 'bay' || o.kind === 'lbay') ? `<div class="form"><label>${tr('窗台高', 'Sill height')} (mm)<input type="number" id="oSill" value="${sillDef}" min="0" max="2200" step="50"></label><label title="${tr(`窗台 ${sillDef} + 窗高 ≤ 墙高 ${wallH}`, `Sill ${sillDef} + window height ≤ wall ${wallH}`)}">${tr('窗户高度', 'Window height')} (mm)<input type="number" id="oWh" value="${whDef}" min="300" max="${whMax}" step="50"></label></div>` : ''}
+    ${(o.kind === 'bay' || o.kind === 'lbay') ? `<div class="form"><label title="${tr('向外凸出的进深（垂直于墙面）', 'Depth protruding from the wall')}">${tr('外凸进深', 'Depth')} (mm)<input type="number" id="oBayD" value="${Math.round(o.bayDepth ?? 600)}" min="150" max="1500" step="50"></label>${o.kind === 'lbay' ? `<label title="${tr('转角另一面墙上的这段宽度', 'Width of the second leg on the adjacent wall')}">${tr('第二段宽', 'Second leg width')} (mm)<input type="number" id="oLw2" value="${Math.round(o.legs?.[1]?.w ?? 1200)}" min="300" step="50"></label>` : ''}</div>
     <div class="actions"><button class="btn" id="oBayFlip" title="${tr('凸窗换到墙的另一侧', 'Flip the bay to the other side of the wall')}">${tr('换到墙另一侧', 'Flip side')}</button></div>` : ''}
     ${o.kind === 'cwin' ? `<div class="form"><label title="${tr('圆窗直径 = 宽度，窗台为圆心以下的高度', 'Diameter = width; sill is measured below the circle')}">${tr('窗台高（圆底离地）', 'Sill height')} (mm)<input type="number" id="oSill" value="${sillDef}" min="0" max="2200" step="50"></label></div>` : ''}
     ${['window', 'hwin', 'dwin'].includes(o.kind) ? `<div class="form"><label class="chk full"><input type="checkbox" id="oGrille" ${openGrille(o) ? 'checked' : ''}>${tr('窗花（窗上亮子：横向带框玻璃带）', 'Transom: framed glass band above the window')}</label></div>` : ''}
     ${['window', 'hwin', 'dwin'].includes(o.kind) && openGrille(o) ? `<div class="form"><label title="${tr('窗花高度不能超过窗户高度', 'Transom height cannot exceed the window height')}">${tr('窗花高度', 'Transom height')} (mm · ≤ ${Math.round(o.wh ?? Math.max(300, 2400 - Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : 900))))})<input type="number" id="oTh" value="${Math.round(o.th ?? 500)}" min="150" max="${Math.round(o.wh ?? Math.max(300, 2400 - Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : 900))))}" step="50"></label></div>` : ''}
     ${['door', 'dble', 'zimu', 'yak', 'dwin', 'slid', 'sd', 'fold', 'elev', 'roller'].includes(o.kind) ? `<div class="form"><label title="${tr(`墙高 ${wallH} − 门槛 ${sillMM} = 最大 ${maxDh} mm`, `Wall ${wallH} − threshold ${sillMM} = max ${maxDh} mm`)}">${tr('门高', 'Door height')} (mm · ≤ ${maxDh})<input type="number" id="oDh" value="${dhMM}" min="300" max="${maxDh}" step="50"></label><label>${tr('门槛高（门洞下沿离地）', 'Threshold height')} (mm)<input type="number" id="oBase" value="${sillMM}" min="0" max="${Math.max(0, wallH - dhMM)}" step="10"></label></div>` : ''}
-    <div class="muted" style="margin-top:8px">${tr('在 2D 里拖动门窗可沿墙滑动。', 'Drag the opening in 2D to slide it along its wall.')}${(o.kind === 'window' || o.kind === 'hwin') ? tr(' 3D 里点窗户可左右推拉开合。', ' Click the window in 3D to slide it open.') : o.kind === 'louver' ? tr(' 百叶窗为固定叶片，3D 中不可开启。', ' Louver blades are fixed (not openable in 3D).') : o.kind === 'cwin' ? tr(' 圆窗直径跟随宽度，高度不可单独设置。', ' The circle diameter follows the width.') : o.kind === 'bay' ? tr(' 飘窗向外凸出，进深与朝向可改；3D 中为固定窗不可开启。', ' The bay protrudes outward; depth and side are editable. Fixed glass (not openable) in 3D.') : o.kind === 'sd' ? tr(' 3D 里点门扇可沿墙推开。', ' Click the door in 3D to slide it open.') : o.kind === 'fold' ? tr(' 3D 里点门扇可折起 / 展开；折起后中间可直接通行。', ' Click the door in 3D to fold / unfold it.') : ''}</div>
+    <div class="muted" style="margin-top:8px">${tr('在 2D 里拖动门窗可沿墙滑动。', 'Drag the opening in 2D to slide it along its wall.')}${(o.kind === 'window' || o.kind === 'hwin') ? tr(' 3D 里点窗户可左右推拉开合。', ' Click the window in 3D to slide it open.') : o.kind === 'louver' ? tr(' 百叶窗为固定叶片，3D 中不可开启。', ' Louver blades are fixed (not openable in 3D).') : o.kind === 'cwin' ? tr(' 圆窗直径跟随宽度，高度不可单独设置。', ' The circle diameter follows the width.') : o.kind === 'bay' ? tr(' 飘窗向外凸出，进深与朝向可改；3D 中为固定窗不可开启。', ' The bay protrudes outward; depth and side are editable. Fixed glass (not openable) in 3D.') : o.kind === 'lbay' ? tr(' L 型飘窗跨两面墙，点任一段都选中同一个对象；窗台 / 窗高 / 进深两段共用。', ' The L-shaped bay spans two walls and stays one object.') : o.kind === 'sd' ? tr(' 3D 里点门扇可沿墙推开。', ' Click the door in 3D to slide it open.') : o.kind === 'fold' ? tr(' 3D 里点门扇可折起 / 展开；折起后中间可直接通行。', ' Click the door in 3D to fold / unfold it.') : ''}</div>
     ${o.kind === 'elev' ? `<div class="form"><label>${tr('呼叫按钮位置', 'Call button side')}<select id="oBtn"><option value="r" ${(o.btn || 'r') === 'r' ? 'selected' : ''}>${tr('门右侧', 'Right of door')}</option><option value="l" ${o.btn === 'l' ? 'selected' : ''}>${tr('门左侧', 'Left of door')}</option></select></label></div>` : ''}
     ${o.kind === 'door' ? `<div class="actions"><button class="btn" id="oDir" title="点击循环切换开启方式：左开 → 右开 → 左开反向 → 右开反向">${tr('改变开门方向', 'Change swing')}</button></div>` : ''}
     ${(o.kind === 'dble' || o.kind === 'zimu') ? `<div class="actions"><button class="btn" id="oFlip2" title="两扇一起翻到墙的另一侧开启">${tr('换到墙另一侧开', 'Flip to other side')}</button></div>` : ''}
@@ -5070,11 +5228,38 @@
     function bindOpenPanel(o) {
       $('#oW').onchange = e => {
         const v = parseFloat(e.target.value); if (isNaN(v)) return;
-        mutate(() => { const g = state.openings.find(x => x.id === o.id); if (!g) return; g.w = Math.round(v / 10) * 10; clampOpening(g); });
+        mutate(() => {
+          const g = state.openings.find(x => x.id === o.id); if (!g) return;
+          g.w = Math.round(v / 10) * 10; clampOpening(g);
+          if (g.kind === 'lbay' && g.legs?.[0]) { g.legs[0].w = g.w; g.legs[0].c = g.c + g.w / 2; }   // 主段与对象字段同步（leg.c 为段中心）
+        });
       };
       $('#oC').onchange = e => {
         const v = parseFloat(e.target.value); if (isNaN(v)) return;
-        mutate(() => { const g = state.openings.find(x => x.id === o.id); if (!g) return; g.c = Math.round(v / 10) * 10; clampOpening(g); });
+        mutate(() => {
+          const g = state.openings.find(x => x.id === o.id); if (!g) return;
+          g.c = Math.round(v / 10) * 10; clampOpening(g);
+          if (g.kind === 'lbay' && g.legs?.[0]) g.legs[0].c = g.c + g.w / 2;   // leg.c 为段中心
+        });
+      };
+      const olw = $('#oLw2');                                        // L 型飘窗第二段宽度
+      if (olw) olw.onchange = e => {
+        const v = parseFloat(e.target.value); if (isNaN(v)) return;
+        mutate(() => {
+          const leg = state.openings.find(x => x.id === o.id)?.legs?.[1]; if (!leg) return;
+          const lg = openingWallGeom(leg.wall);
+          const Lw = lg ? Math.hypot(lg.B[0] - lg.A[0], lg.B[1] - lg.A[1]) : leg.c * 2;
+          const w = Math.max(300, Math.round(v / 10) * 10);
+          if (leg.lc === -1) {                                      // 转角在起点：起点固定不动，远端受墙长限制
+            const c0 = leg.c - leg.w / 2;
+            leg.w = Math.max(300, Math.min(w, Math.floor((Lw - c0) / 10) * 10));
+            leg.c = c0 + leg.w / 2;
+          } else {                                                  // 转角在终点：终点固定不动
+            const c1 = leg.c + leg.w / 2;
+            leg.w = Math.max(300, Math.min(w, Math.floor(c1 / 10) * 10));
+            leg.c = c1 - leg.w / 2;
+          }
+        });
       };
       const od = $('#oDir');                                         // 开启方式单按钮：循环切换
       if (od) od.onclick = () => {
@@ -5097,7 +5282,11 @@
         mutate(() => { const g = state.openings.find(x => x.id === o.id); if (g) g.bayDepth = Math.max(150, Math.min(1500, Math.round(v / 50) * 50)); });
       };
       const obf = $('#oBayFlip');                                    // 飘窗凸出朝向：换到墙另一侧
-      if (obf) obf.onclick = () => mutate(() => { const g = state.openings.find(x => x.id === o.id); if (g) g.bayFlip = !g.bayFlip; });
+      if (obf) obf.onclick = () => mutate(() => {
+        const g = state.openings.find(x => x.id === o.id); if (!g) return;
+        if (g.kind === 'lbay' && g.legs) g.legs.forEach(l => l.flip = !l.flip);   // 两段一起翻到外侧
+        else g.bayFlip = !g.bayFlip;
+      });
       const owh = $('#oWh');                                         // 窗户高度（总高，含窗花）：窗台 + 窗高 ≤ 墙高
       if (owh) owh.onchange = e => {
         const v = parseFloat(e.target.value); if (isNaN(v)) return;
@@ -5489,7 +5678,7 @@
               const w = getW(s.id); if (!w) return;
               const nw = { ...w, id: uid(), a: [w.a[0] + 200, w.a[1] + 200], b: [w.b[0] + 200, w.b[1] + 200] };
               state.walls.push(nw);
-              state.openings.filter(o => o.wall === s.id).forEach(o => state.openings.push({ ...o, id: uid(), wall: 'CW' + nw.id }));
+              state.openings.filter(o => o.wall === s.id && o.kind !== 'lbay').forEach(o => state.openings.push({ ...o, id: uid(), wall: 'CW' + nw.id }));
               added.push({ kind: 'wall', id: 'CW' + nw.id });
             }
             else if (s.kind === 'room') return;                    // 房间地面不复制（地面跟墙体走，不重复叠加）
@@ -5771,7 +5960,7 @@
       return Math.round(ext);
     }
     // 吸附到已有墙（内置 + 自画）：优先端点，其次墙面中线上的投影点，使新墙与旧墙无缝融合
-    function snapToWall(p) {
+    function snapToWall(p, skip) {
       const tol = 14 / view.s; let best = null;
       const test = (A, B) => {
         const dx = B[0] - A[0], dy = B[1] - A[1], L = Math.hypot(dx, dy); if (L < 1) return;
@@ -5783,11 +5972,13 @@
         if (!best || (end && !best.end) || (end === best.end && d < best.d)) best = { x: cx, y: cy, end, d };
       };
       WALLS.forEach((w, i) => {
-        if (state.deletedWalls.includes('w' + i) || state.demolished.includes('w' + i)) return;
+        const id = 'w' + i;
+        if (id === skip || state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
         const s = builtinSeg(i); test(s.A, s.B);
       });
       state.walls.forEach(w => {
-        if (state.deletedWalls.includes('CW' + w.id) || state.demolished.includes('CW' + w.id)) return;
+        const id = 'CW' + w.id;
+        if (id === skip || state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
         test(w.a, w.b);
       });
       return best && { x: best.x, y: best.y };
@@ -5874,11 +6065,20 @@
     });
     // ---------- 设计模式公共几何：墙段切割 / 拾取 ----------
     function openingsOf(ref) { return state.openings.filter(o => o.wall === ref).sort((x, y) => x.c - y.c); }
+    // 该墙上所有洞口区间（含 L 型飘窗的另一段：它挂在别的墙 id 上，但也要在本墙开洞）
+    function wallCuts(ref, L) {
+      const cuts = [];
+      state.openings.forEach(o => {
+        if (o.kind === 'lbay' && o.legs) o.legs.forEach(l => { if (l.wall === ref) cuts.push([l.c - l.w / 2, l.c + l.w / 2]); });
+        else if (o.wall === ref) cuts.push([o.c, o.c + o.w]);
+      });
+      return cuts.sort((a, b) => a[0] - b[0]);
+    }
     // 墙被门窗切割后的实墙区间（沿墙方向 mm）
     function wallSegs(ref, L) {
       const segs = []; let x = 0;
-      openingsOf(ref).forEach(o => {
-        const c0 = Math.max(0, o.c), c1 = Math.min(L, o.c + o.w);
+      wallCuts(ref, L).forEach(([a, b]) => {
+        const c0 = Math.max(0, a), c1 = Math.min(L, b);
         if (c1 <= c0 + 1) return;
         if (c0 > x + 1) segs.push([x, c0]);
         x = Math.max(x, c1);
@@ -5925,7 +6125,7 @@
         if (cw) state.walls = state.walls.filter(w => 'CW' + w.id !== ref);
         else state.deletedWalls.push(ref);
         state.demolished = state.demolished.filter(x => x !== ref);
-        state.openings = state.openings.filter(o => o.wall !== ref);
+        state.openings = state.openings.filter(o => o.wall !== ref && !(o.kind === 'lbay' && (o.legs || []).some(l => l.wall === ref)));
       });
       toast(tr('已删除墙体 · Ctrl+Z 可撤销', 'Wall deleted · Ctrl+Z to undo'));
     }
@@ -6160,6 +6360,90 @@
                                 ? tr(`已放飘窗 ${Math.round(w)} mm（窗台 500，向外凸出 600，进深 / 朝向可在右侧改）`, `Bay window ${Math.round(w)} mm added (sill 500, 600 deep; depth / side editable in the panel)`)
                                 : tr(`已放窗户 ${Math.round(w)} mm（窗台默认 900，可在属性里调）`, `Window ${Math.round(w)} mm added (sill 900, editable in the panel)`));
     }
+    // 取墙的两端坐标（内置墙 / 自画墙统一）
+    function wallEnds(ref) {
+      if (ref.startsWith('CW')) { const w = state.walls.find(x => 'CW' + x.id === ref); return w ? [w.a.slice(), w.b.slice()] : null; }
+      const i = +ref.slice(1); if (!Number.isFinite(i)) return null;
+      const s = builtinSeg(i); return s ? [s.A.slice(), s.B.slice()] : null;
+    }
+    // 点在墙角附近（没正好压到墙线）时，就近吸到该墙的这一端
+    function wallCornerNear(p, tol = 700) {
+      let best = null;
+      const test = (ref, A, B, T) => {
+        const L = Math.hypot(B[0] - A[0], B[1] - A[1]) || 1;
+        [[0, A], [1, B]].forEach(([e, P]) => {
+          const d = Math.hypot(p.x - P[0], p.y - P[1]); if (d > tol) return;
+          if (!best || d < best.d) best = { ref, A, B, T, L, t: e === 0 ? 0 : L, d };
+        });
+      };
+      WALLS.forEach((w, i) => {
+        const id = 'w' + i;
+        if (state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
+        const s = builtinSeg(i); test(id, s.A, s.B, s.T);
+      });
+      state.walls.forEach(w => {
+        const id = 'CW' + w.id;
+        if (state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
+        test(id, w.a, w.b, cwT(w));
+      });
+      return best;
+    }
+    // L 型飘窗：点在两面墙的直角转角处，沿两面墙各放一段飘窗（两段共用进深 / 窗台 / 窗高，可分别再改）
+    function placeLBays(hit) {
+      const { ref, L, t } = hit, ends = wallEnds(ref);
+      if (!ends) return toast(tr('找不到这面墙', 'Wall not found'));
+      if (L < 900) return toast(tr('这面墙太短，放不下飘窗', 'Wall is too short for a bay window'));
+      const [A0, B0] = ends, dx = (B0[0] - A0[0]) / L, dy = (B0[1] - A0[1]) / L;
+      const ei = t < L / 2 ? 0 : 1, corner = ends[ei];           // 按点击端确定转角
+      let best = null;
+      const scan = (ref2, A, B) => {                             // 用两墙直线的交点找转角（容忍端点没对齐）
+        if (ref2 === ref) return;
+        const L2 = Math.hypot(B[0] - A[0], B[1] - A[1]); if (L2 < 600) return;
+        const ux = (B[0] - A[0]) / L2, uy = (B[1] - A[1]) / L2;
+        const cr = dx * uy - dy * ux;                            // 夹角正弦：只认接近直角
+        if (Math.abs(cr) < .9) return;
+        const wx = A[0] - corner[0], wy = A[1] - corner[1];
+        const s = (wx * uy - wy * ux) / cr, r = (wx * dy - wy * dx) / cr;
+        if (Math.abs(s) > 900 || r < -200 || r > L2 + 200) return;   // 交点要落在墙角附近
+        if (!best || Math.abs(s) < Math.abs(best.s)) best = { ref: ref2, L: L2, ux, uy, r, s };
+      };
+      WALLS.forEach((w, i) => {
+        const id = 'w' + i;
+        if (state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
+        const s = builtinSeg(i); scan(id, s.A, s.B);
+      });
+      state.walls.forEach(w => {
+        const id = 'CW' + w.id;
+        if (state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
+        scan(id, w.a, w.b);
+      });
+      if (!best) return toast(tr('请点在两面墙的直角转角处（L 型飘窗要跨两面墙）', 'Click a square corner where two walls meet'));
+      const leg = (c0, len) => {                                 // 从交点往墙内伸出可用长度的一段
+        const fwd = len - c0, bwd = c0, forward = fwd >= bwd;
+        const w = Math.min(1200, Math.floor((forward ? fwd : bwd) / 10) * 10);
+        return { w, c: forward ? c0 + w / 2 : c0 - w / 2, forward };
+      };
+      const c01 = Math.max(0, Math.min(L, ei === 0 ? best.s : L + best.s));
+      const c02 = Math.max(0, Math.min(best.L, best.r));
+      const g1 = leg(c01, L), g2 = leg(c02, best.L);
+      if (g1.w < 500 || g2.w < 500) return toast(tr('转角两侧的墙每段至少要有 500 mm', 'Each wall at the corner needs at least 500 mm'));
+      const clash = (rf, c, w) => openingsOf(rf).some(o => c < o.c + o.w + 60 && o.c - 60 < c + w);
+      if (clash(ref, g1.c, g1.w) || clash(best.ref, g2.c, g2.w)) return toast(tr('转角处已有门窗，换个墙角试试', 'This corner already has an opening'));
+      const uA = g1.forward ? [dx, dy] : [-dx, -dy], uB = g2.forward ? [best.ux, best.uy] : [-best.ux, -best.uy];
+      const flip1 = (-dy) * uB[0] + dx * uB[1] >= 0;             // 朝向：背离另一面墙，即转角外侧
+      const flip2 = (-best.uy) * uA[0] + best.ux * uA[1] >= 0;
+      const legs = [
+        { wall: ref, c: g1.c, w: g1.w, flip: flip1, lc: g1.forward ? -1 : 1 },
+        { wall: best.ref, c: g2.c, w: g2.w, flip: flip2, lc: g2.forward ? -1 : 1 }
+      ];
+      const tmpId = uid();
+      mutate(() => state.openings.push({
+        id: tmpId, kind: 'lbay', wall: ref, c: g1.c - g1.w / 2, w: g1.w, flip: flip1,   // 主段放在被点的墙上（o.c 为起点），便于通用逻辑沿用
+        sill: 500, wh: 1200, bayDepth: 600, legs
+      }));
+      select({ kind: 'open', id: tmpId });
+      toast(tr(`已放 L 型飘窗（两段各 ${Math.round(g1.w)} / ${Math.round(g2.w)} mm，进深 600）· 改窗台 / 窗高 / 进深会让两段一起变`, `L-shaped bay added (legs ${Math.round(g1.w)} / ${Math.round(g2.w)} mm)`));
+    }
     // 设置房间：两个对角点拉出矩形房间（地面区域），存入 state.roomsExtra，配置进 state.rooms
     function roomCommit(a, b) {
       const x0 = Math.round(Math.min(a.x, b.x) / 10) * 10, x1 = Math.round(Math.max(a.x, b.x) / 10) * 10;
@@ -6169,7 +6453,7 @@
       const id = 'X' + uid();
       mutate(() => {
         state.roomsExtra.push({ id, poly: [[x0, y0], [x1, y0], [x1, y1], [x0, y1]], mat: 'tile800' });
-        state.rooms[id] = { name: tr('房间', 'Room') + ' ' + (state.roomsExtra.length), mat: 'tile800' };
+        state.rooms[id] = { name: tr('区域', 'Area') + ' ' + (state.roomsExtra.length), mat: 'tile800' };
       });
       setSubTool('select');                                                    // 画完切回选择子工具：顶点手柄立即可用
       select({ kind: 'room', id });                                            // 建完直接进入房间属性（改名 / 选地面材料）
@@ -6364,7 +6648,7 @@
         }
         return;
       }
-      if (ui.tool === 'draw' && ['wall', 'door', 'win', 'louver', 'cwin', 'bay', 'roller', 'elev', 'fwin', 'slid', 'sd', 'fold', 'yak', 'dble', 'zimu', 'hwin', 'dwin', 'room', 'entry', 'pillar', 'stair', 'stair2', 'stair3', 'stair3s', 'ramp', 'steps', 'rail', 'beam', 'level', 'slab', 'parapet', 'canopy', 'balcony', 'planter', 'flue', 'north', 'lift', 'text', 'dim', 'paint'].includes(ui.drawTool)) {   // 选择子工具不创建，落到下面的编辑链
+      if (ui.tool === 'draw' && ['wall', 'door', 'win', 'louver', 'cwin', 'bay', 'lbay', 'roller', 'elev', 'fwin', 'slid', 'sd', 'fold', 'yak', 'dble', 'zimu', 'hwin', 'dwin', 'room', 'entry', 'pillar', 'stair', 'stair2', 'stair3', 'stair3s', 'ramp', 'steps', 'rail', 'beam', 'level', 'slab', 'parapet', 'canopy', 'balcony', 'planter', 'flue', 'north', 'lift', 'text', 'dim', 'paint'].includes(ui.drawTool)) {   // 选择子工具不创建，落到下面的编辑链
         if (ui.drawTool === 'entry') {                                   // 入户工具：点门洞（原始门洞或自画的门）→ 设为全局唯一的入户门
           const og = t.closest('[data-bopen]'), oc = t.closest('[data-open]');
           let id = null;
@@ -6490,37 +6774,56 @@
         if (ui.drawTool === 'lift') {                                     // 电梯：点位置放一部（可连续放置）
           const q = snapPoint(p, e.shiftKey), id = uid();
           mutate(() => (state.lifts = state.lifts || []).push({
-            id, x: Math.round(q.x / 10) * 10, y: Math.round(q.y / 10) * 10, w: 2000, d: 2000, h: 2400, dw: 900, stop: 0, dir: 0
+            id, x: Math.round(q.x / 10) * 10, y: Math.round(q.y / 10) * 10, w: 2000, d: 2000, h: 2400, dw: 900, dh: 2100, dpos: 0, stop: 0, dir: 0
           }));
           select({ kind: 'lift', id });
-          toast(tr('已放电梯（2000×2000）· 宽 / 深 / 门宽 / 开门方向在右侧改', 'Lift placed (2000×2000) · edit size / door in the panel'));
+          toast(tr('已放电梯（2000×2000）· 宽 / 深 / 门宽 / 门高 / 门位置 / 开门方向在右侧改', 'Lift placed (2000×2000) · edit size / door in the panel'));
           renderNotes(); return;
         }
-        if (ui.drawTool === 'balcony' || ui.drawTool === 'planter') {     // 阳台 / 花坛：两次点击定对角点
-          const q = snapPoint(p, e.shiftKey), kind = ui.drawTool;
-          if (ui.rectKind && ui.rectKind !== kind) { ui.rectA = null; ui.rectCur = null; }
+        if (ui.drawTool === 'balcony') {                                  // 阳台：点击墙体，靠墙生成
+          const wall = nearestWall([p.x, p.y]);
+          if (!wall || wall.d > wall.T / 2 + 300) { toast(tr('请点击墙上的位置', 'Click a position on a wall')); return; }
+          if (wall.L < 400) { toast(tr('这面墙太短，放不下阳台', 'This wall is too short for a balcony')); return; }
+          const hz = Math.abs(wall.b[0] - wall.a[0]) >= Math.abs(wall.b[1] - wall.a[1]);
+          let w, d, x, y, edge;
+          if (hz) {
+            w = Math.min(1500, wall.L); d = 1200;
+            const x0 = Math.min(wall.a[0], wall.b[0]), x1 = Math.max(wall.a[0], wall.b[0]), cy = wall.a[1];
+            x = Math.max(x0 + w / 2, Math.min(x1 - w / 2, p.x));
+            y = cy + (p.y >= cy ? 1 : -1) * (wall.T / 2 + d / 2);
+            edge = y > cy ? 't' : 'b';                                // 靠墙的那条边不做栏板
+          } else {
+            w = 1200; d = Math.min(1500, wall.L);
+            const y0 = Math.min(wall.a[1], wall.b[1]), y1 = Math.max(wall.a[1], wall.b[1]), cx = wall.a[0];
+            y = Math.max(y0 + d / 2, Math.min(y1 - d / 2, p.y));
+            x = cx + (p.x >= cx ? 1 : -1) * (wall.T / 2 + w / 2);
+            edge = x > cx ? 'l' : 'r';
+          }
+          const id = uid();
+          mutate(() => (state.balconies = state.balconies || []).push({
+            id, x: Math.round(x / 10) * 10, y: Math.round(y / 10) * 10,
+            w: Math.round(w / 10) * 10, d: Math.round(d / 10) * 10,
+            thick: 120, z: 0, rh: 900, style: 'glass', sides: ['l', 't', 'r', 'b'].filter(e => e !== edge)
+          }));
+          select({ kind: 'balcony', id });
+          toast(tr('已加阳台（贴墙）· 板厚 / 栏板高 / 样式 / 栏板边在右侧改', 'Balcony added against the wall · edit slab / parapet / sides in the panel'));
+          return;
+        }
+        if (ui.drawTool === 'planter') {                                   // 花坛：两次点击定对角点
+          const q = snapPoint(p, e.shiftKey);
           if (!ui.rectA) {
-            ui.rectA = q; ui.rectCur = q; ui.rectKind = kind; renderNotes();
-            toast(kind === 'balcony' ? tr('已定阳台一角，再点对角点', 'Balcony corner set — click the opposite corner')
-              : tr('已定花坛一角，再点对角点', 'Planter corner set — click the opposite corner'));
+            ui.rectA = q; ui.rectCur = q; ui.rectKind = 'planter'; renderNotes();
+            toast(tr('已定花坛一角，再点对角点', 'Planter corner set — click the opposite corner'));
           } else {
             const a = ui.rectA; ui.rectA = null; ui.rectCur = null; ui.rectKind = null;
             if (Math.abs(q.x - a.x) < 100 || Math.abs(q.y - a.y) < 100) { renderNotes(); return; }
             const id = uid(), cx = Math.round((a.x + q.x) / 2 / 10) * 10, cy = Math.round((a.y + q.y) / 2 / 10) * 10;
             const w = Math.round(Math.abs(q.x - a.x) / 10) * 10, d = Math.round(Math.abs(q.y - a.y) / 10) * 10;
-            if (kind === 'balcony') {
-              mutate(() => (state.balconies = state.balconies || []).push({
-                id, x: cx, y: cy, w, d, thick: 120, z: 0, rh: 900, style: 'glass', sides: ['l', 't', 'r', 'b']
-              }));
-              select({ kind: 'balcony', id });
-              toast(tr('已加阳台 · 板厚 / 栏板高 / 样式 / 栏板边在右侧改', 'Balcony added · edit slab / parapet / sides in the panel'));
-            } else {
-              mutate(() => (state.planters = state.planters || []).push({
-                id, x: cx, y: cy, w, d, t: 100, h: 450, z: 0
-              }));
-              select({ kind: 'planter', id });
-              toast(tr('已加花坛 · 壁厚 / 高 / 底标高在右侧改', 'Planter added · edit thickness / height / elevation in the panel'));
-            }
+            mutate(() => (state.planters = state.planters || []).push({
+              id, x: cx, y: cy, w, d, t: 100, h: 450, z: 0
+            }));
+            select({ kind: 'planter', id });
+            toast(tr('已加花坛 · 壁厚 / 高 / 底标高在右侧改', 'Planter added · edit thickness / height / elevation in the panel'));
           }
           renderNotes(); return;
         }
@@ -6570,23 +6873,25 @@
           }
           renderNotes(); return;
         }
-        if (ui.drawTool === 'canopy') {                                   // 雨棚：两次点击定起终点
-          const q = axisLock(ui.canopyA, snapPoint(p, false), e.shiftKey);
-          if (!ui.canopyA) {
-            ui.canopyA = q; ui.canopyCur = q; renderNotes();
-            toast(tr('已定雨棚起点，再点一下终点', 'Canopy start set — click the end point'));
-          } else {
-            const a = ui.canopyA; ui.canopyA = null; ui.canopyCur = null;
-            if (seg2([a.x, a.y], [q.x, q.y]) < 100) { renderNotes(); return; }
-            const id = uid();
-            mutate(() => (state.canopies = state.canopies || []).push({
-              id, a: [Math.round(a.x / 10) * 10, Math.round(a.y / 10) * 10],
-              b: [Math.round(q.x / 10) * 10, Math.round(q.y / 10) * 10], depth: 800, thick: 100, z: 2400, side: 1
-            }));
-            select({ kind: 'canopy', id });
-            toast(tr('已加雨棚 · 挑出 / 板厚 / 底标高在右侧改，可翻转方向', 'Canopy added · edit projection / thickness / elevation in the panel'));
-          }
-          renderNotes(); return;
+        if (ui.drawTool === 'canopy') {                                   // 雨棚：点击墙体，沿墙靠墙生成
+          const hit = wallAt(p);
+          if (!hit) { toast(tr('请点击墙上的位置', 'Click a position on a wall')); return; }
+          if (hit.L < 300) { toast(tr('这面墙太短，放不下雨棚', 'This wall is too short for a canopy')); return; }
+          const L = hit.L, T = hit.T, w = Math.min(1500, L);
+          const c = Math.max(0, Math.min(L - w, hit.t - w / 2));         // 以点击处为中心，限制在墙内
+          const ux = (hit.B[0] - hit.A[0]) / L, uy = (hit.B[1] - hit.A[1]) / L, nx = -uy, ny = ux;
+          const cx = hit.A[0] + ux * hit.t, cy = hit.A[1] + uy * hit.t;
+          const side = ((p.x - cx) * nx + (p.y - cy) * ny) >= 0 ? 1 : -1;   // 朝点击的那一侧挑出
+          const id = uid();
+          mutate(() => (state.canopies = state.canopies || []).push({
+            id,
+            a: [hit.A[0] + ux * c + nx * side * T / 2, hit.A[1] + uy * c + ny * side * T / 2],
+            b: [hit.A[0] + ux * (c + w) + nx * side * T / 2, hit.A[1] + uy * (c + w) + ny * side * T / 2],
+            depth: 800, thick: 100, z: 2400, side
+          }));
+          select({ kind: 'canopy', id });
+          toast(tr(`已加雨棚 ${Math.round(w)} mm（贴墙）· 长度 / 挑出 / 板厚 / 底标高在右侧改`, `Canopy ${Math.round(w)} mm added against the wall · edit length / projection / thickness / elevation in the panel`));
+          return;
         }
         if (ui.drawTool === 'text') {                                     // 文字标注：点哪里放哪里，直接在位置上编辑
           const q = snapPoint(p, e.shiftKey), id = uid();
@@ -6605,10 +6910,11 @@
           toast(tr(`已刷「${nm(MATS[mat].name)}」到 ${nm(state.rooms[rid].name)}`, `Applied "${MATS[mat].name}" to ${state.rooms[rid].name}`));
           return;
         }
-        if (['door', 'win', 'louver', 'cwin', 'bay', 'roller', 'elev', 'fwin', 'slid', 'sd', 'fold', 'yak', 'dble', 'zimu', 'hwin', 'dwin'].includes(ui.drawTool)) {
+        if (['door', 'win', 'louver', 'cwin', 'bay', 'lbay', 'roller', 'elev', 'fwin', 'slid', 'sd', 'fold', 'yak', 'dble', 'zimu', 'hwin', 'dwin'].includes(ui.drawTool)) {
           const og = t.closest('[data-open]');
           if (og) { const id = og.dataset.open; if (!(ui.sel?.kind === 'open' && ui.sel?.id === id)) select({ kind: 'open', id }); renderPanel(); return; }  // 点已有门窗 → 选中编辑
           const hit = wallAt(p);
+          if (ui.drawTool === 'lbay') { const hitb = wallAt(p) || wallCornerNear(p); if (hitb) placeLBays(hitb); else toast(tr('请点击两面墙的直角转角处', 'Click a square corner where two walls meet')); return; }
           const km = { door: 'door', win: 'window', louver: 'louver', cwin: 'cwin', bay: 'bay', roller: 'roller', elev: 'elev', fwin: 'fwin', slid: 'slid', sd: 'sd', fold: 'fold', yak: 'yak', dble: 'dble', zimu: 'zimu', hwin: 'hwin', dwin: 'dwin' };
           if (hit) placeOpening(hit, km[ui.drawTool]);
           else toast(tr('请点击墙上的位置', 'Click a position on a wall'));
@@ -6658,6 +6964,7 @@
         drag = { kind: 'bwEnd', id: ui.sel.id, end: +h.dataset.end, sx: e.clientX, sy: e.clientY, before: snap(), moved: false };
       } else if (h && ui.sel?.kind === 'open' && h.dataset.handle === 'openEnd') {
         const o = state.openings.find(x => x.id === ui.sel.id);
+        if (o?.kind === 'lbay') return;
         drag = { kind: 'openEnd', id: ui.sel.id, end: +h.dataset.end, oc0: o?.c, ow0: o?.w, sx: e.clientX, sy: e.clientY, before: snap(), moved: false };
       } else if (h && ui.sel?.kind === 'bopen' && h.dataset.handle === 'bopenEnd') {
         drag = { kind: 'bopenEnd', id: ui.sel.id, end: +h.dataset.end, sx: e.clientX, sy: e.clientY, before: snap(), moved: false };
@@ -6670,6 +6977,8 @@
         drag = { kind: 'beamEnd', id: ui.sel.id, end: +h.dataset.end, sx: e.clientX, sy: e.clientY, before: snap(), moved: false };
       } else if (h && ui.sel?.kind === 'parapet' && h.dataset.handle === 'parapetEnd') {
         drag = { kind: 'parapetEnd', id: ui.sel.id, end: +h.dataset.end, sx: e.clientX, sy: e.clientY, before: snap(), moved: false };
+      } else if (h && ui.sel?.kind === 'canopy' && h.dataset.handle === 'canopyDepth') {
+        drag = { kind: 'canopyDepth', id: ui.sel.id, sx: e.clientX, sy: e.clientY, before: snap(), moved: false };
       } else if (h && ui.sel?.kind === 'canopy' && h.dataset.handle === 'canopyEnd') {
         drag = { kind: 'canopyEnd', id: ui.sel.id, end: +h.dataset.end, sx: e.clientX, sy: e.clientY, before: snap(), moved: false };
       } else if (h && ui.sel?.kind === 'slab' && h.dataset.handle === 'slabCorner') {
@@ -6745,6 +7054,7 @@
       } else if (edit && t.closest('[data-open]')) {
         const id = t.closest('[data-open]').dataset.open;
         if (!(ui.sel?.kind === 'open' && ui.sel?.id === id)) select({ kind: 'open', id });
+        if (state.openings.find(x => x.id === id)?.kind === 'lbay') { renderPanel(); return; }   // L 型飘窗跨两面墙，不做整体拖动
         drag = { kind: 'openMove', id, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, before: snap(), moved: false };
       } else if (edit && t.closest('[data-stair]')) {
         const id = t.closest('[data-stair]').dataset.stair, s0 = (state.stairs || []).find(x => x.id === id);
@@ -6757,7 +7067,7 @@
       } else if (edit && t.closest('[data-fid]')) {
         const f = getF(t.closest('[data-fid]').dataset.fid);
         if (ui.sel?.id !== f.id) select({ kind: 'furn', id: f.id });
-        drag = { kind: 'move', id: f.id, sx: e.clientX, sy: e.clientY, ox: p.x - f.cx, oy: p.y - f.cy, before: snap(), moved: false };
+        drag = { kind: 'move', id: f.id, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, ox: p.x - f.cx, oy: p.y - f.cy, before: snap(), moved: false };
       } else if (edit) {
         const wid = t.closest('[data-wall]')?.dataset.wall;
         if (wid && !wid.startsWith('CW') && state.demolished.includes(wid)) { toggleWall(wid); return; }   // 点已拆内置墙虚线残留 → 恢复
@@ -6801,7 +7111,9 @@
         zoomAt(ns, c[0], c[1]);
         return;
       }
-      const p = toMM(e);
+      let p = toMM(e);
+      if (drag && ['move', 'multiMove', 'noteMove', 'dimMove', 'railMove', 'beamMove', 'levelMove', 'liftMove', 'northMove', 'slabMove', 'stairMove', 'pillarMove'].includes(drag.kind) && drag.px != null)
+        p = axisLock({ x: drag.px, y: drag.py }, p, e.shiftKey);   // 直角模式（或按住 Shift）：整体拖动只走水平 / 垂直
       $('#cx').textContent = Math.round(p.x) + ' mm'; $('#cy').textContent = Math.round(p.y) + ' mm';
       if (!drag) {
         if (rotBaseSet()) {                                        // 旋转预览：跟手实时改变角度
@@ -6915,6 +7227,17 @@
         if (c.includes('e')) x1 = p.x;
         if (c.includes('n')) y0 = p.y;
         if (c.includes('s')) y1 = p.y;
+        if (drag.objKind === 'balcony') {                      // 阳台：靠墙边只能沿墙滑动，垂直墙的方向锁定
+          const wall = nearestWall([drag.x0, drag.y0]);
+          if (wall && wall.d <= wall.T / 2 + Math.max(drag.w0, drag.d0) / 2 + 600) {
+            const hzW = Math.abs(wall.b[0] - wall.a[0]) >= Math.abs(wall.b[1] - wall.a[1]);
+            const edge = hzW ? (drag.y0 > wall.a[1] ? 't' : 'b') : (drag.x0 > wall.a[0] ? 'l' : 'r');
+            if (edge === 't' && c.includes('n')) y0 = drag.y0 - drag.d0 / 2;
+            else if (edge === 'b' && c.includes('s')) y1 = drag.y0 + drag.d0 / 2;
+            else if (edge === 'l' && c.includes('w')) x0 = drag.x0 - drag.w0 / 2;
+            else if (edge === 'r' && c.includes('e')) x1 = drag.x0 + drag.w0 / 2;
+          }
+        }
         if (x1 - x0 < min) { if (c.includes('w')) x0 = x1 - min; else x1 = x0 + min; }
         if (y1 - y0 < min) { if (c.includes('n')) y0 = y1 - min; else y1 = y0 + min; }
         const arr = drag.objKind === 'lift' ? state.lifts : drag.objKind === 'balcony' ? state.balconies : state.planters;
@@ -6923,6 +7246,7 @@
         o.d = Math.round((y1 - y0) / 10) * 10;
         o.x = Math.round((x0 + x1) / 2 / 10) * 10;
         o.y = Math.round((y0 + y1) / 2 / 10) * 10;
+        if (drag.objKind === 'balcony') fitBalconyWall(o);     // 保持贴墙并同步靠墙边
         if (drag.objKind === 'lift') o.dw = Math.min(o.dw ?? 900, Math.max(500, o.w - 300));   // 门宽随梯宽收窄
         renderNotes(); renderSel(); return;
       }
@@ -6939,9 +7263,21 @@
           q.a = [drag.a0[0] + dx, drag.a0[1] + dy]; q.b = [drag.b0[0] + dx, drag.b0[1] + dy];
         } else if (drag.kind === 'canopyMove') {
           const q = (state.canopies || []).find(x => x.id === drag.id); if (!q) return;
-          q.a = [drag.a0[0] + dx, drag.a0[1] + dy]; q.b = [drag.b0[0] + dx, drag.b0[1] + dy];
+          const a = [drag.a0[0] + dx, drag.a0[1] + dy], b = [drag.b0[0] + dx, drag.b0[1] + dy];
+          const m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+          const wall = nearestWall(m);
+          if (wall && wall.d <= wall.T / 2 + 600) {                 // 贴近墙时自动吸附，始终紧贴墙体
+            const sd = wallSideOf(m, wall);
+            q.a = snapPointToWall(a, wall, sd); q.b = snapPointToWall(b, wall, sd); q.side = sd;
+          } else {
+            q.a = a; q.b = b;
+          }
+        } else if (drag.kind === 'balconyMove') {
+          const b = (state.balconies || []).find(x => x.id === drag.id); if (!b) return;
+          b.x = drag.x0 + dx; b.y = drag.y0 + dy;
+          fitBalconyWall(b);                                        // 靠近墙时保持贴墙
         } else {
-          const arr = drag.kind === 'balconyMove' ? state.balconies : drag.kind === 'planterMove' ? state.planters : state.flues;
+          const arr = drag.kind === 'planterMove' ? state.planters : state.flues;
           const q = (arr || []).find(x => x.id === drag.id); if (!q) return;
           q.x = drag.x0 + dx; q.y = drag.y0 + dy;
         }
@@ -6969,6 +7305,16 @@
           else { const c = getP(it.id); if (c) { c.x = it.x + dx; c.y = it.y + dy; } }
         });
         renderRooms(); renderFurn(); renderStairs(); renderPillars(); renderWalls(); renderOpenings(); renderSel(); return;
+      }
+      if (drag.kind === 'canopyDepth') {                      // 雨棚：拖外侧边自由调整挑出深度，基线保持贴墙
+        if (!drag.moved && !far) return;
+        drag.moved = true;
+        const c = (state.canopies || []).find(x => x.id === drag.id); if (!c) return;
+        const [ax, ay] = c.a, [bx, by] = c.b, L = Math.hypot(bx - ax, by - ay) || 1;
+        const sd = c.side === -1 ? -1 : 1, ux = (bx - ax) / L, uy = (by - ay) / L;
+        const nx = -uy * sd, ny = ux * sd, mx = (ax + bx) / 2, my = (ay + by) / 2;
+        c.depth = Math.max(100, Math.min(3000, Math.round(((p.x - mx) * nx + (p.y - my) * ny) / 10) * 10));
+        renderNotes(); renderSel(); return;
       }
       // 墙 / 门窗的直接拖动编辑
       if (drag.kind === 'wallMove' || drag.kind === 'wallEnd' || drag.kind === 'openMove' || drag.kind === 'bopenMove' || drag.kind === 'bwEnd' || drag.kind === 'openEnd' || drag.kind === 'bopenEnd' || drag.kind === 'bopenDoorEnd' || drag.kind === 'pillarMove' || drag.kind === 'stairMove' || drag.kind === 'stairLen' || drag.kind === 'stairW'
@@ -7004,12 +7350,28 @@
         }
         if (drag.kind === 'wallMove') {
           const w = state.walls.find(x => 'CW' + x.id === drag.id); if (!w) return;
-          const dx = Math.round((p.x - drag.px) / 10) * 10, dy = Math.round((p.y - drag.py) / 10) * 10;
-          w.a = [drag.a0[0] + dx, drag.a0[1] + dy]; w.b = [drag.b0[0] + dx, drag.b0[1] + dy];
+          let dx = Math.round((p.x - drag.px) / 10) * 10, dy = Math.round((p.y - drag.py) / 10) * 10;
+          let a = [drag.a0[0] + dx, drag.a0[1] + dy], b = [drag.b0[0] + dx, drag.b0[1] + dy];
+          const sa = snapToWall({ x: a[0], y: a[1] }, drag.id), sb = snapToWall({ x: b[0], y: b[1] }, drag.id);
+          const wasNear = p0 => !!snapToWall({ x: p0[0], y: p0[1] }, drag.id);   // 原本就贴着墙的一端保持自由，避免整墙被粘住拖不开
+          const fits = [sa && !wasNear(drag.a0) && [sa.x - a[0], sa.y - a[1]], sb && !wasNear(drag.b0) && [sb.x - b[0], sb.y - b[1]]].filter(Boolean);
+          if (fits.length) {                                 // 整墙平移时也吸附：取更近的一端贴到相邻墙中线
+            const c = fits.reduce((m, v) => Math.hypot(v[0], v[1]) < Math.hypot(m[0], m[1]) ? v : m);
+            a = [a[0] + c[0], a[1] + c[1]]; b = [b[0] + c[0], b[1] + c[1]];
+          } else if (!ui.wallFree || e.shiftKey) {           // 直角模式（或 Shift）：整墙只走水平 / 垂直
+            if (Math.abs(dx) >= Math.abs(dy)) dy = 0; else dx = 0;
+            a = [drag.a0[0] + dx, drag.a0[1] + dy]; b = [drag.b0[0] + dx, drag.b0[1] + dy];
+          }
+          w.a = a; w.b = b;
         } else if (drag.kind === 'wallEnd') {
           const w = state.walls.find(x => 'CW' + x.id === drag.id); if (!w) return;
-          const q = snapPoint(p, false);
-          if (e.shiftKey) { const o = drag.end ? w.a : w.b; if (Math.abs(q.x - o[0]) > Math.abs(q.y - o[1])) q.y = o[1]; else q.x = o[0]; }
+          const q = snapPoint(p, false), o = drag.end ? w.a : w.b;
+          if (e.shiftKey) { if (Math.abs(q.x - o[0]) > Math.abs(q.y - o[1])) q.y = o[1]; else q.x = o[0]; }
+          else {                                                   // 未按 Shift：端点自动吸到相邻墙中线 / 墙角，两墙严丝合缝
+            const ws = snapToWall(p, drag.id);
+            if (ws) { q.x = ws.x; q.y = ws.y; }                     // 吸墙优先：严格吸附，不被直角约束带偏
+            else if (!ui.wallFree) { const lk = axisLock({ x: o[0], y: o[1] }, q, false); q.x = lk.x; q.y = lk.y; }   // 没靠墙时按直角模式锁轴
+          }
           if (drag.end) w.b = [q.x, q.y]; else w.a = [q.x, q.y];
           state.openings.filter(o => o.wall === drag.id).forEach(clampOpening);   // 墙变短后把门窗钳回墙内
         } else if (drag.kind === 'bopenMove') {
@@ -7060,13 +7422,26 @@
           const arr = state[map[drag.kind]] || [];
           const o = arr.find(x => x.id === drag.id); if (!o) return;
           const q = snapPoint(p, false);
-          if (e.shiftKey) { const other = drag.end ? o.a : o.b; if (Math.abs(q.x - other[0]) > Math.abs(q.y - other[1])) q.y = other[1]; else q.x = other[0]; }
-          const newPt = [Math.round(q.x / 10) * 10, Math.round(q.y / 10) * 10];
-          const Lmin = 100;
-          if (drag.end) {
-            if (Math.hypot(newPt[0] - o.a[0], newPt[1] - o.a[1]) >= Lmin) o.b = newPt;
-          } else {
-            if (Math.hypot(newPt[0] - o.b[0], newPt[1] - o.b[1]) >= Lmin) o.a = newPt;
+          let snapped = false;
+          if (drag.kind === 'canopyEnd') {                       // 雨棚：端点始终沿墙滑动，保持紧贴墙体
+            const other = drag.end ? o.a : o.b;
+            const wall = nearestWall(other);
+            if (wall && wall.d <= wall.T / 2 + 300) {
+              const np = snapPointToWall([q.x, q.y], wall, o.side === -1 ? -1 : 1);
+              if (drag.end) { if (Math.hypot(np[0] - o.a[0], np[1] - o.a[1]) >= 100) o.b = np; }
+              else { if (Math.hypot(np[0] - o.b[0], np[1] - o.b[1]) >= 100) o.a = np; }
+              snapped = true;
+            }
+          }
+          if (!snapped) {
+            if (e.shiftKey) { const other = drag.end ? o.a : o.b; if (Math.abs(q.x - other[0]) > Math.abs(q.y - other[1])) q.y = other[1]; else q.x = other[0]; }
+            const newPt = [Math.round(q.x / 10) * 10, Math.round(q.y / 10) * 10];
+            const Lmin = 100;
+            if (drag.end) {
+              if (Math.hypot(newPt[0] - o.a[0], newPt[1] - o.a[1]) >= Lmin) o.b = newPt;
+            } else {
+              if (Math.hypot(newPt[0] - o.b[0], newPt[1] - o.b[1]) >= Lmin) o.a = newPt;
+            }
           }
         } else {
           const o = state.openings.find(x => x.id === drag.id); if (!o) return;
@@ -7304,7 +7679,7 @@
     function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800); }
 
     /* ======================= 2D / 3D 切换 ======================= */
-    let viewMode = '2d', switching = false;
+    let viewMode = '2d', switching = false, toolBefore3D = null;   // 进 3D 前的 2D 模式，切回时恢复（设计模式 → 设计模式）
     const is3D = () => viewMode === '3d';
     const TIPS = () => COARSE
       ? {
@@ -7321,12 +7696,18 @@
       switching = true; document.body.classList.add('busy');
       viewMode = m;
       if (m === '3d') {
+        toolBefore3D = ui.tool;                                          // 记住 2D 模式（预览 / 设计 / 测量）
         if (ui.tool !== 'select') setTool('select'); ui.mA = null; document.body.classList.add('m3d'); await window.View3D.enter();
         setRightTab('prop');   // 3D 下右侧只保留属性（对象列表仅 2D 可用）
         const hasDoors = state.openings.some(o => o.kind === 'door' && openingWallGeom(o.wall)) || DOORS.some((d, i) => !bopenRemoved('d' + i) && !bopenOnDeadWall('d' + i));
         if (hasDoors && !setView.doorTipShown) { setView.doorTipShown = true; toast(tr('小提示：点击门即可开门 / 关门', 'Tip: click a door to open / close')); }
       }
-      else { document.body.classList.remove('m3d'); await window.View3D.exit(); applyView(); }
+      else {
+        const back = toolBefore3D; toolBefore3D = null;
+        document.body.classList.remove('m3d');
+        if (back === 'draw') setTool('draw');   // 先切回设计模式，不等 3D 退出动画结束（避免先看到预览再跳设计）
+        await window.View3D.exit(); applyView();
+      }
       $('#tip').textContent = TIPS()[m];
       switching = false; document.body.classList.remove('busy');
     }
@@ -7399,10 +7780,10 @@
       if (dt === 'level') toast(tr('标高：点击放置标高符号，可改标高值与文字', 'Level: click to place a level marker; edit value / text in the panel'));
       if (dt === 'slab') toast(tr('楼板：点第一个角，再点对角点；板厚 / 底标高在右侧改', 'Slab: click one corner, then the opposite. Edit thickness / elevation in the panel'));
       if (dt === 'parapet') toast(tr('女儿墙：点起点，再点终点；厚 / 高 / 底标高在右侧改', 'Parapet: click start, then end. Edit thickness / height / elevation in the panel'));
-      if (dt === 'canopy') toast(tr('雨棚：点起点，再点终点；挑出 / 板厚 / 底标高在右侧改', 'Canopy: click start, then end. Edit projection / thickness / elevation in the panel'));
+      if (dt === 'canopy') toast(tr('雨棚：点击墙上的位置放置，朝点击的一侧挑出；长度 / 挑出 / 板厚 / 底标高在右侧改', 'Canopy: click a position on a wall; it projects to the clicked side. Edit length / projection / thickness / elevation in the panel'));
       if (dt === 'north') toast(tr('指北针：点击放置 / 移动，朝向角度在右侧改', 'North arrow: click to place / move; set the angle in the panel'));
-      if (dt === 'lift') toast(tr('电梯：点位置放置；3D 中点门扇可开合，宽 / 深 / 停靠高度 / 门宽 / 开门方向在右侧改', 'Elevator: click to place; click its door in 3D to open/close'));
-      if (dt === 'balcony') toast(tr('阳台：点第一个角，再点对角点；板厚 / 栏板高 / 样式与栏板边在右侧改', 'Balcony: click one corner, then the opposite. Edit slab / parapet / sides in the panel'));
+      if (dt === 'lift') toast(tr('电梯：点位置放置；3D 中点门扇可开合，宽 / 深 / 停靠高度 / 门宽 / 门高 / 门位置 / 开门方向在右侧改', 'Elevator: click to place; click its door in 3D to open/close'));
+      if (dt === 'balcony') toast(tr('阳台：点击墙上的位置放置（自动贴墙，靠墙边不做栏板）；板厚 / 栏板高 / 样式与栏板边在右侧改', 'Balcony: click a position on a wall (it snaps to the wall; the wall side has no parapet). Edit slab / parapet / sides in the panel'));
       if (dt === 'planter') toast(tr('花坛：点第一个角，再点对角点；壁厚 / 高 / 底标高在右侧改', 'Planter: click one corner, then the opposite. Edit thickness / height / elevation in the panel'));
       if (dt === 'flue') toast(tr('烟道：点位置放置；宽 / 进深 / 高 / 底标高在右侧改', 'Flue: click to place; edit size / height / elevation in the panel'));
       renderNotes();
@@ -7423,11 +7804,11 @@
     const refreshModePreview = () => { renderDraw(); renderNotes(); renderMeasure(); };
     $('#wallOrtho').onclick = () => {
       ui.wallFree = false; syncWallMode(); refreshModePreview();
-      toast(tr('绘制：直角模式 · 线段只走水平 / 垂直（按住 Shift 同效）', 'Drawing: orthogonal — horizontal / vertical only'));
+      toast(tr('直角模式 · 绘制线段与拖动对象都只走水平 / 垂直（按住 Shift 同效）', 'Orthogonal: drawing and dragging follow horizontal / vertical only'));
     };
     $('#wallFree').onclick = () => {
       ui.wallFree = true; syncWallMode(); refreshModePreview();
-      toast(tr('绘制：自由模式 · 可任意角度（按住 Shift 临时锁水平 / 垂直）', 'Drawing: free angle — any angle, hold Shift to lock ortho'));
+      toast(tr('自由模式 · 绘制与拖动可任意方向（按住 Shift 临时锁水平 / 垂直）', 'Free: any angle for drawing and dragging, hold Shift to lock ortho'));
     };
     syncWallMode();
     document.querySelectorAll('#layers .btn').forEach(b => {
@@ -7563,19 +7944,24 @@
 
     /* ======================= 服务器方案（Python 后端 /api/plans） ======================= */
     const planURL = n => '/api/plans/' + encodeURIComponent(n);
-    const cloudLoad = (s, name) => { applyLayers(s); const b = snap(); state = fixState(s); ui.sel = null; commit(b); markDirty(false); renderAll(); syncPlanName(name || ''); toast(tr('方案已打开', 'Plan loaded')); };
+    const cloudLoad = (s, name) => { applyLayers(s); const b = snap(); state = fixState(s); ui.sel = null; commit(b); markDirty(false); renderAll(); syncPlanName(name || ''); autoSaved = JSON.stringify({ ...state, layers: ui.layers }); autoSavedName = autoTarget(); toast(tr('方案已打开', 'Plan loaded')); };
     const cloudFail = () => toast(tr('操作失败：请确认程序已启动', 'Failed — make sure the app is running'));
 
-    /* 自动保存：改动后 2 秒写入「自动保存」槽位（静默进行，失败不打扰，下次改动再试） */
+    /* 自动保存：改动后 2 秒写入当前方案——已命名的方案直接回写自身，未命名 / 草稿仍写「自动保存」槽位（静默进行，失败不打扰，下次改动再试） */
     const AUTO_NAME = '自动保存';
-    let autoSaveT = null, autoSaved = '';
+    let autoSaveT = null, autoSaved = '', autoSavedName = '';
+    const autoTarget = () => (planName && planName !== AUTO_NAME ? planName : AUTO_NAME);
     function scheduleAutoSave() { clearTimeout(autoSaveT); autoSaveT = setTimeout(autoSave, 2000); }
     async function autoSave() {
+      const name = autoTarget();
       const cur = JSON.stringify({ ...state, layers: ui.layers });
-      if (cur === autoSaved) return;
+      if (cur === autoSaved && name === autoSavedName) return;
       try {
-        const r = await fetch(planURL(AUTO_NAME), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: cur, keepalive: true });
-        if (r.ok) autoSaved = cur;
+        const r = await fetch(planURL(name), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: cur, keepalive: true });
+        if (r.ok) {
+          autoSaved = cur; autoSavedName = name;
+          if (name !== AUTO_NAME && JSON.stringify({ ...state, layers: ui.layers }) === cur) markDirty(false);   // 已回写到方案里，去掉未保存高亮
+        }
       } catch (e) { }
     }
     /* 关闭 / 切走页面时把未写入的改动立即落盘（keepalive 让请求在页面关闭后仍能发完） */
@@ -7701,6 +8087,7 @@
       try { thumb = await svgToPngBlob(480); } catch (e) { }
       const r = await fetch(planURL(name), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body });
       if (!r.ok) throw 0;
+      autoSaved = body; autoSavedName = name;                  // 手动保存后不必再自动回写一次
       let thumbSaved = !!thumb;
       if (thumb) {
         try {
@@ -8734,6 +9121,29 @@
       door.cur = door.a1; pivot.rotation.y = door.cur; leaf.userData.door = knob.userData.door = door;
       doors.push(door); archUp.add(pivot);
     }
+    // 飘窗可开扇：以 p0（世界坐标，米）为铰链向窗外推开；点 3D 中的玻璃或扇框即可开关
+    function addBaySash(p0, p1, yb, wh, ox, oz) {
+      const dx = p1[0] - p0[0], dz = p1[1] - p0[1], len = Math.hypot(dx, dz);
+      if (len < .12 || wh < .2) return;
+      const ux = dx / len, uz = dz / len, rot = Math.atan2(-uz, ux);
+      const sgn = (ox * uz - oz * ux) < 0 ? -1 : 1;            // 往窗外那一侧转
+      const pg = new THREE.Group();
+      pg.position.set(p0[0], 0, p0[1]); pg.rotation.y = rot;
+      const sash = { pivot: pg, win: true, open: false, a0: rot, a1: rot + sgn * 1.3, cur: rot };
+      const pane = new THREE.Mesh(new THREE.BoxGeometry(len, wh, .014), glassMat.clone());   // 克隆玻璃材质：pick() 跳过原始 glassMat，克隆体才能点击
+      pane.position.set(len / 2, yb + wh / 2, 0); pane.userData.door = sash; pg.add(pane);
+      const bar = (w, h, x, y) => {                             // 扇框：四边梃
+        const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, .045), frameMat);
+        m.position.set(x, yb + y, 0); m.castShadow = true; m.userData.door = sash; pg.add(m);
+      };
+      bar(.05, wh, .025, wh / 2); bar(.05, wh, len - .025, wh / 2);
+      bar(Math.max(.02, len - .1), .04, len / 2, .02); bar(Math.max(.02, len - .1), .04, len / 2, wh - .02);
+      const hd = new THREE.Mesh(new THREE.BoxGeometry(.02, .14, .035), metal());   // 开扇侧把手
+      hd.position.set(len - .075, yb + Math.max(.3, Math.min(wh - .15, wh * .45)), .03);
+      hd.userData.door = sash; pg.add(hd);
+      pg.userData.door = sash;
+      doors.push(sash); archUp.add(pg);
+    }
     function buildRamp3D(s) {                                  // 坡道：斜面踏板 + 两侧挡条（漫游高度由 stairH 按斜面插值）
       const L = s.len / 1000, W = s.w / 1000, H = Math.max(.05, (s.rise ?? 600) / 1000);
       const g = new THREE.Group();
@@ -8908,7 +9318,10 @@
     }
     function buildLift3D(l) {                                   // 电梯：井道四壁 + 门洞过梁 + 金属双扇门
       const W = Math.max(.8, (l.w ?? 2000) / 1000), D = Math.max(.8, (l.d ?? 2000) / 1000);
-      const H = Math.max(1.8, Math.min(4, (l.h ?? 2400) / 1000)), DW = Math.max(.5, Math.min(W - .3, (l.dw ?? 900) / 1000));
+      const H = Math.max(1.8, Math.min(4, (l.h ?? 2400) / 1000));
+      const DW = Math.max(.5, Math.min(W - .3, D - .3, (l.dw ?? 900) / 1000));   // 门宽（沿进深方向）
+      const DOFF = Math.max(-(D - DW) / 2, Math.min((D - DW) / 2, (l.dpos ?? 0) / 1000));   // 门洞在门面上的偏移
+      const DH = Math.max(1.2, Math.min((l.dh ?? 2100) / 1000, H - .1));         // 门高
       const B = Math.max(0, (l.stop ?? 0) / 1000);              // 停靠高度：井道从这个标高向上建
       const g = new THREE.Group();
       g.position.set(wx(l.x), 0, wz(l.y));
@@ -8922,26 +9335,30 @@
       add(t, H, D, -W / 2 + t / 2, H / 2, 0, shMat);             // 左壁（-X）
       add(W, H, t, 0, H / 2, -D / 2 + t / 2, shMat);             // 后壁（-Z）
       add(W, H, t, 0, H / 2, D / 2 - t / 2, shMat);              // 前壁（+Z）
-      const seg = (D - DW) / 2;                                   // 门洞两侧墙垛（门在 +X 面）
-      if (seg > .01) {
-        add(t, H, seg, W / 2 - t / 2, H / 2, -(DW / 2 + seg / 2), shMat);
-        add(t, H, seg, W / 2 - t / 2, H / 2, DW / 2 + seg / 2, shMat);
-      }
-      const dH = Math.min(2.1, H - .1), lH = H - dH;              // 门洞过梁
-      if (lH > .01) add(t, lH, DW, W / 2 - t / 2, dH + lH / 2, 0, shMat);
-      const leaf = (DW - .04) / 2;                                // 金属双扇门：3D 点击开合，两扇同步向两侧滑入墙内
+      const z0 = DOFF - DW / 2, z1 = DOFF + DW / 2;              // 门洞位置（门在 +X 面，可沿进深偏移）
+      const segA = z0 + D / 2, segB = D / 2 - z1;                 // 门洞两侧墙垛
+      if (segA > .01) add(t, H, segA, W / 2 - t / 2, H / 2, -D / 2 + segA / 2, shMat);
+      if (segB > .01) add(t, H, segB, W / 2 - t / 2, H / 2, z1 + segB / 2, shMat);
+      const dH = DH, lH = H - dH;                                 // 门洞过梁
+      if (lH > .01) add(t, lH, DW, W / 2 - t / 2, dH + lH / 2, DOFF, shMat);
+      const leaf = DW / 2 + .01;                                  // 每扇略过半洞宽：闭合时中缝重叠，不留缝
       const edoor = { slide: true, open: false, cur: 0, pivots: [] };
       [-1, 1].forEach(sd => {
         const pg = new THREE.Group();
-        pg.position.set(W / 2 - t - .02, 0, sd * (DW / 4 + .01));
-        const panel = new THREE.Mesh(new THREE.BoxGeometry(.04, dH - .02, leaf), doorMat);
-        panel.position.y = B + dH / 2; panel.castShadow = panel.receiveShadow = true;
+        pg.position.set(W / 2 - t - .02, 0, DOFF + sd * DW / 4);
+        const panel = new THREE.Mesh(new THREE.BoxGeometry(.04, dH - .006, leaf), doorMat);
+        panel.position.y = B + dH / 2 - .003; panel.castShadow = panel.receiveShadow = true;   // 门扇上下也贴到门槛与过梁
+        if (sd === 1) {                                          // 中缝饰条：闭合时能看出是两扇，开合时随门扇滑走
+          const seam = new THREE.Mesh(new THREE.BoxGeometry(.048, dH - .01, .02), frameMat);
+          seam.position.set(0, 0, -DW / 4); seam.castShadow = true;
+          seam.userData.door = edoor; panel.add(seam);
+        }
         panel.userData.door = pg.userData.door = edoor; pg.add(panel);
         edoor.pivots.push({ g: pg, px: pg.position.x, pz: pg.position.z, ax: 0, az: sd, dist: DW / 2 });
         g.add(pg);
       });
       const call = new THREE.Mesh(new THREE.BoxGeometry(.02, .13, .09), doorMat);   // 门侧呼叫面板（门开走后仍可点它关门）
-      call.position.set(W / 2 - t - .03, B + Math.min(1.15, dH * .6), DW / 2 + .2);
+      call.position.set(W / 2 - t - .03, B + Math.min(1.15, dH * .6), z1 + .2);
       call.castShadow = true; call.userData.door = edoor; g.add(call);
       doors.push(edoor);
       archUp.add(g);
@@ -8950,6 +9367,16 @@
       colliders.push([wx(l.x) - hx, wz(l.y) - hz, wx(l.x) + hx, wz(l.y) + hz]);   // 井道整体占位
     }
     function buildOpening3D(A, B, o, top, T) {
+      if (o.kind === 'lbay') {                                    // L 型飘窗：两段各自建，共用窗台 / 窗高 / 进深
+        const lgs = (o.legs || []).map(leg => {
+          const lg = openingWallGeom(leg.wall); if (!lg) return null;
+          const [PA, PB] = segPts(lg.A, lg.B, leg.c - leg.w / 2, leg.c + leg.w / 2);   // leg.c 为段中心
+          buildOpening3D(PA, PB, { ...o, kind: 'bay', c: 0, w: leg.w, bayFlip: leg.flip, lcorner: leg.lc }, top, lg.T);
+          return { PA, PB, leg };
+        }).filter(Boolean);
+        if (lgs.length === 2) buildLBayCorner3D(o, lgs, top);      // 转角补齐：缺的台板与玻璃
+        return;
+      }
       const WL = Math.hypot(B[0] - A[0], B[1] - A[1]);               // 墙可能被改短：把门窗钳回墙内再建
       const c0 = Math.max(0, Math.min(o.c, WL)), c1 = Math.max(0, Math.min(WL, o.c + o.w));
       if (c1 - c0 < 10) return;
@@ -9070,21 +9497,29 @@
         wallSeg3D(P0, P1, T, 0, sill);                       // 窗下墙
         if (top > head) wallSeg3D(P0, P1, T, head, top);     // 窗上过梁
         const cx = mx + nx * dep / 2, cz = mz + nz * dep / 2;
+        const lcEnd = o.lcorner || 0;                         // L 型飘窗的转角端：台板收到洞口边，交给转角台板拼接
+        const slabL = L + (lcEnd ? .06 : .12), slabOff = -lcEnd * .03;
+        const sx = cx + dx * slabOff, sz = cz + dz * slabOff;
         [sill - .06, head + .06].forEach(y => {              // 上下窗台板（略宽于洞口）
-          const slab = new THREE.Mesh(new THREE.BoxGeometry(L + .12, .12, dep + .06), frameMat);
-          slab.position.set(cx, y, cz); slab.rotation.y = rot;
+          const slab = new THREE.Mesh(new THREE.BoxGeometry(slabL, .12, dep + .06), frameMat);
+          slab.position.set(sx, y, sz); slab.rotation.y = rot;
           slab.castShadow = slab.receiveShadow = true; archUp.add(slab);
         });
         const seat = new THREE.Mesh(new THREE.BoxGeometry(L, .04, dep), mat('#e9e2d4', { roughness: .9 }));   // 窗台坐板
         seat.position.set(cx, sill + .02, cz); seat.rotation.y = rot; seat.receiveShadow = true; archUp.add(seat);
-        const front = new THREE.Mesh(new THREE.BoxGeometry(L + .06, wh, .02), glassMat);   // 正面玻璃
-        front.position.set(mx + nx * dep, sill + wh / 2, mz + nz * dep); front.rotation.y = rot; archUp.add(front);
-        [-1, 1].forEach(sd => {                              // 两侧玻璃（沿进深方向）
+        [-L / 2, -L / 6, L / 6].forEach(s0 => {               // 正面玻璃按竖梃分三扇，全部可向外推开
+          const a = s0 + .012, b = s0 + L / 3 - .012;
+          addBaySash([mx + dx * a + nx * dep, mz + dz * a + nz * dep],
+            [mx + dx * b + nx * dep, mz + dz * b + nz * dep], sill, wh, nx, nz);
+        });
+        [-1, 1].forEach(sd => {                              // 两侧玻璃（沿进深方向、靠墙）：固定玻璃，不可开启
+          if (o.lcorner === sd) return;                       // L 型飘窗：转角那侧不封玻璃
           const gp = new THREE.Mesh(new THREE.BoxGeometry(dep, wh, .02), glassMat);
           gp.position.set(mx + dx * sd * L / 2 + nx * dep / 2, sill + wh / 2, mz + dz * sd * L / 2 + nz * dep / 2);
           gp.rotation.y = rot + Math.PI / 2; archUp.add(gp);
         });
         [[-L / 2, 0], [L / 2, 0]].forEach(([so]) => {        // 靠墙两角的竖梃
+          if (o.lcorner === Math.sign(so)) return;
           const p = new THREE.Mesh(new THREE.BoxGeometry(.06, wh, .06), frameMat);
           p.position.set(mx + dx * so, sill + wh / 2, mz + dz * so); p.rotation.y = rot; p.castShadow = true; archUp.add(p);
         });
@@ -9334,6 +9769,44 @@
       });
       pushWallCollider(P0, P1, T);                           // 窗下不能穿行
     }
+    // L 型飘窗转角补齐：补上两段之间缺的台板 / 坐板 / 两面转角玻璃（否则转角是敞开的缺口）
+    function buildLBayCorner3D(o, legs, top) {
+      const dep = Math.max(.15, Math.min((o.bayDepth ?? 600) / 1000, 1.5)), depMM = dep * 1000;
+      const sill = Math.max(0, Math.min((o.sill ?? 500) / 1000, top - .5));
+      const wh = Math.max(.4, Math.min((o.wh ?? 1200) / 1000, top - sill));
+      const head = sill + wh;
+      const info = legs.map(({ PA, PB, leg }) => {
+        const dx = PB[0] - PA[0], dy = PB[1] - PA[1], L = Math.hypot(dx, dy) || 1;
+        const u = [dx / L, dy / L], n = [-u[1], u[0]], side = leg.flip ? -1 : 1, ov = [n[0] * side, n[1] * side];
+        const Pc = leg.lc === -1 ? PA : PB;
+        return { u, ov, Pc, Qc: [Pc[0] + ov[0] * depMM, Pc[1] + ov[1] * depMM] };
+      });
+      if (info.length < 2) return;
+      const a = info[0], b = info[1], cr = a.u[0] * b.u[1] - a.u[1] * b.u[0];
+      if (Math.abs(cr) < 1e-6) return;
+      const t = ((b.Qc[0] - a.Qc[0]) * b.u[1] - (b.Qc[1] - a.Qc[1]) * b.u[0]) / cr;
+      if (!isFinite(t)) return;
+      const X = [a.Qc[0] + a.u[0] * t, a.Qc[1] + a.u[1] * t];
+      const OV = 30;                                         // 转角台板也外挑 30mm，与两段台板的外沿齐平拼接
+      const aQ = [a.Qc[0] + a.ov[0] * OV, a.Qc[1] + a.ov[1] * OV];
+      const bQ = [b.Qc[0] + b.ov[0] * OV, b.Qc[1] + b.ov[1] * OV];
+      const X2 = [X[0] + (a.ov[0] + b.ov[0]) * OV, X[1] + (a.ov[1] + b.ov[1]) * OV];
+      const pts = [a.Pc, aQ, X2, bQ, b.Pc];
+      const xs = pts.map(q => wx(q[0])), zs = pts.map(q => wz(q[1]));
+      const x0 = Math.min(...xs), x1 = Math.max(...xs), z0 = Math.min(...zs), z1 = Math.max(...zs);
+      [sill - .06, head + .06].forEach(y => {                // 转角上下台板（与两段台板齐平，避免叠面闪烁与错台）
+        const slab = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, .12, z1 - z0), frameMat);
+        slab.position.set((x0 + x1) / 2, y, (z0 + z1) / 2);
+        slab.castShadow = slab.receiveShadow = true; archUp.add(slab);
+      });
+      const seat = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, .04, z1 - z0), mat('#e9e2d4', { roughness: .9 }));
+      seat.position.set((x0 + x1) / 2, sill + .02, (z0 + z1) / 2); seat.receiveShadow = true; archUp.add(seat);
+      [[X, a.Qc, a.ov], [X, b.Qc, b.ov]].forEach(([p, q, ov]) => {   // 转角两面玻璃也做成可开扇：铰在转角立柱上、向外推开
+        addBaySash([wx(p[0]), wz(p[1])], [wx(q[0]), wz(q[1])], sill, wh, ov[0], ov[1]);
+      });
+      const post = new THREE.Mesh(new THREE.BoxGeometry(.06, wh, .06), frameMat);   // 转角外角竖梃
+      post.position.set(wx(X[0]), sill + wh / 2, wz(X[1])); post.castShadow = true; archUp.add(post);
+    }
     function shapeOf(poly, flip) { const s = new THREE.Shape(); poly.forEach(([x, y], i) => s[i ? 'lineTo' : 'moveTo'](wx(x), flip ? wz(y) : -wz(y))); return s; }
 
     function buildArch() {
@@ -9368,18 +9841,32 @@
         if (!(Number.isFinite(v) && v > 0)) return def;
         return Math.min(opt.cut < H ? opt.cut : Infinity, v / 1000);
       };
+      const lbCornerAt = (ref, end) => {                       // 该墙这一端是不是 L 型飘窗的转角端
+        for (const o of state.openings) {
+          if (o.kind !== 'lbay' || !o.legs) continue;
+          for (const l of o.legs) if (l.wall === ref && l.lc === (end ? 1 : -1)) return o;
+        }
+        return null;
+      };
+      const cornerStub3D = (P0, P1, T, ht, o) => {             // 转角处残留的小墙垛：窗洞高度范围内不砌，否则转角看起来像一根柱子
+        const sill = Math.max(0, Math.min((o.sill ?? 500) / 1000, ht - .5));
+        const head = sill + Math.max(.4, Math.min((o.wh ?? 1200) / 1000, ht - sill));
+        if (sill > .001) wallSeg3D(P0, P1, T, 0, sill);
+        if (ht > head) wallSeg3D(P0, P1, T, head, ht);
+      };
       WALLS.forEach((w, i) => {
         const id = 'w' + i;
         if (state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
-        const s = builtinSeg(i), os = openingsOf(id), ht = wallTop(id, wallTypeOf(i) === 'low' ? Math.min(1, top) : top);
-        if (!os.length) {
+        const s = builtinSeg(i), os = openingsOf(id), cuts = wallCuts(id, s.L), ht = wallTop(id, wallTypeOf(i) === 'low' ? Math.min(1, top) : top);
+        if (!cuts.length) {
           wallBox(w, 0, ht);
           colliders.push([wx(w[0]), wz(w[1]), wx(w[2]), wz(w[3])]);
           return;
         }
         wallSegs(id, s.L).forEach(([c0, c1]) => {
           const [P0, P1] = segPts(s.A, s.B, c0, c1);
-          wallSeg3D(P0, P1, s.T, 0, ht);
+          const lbo = c1 - c0 <= 400 && ((c1 >= s.L - 1 && lbCornerAt(id, 1)) || (c0 <= 1 && lbCornerAt(id, 0)));
+          if (lbo) cornerStub3D(P0, P1, s.T, ht, lbo); else wallSeg3D(P0, P1, s.T, 0, ht);
           pushWallCollider(P0, P1, s.T);
         });
         os.forEach(o => buildOpening3D(s.A, s.B, o, ht, s.T));
@@ -9398,8 +9885,11 @@
         segs.forEach(([c0, c1]) => {
           const c0x = c0 > 0 ? c0 : -e0, c1x = c1 < L ? c1 : L + e1;
           const [P0, P1] = segPts(w.a, w.b, c0x, c1x), k = cwType(w);
+          const lbo = c1 - c0 <= 400 && ((c1 >= L - 1 && lbCornerAt(id, 1)) || (c0 <= 1 && lbCornerAt(id, 0)));
           if (k === 'g' || k === 'lg') {                     // 玻璃隔断 / 玻璃矮隔断
             buildGlassWall(P0, P1, cwT(w), ht);
+          } else if (lbo) {                                  // L 型飘窗转角的小墙垛：窗洞范围内留空
+            cornerStub3D(P0, P1, cwT(w), ht, lbo);
           } else {
             wallSeg3D(P0, P1, cwT(w), 0, ht);
           }
@@ -9857,6 +10347,7 @@
           }
           continue;
         }
+        if (d.win) continue;                                 // 飘窗可开扇在窗台上方，不挡地面行走
         const a = d.pivot.rotation.y, px = d.pivot.position.x, pz = d.pivot.position.z, ex = px + Math.cos(a) * .9, ez = pz - Math.sin(a) * .9;
         const t = clamp01(((x - px) * (ex - px) + (z - pz) * (ez - pz)) / ((ex - px) ** 2 + (ez - pz) ** 2));
         if (Math.hypot(x - (px + t * (ex - px)), z - (pz + t * (ez - pz))) < r * .8) return true;
