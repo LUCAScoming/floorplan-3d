@@ -876,9 +876,48 @@
     }
 
     #cloudList.grid {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+      overflow: hidden
+    }
+
+    #cloudList.grid .cloud-actions,
+    #cloudList.grid .cloud-plans {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       gap: 10px
+    }
+
+    #cloudList.grid .cloud-actions {
+      flex: none
+    }
+
+    #cloudList.grid .cloud-plans {
+      flex: 1 1 auto;
+      align-content: start;
+      min-height: 40px;
+      overflow-y: auto;
+      padding: 1px
+    }
+
+    #cloudSearch {
+      flex: none;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font: inherit;
+      background: var(--paper);
+      color: var(--ink);
+      outline: none
+    }
+
+    #cloudSearch:focus {
+      border-color: var(--accent)
     }
 
     #cloudList.grid .muted {
@@ -898,6 +937,20 @@
     .plan-card:hover {
       border-color: var(--accent);
       background: var(--accent-soft)
+    }
+
+    .plan-card.action {
+      border-style: dashed
+    }
+
+    .plan-card.action .pc-thumb {
+      border-style: dashed;
+      color: var(--accent);
+      font-size: 38px
+    }
+
+    .plan-card.action .pc-nm {
+      color: var(--accent)
     }
 
     .plan-card .pc-thumb {
@@ -5354,7 +5407,7 @@
       let mask = $('#cloudMask');
       if (!mask) {
         mask = document.createElement('div'); mask.id = 'cloudMask';
-        mask.innerHTML = `<div id="cloudBox"><button id="cloudX" title="关闭">×</button><b id="cloudTitle"></b><div id="cloudSub" class="welcome-sub"></div><div id="cloudNameRow"><input id="cloudName" maxlength="80" autocomplete="off"></div><div id="cloudList"></div><div id="cloudFoot"><button class="btn" id="cloudNew"></button><button class="btn" id="cloudImport"></button><button class="btn" id="cloudOk"></button></div></div>`;
+        mask.innerHTML = `<div id="cloudBox"><button id="cloudX" title="关闭">×</button><b id="cloudTitle"></b><div id="cloudSub" class="welcome-sub"></div><div id="cloudNameRow"><input id="cloudName" maxlength="80" autocomplete="off"></div><div id="cloudList"></div><div id="cloudFoot"><button class="btn" id="cloudImport"></button><button class="btn" id="cloudOk"></button></div></div>`;
         document.body.appendChild(mask);
       }
       // 点弹窗外部不关闭，只能通过按钮退出
@@ -5365,7 +5418,6 @@
       mask.querySelector('#cloudSub').style.display = save ? 'none' : '';
       mask.querySelector('#cloudNameRow').style.display = save ? 'flex' : 'none';
       mask.querySelector('#cloudOk').style.display = save ? '' : 'none';
-      mask.querySelector('#cloudNew').style.display = save ? 'none' : '';
       mask.querySelector('#cloudImport').style.display = save ? 'none' : '';
       return mask;
     }
@@ -5451,12 +5503,17 @@
       mask.querySelector('#cloudTitle').textContent = tr('户型装修设计', 'Floor Plan Designer');
       mask.querySelector('#cloudSub').textContent = tr('欢迎回来！选择一个方案继续创作，或从空白开始', 'Welcome back — pick a plan to continue, or start from scratch');
       const listEl = mask.querySelector('#cloudList');
-      const empty = () => { listEl.innerHTML = `<div class="muted">${tr('还没有保存的方案，点击下方「新建空方案」开始设计吧', 'No saved plans yet — hit "New empty plan" below to start designing')}</div>`; };
-      listEl.innerHTML = '';
+      listEl.innerHTML = '<div class="cloud-actions"></div><input id="cloudSearch" type="search" autocomplete="off"><div class="cloud-plans"></div>';
+      const actionsEl = listEl.querySelector('.cloud-actions'), plansEl = listEl.querySelector('.cloud-plans'), searchEl = listEl.querySelector('#cloudSearch');
+      searchEl.placeholder = tr('搜索方案名称', 'Search plan names');
+      searchEl.setAttribute('aria-label', tr('搜索方案名称', 'Search plan names'));
+      searchEl.disabled = !plans.length;
+      const empty = () => { plansEl.innerHTML = `<div class="muted">${tr('还没有保存的方案，点击上方「新建空方案」开始设计吧', 'No saved plans yet — use "New empty plan" above to start designing')}</div>`; };
       if (!plans.length) { empty(); }
       for (const p of plans) {
         const draft = p.name === AUTO_NAME;
         const card = document.createElement('div'); card.className = 'plan-card';
+        card.dataset.name = p.name.toLocaleLowerCase();
         card.innerHTML = `<div class="pc-del"></div><div class="pc-thumb"><span></span></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
         const thumbBox = card.querySelector('.pc-thumb');
         thumbBox.querySelector('span').textContent = tr('暂无预览', 'No preview');
@@ -5481,7 +5538,7 @@
           try { const r = await fetch(planURL(p.name), { method: 'DELETE' }); if (!r.ok) throw 0; }
           catch (e) { toast(tr('删除失败', 'Failed to delete')); return; }
           card.remove(); toast(tr('已删除', 'Deleted'));
-          if (!listEl.querySelector('.plan-card')) empty();
+          if (!plansEl.querySelector('.plan-card')) { empty(); searchEl.value = ''; searchEl.disabled = true; }
         };
         card.onclick = async () => {
           try {
@@ -5489,12 +5546,29 @@
             cloudLoad(await r.json(), p.name); mask.classList.remove('open');
           } catch (e) { toast(tr('读取失败', 'Failed to load')); }
         };
-        listEl.appendChild(card);
+        plansEl.appendChild(card);
       }
+      searchEl.oninput = () => {
+        const q = searchEl.value.trim().toLocaleLowerCase();
+        let visible = 0;
+        plansEl.querySelectorAll('.plan-card').forEach(card => {
+          const show = card.dataset.name.includes(q);
+          card.hidden = !show;
+          if (show) visible++;
+        });
+        const noMatch = plansEl.querySelector('.search-empty');
+        if (plans.length && q && !visible) {
+          if (!noMatch) {
+            const note = document.createElement('div'); note.className = 'muted search-empty';
+            note.textContent = tr('没有匹配的方案', 'No matching plans');
+            plansEl.appendChild(note);
+          }
+        } else if (noMatch) noMatch.remove();
+      };
       /* 内置示例方案：点击载入画板（不入服务器，可「保存方案」留存） */
       const demo = document.createElement('div'); demo.className = 'plan-card demo';
-      demo.innerHTML = `<div class="pc-thumb"><span></span></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
-      demo.querySelector('.pc-thumb span').textContent = tr('暂无预览', 'No preview');
+      demo.innerHTML = `<div class="pc-thumb"><img src="/libs/demo-plan.png"></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
+      demo.querySelector('.pc-thumb img').alt = tr('示范户型 2D 预览', 'Demo floor plan 2D preview');
       demo.querySelector('.pc-nm').textContent = tr('示例：示范户型', 'Demo: sample floor plan');
       demo.querySelector('.pc-tm').textContent = tr('两居室参考案例，载入后可随意改造', 'A sample two-bedroom — load it and remodel freely');
       demo.onclick = () => {
@@ -5502,11 +5576,15 @@
         mask.classList.remove('open');
         toast(tr('已载入示例方案，用「保存方案」可留存到服务器', 'Demo plan loaded — use "Save plan" to keep it on the server'));
       };
-      listEl.appendChild(demo);
-      const newB = mask.querySelector('#cloudNew'), impB = mask.querySelector('#cloudImport');
-      newB.textContent = tr('新建空方案', 'New empty plan');
+      actionsEl.appendChild(demo);
+      const newCard = document.createElement('div'); newCard.className = 'plan-card action';
+      newCard.innerHTML = `<div class="pc-thumb"><span>＋</span></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
+      newCard.querySelector('.pc-nm').textContent = tr('新建空方案', 'New empty plan');
+      newCard.querySelector('.pc-tm').textContent = tr('从空白画板开始设计', 'Start from a blank canvas');
+      newCard.onclick = () => { mask.classList.remove('open'); $('#newPlan').click(); };
+      actionsEl.prepend(newCard);
+      const impB = mask.querySelector('#cloudImport');
       impB.textContent = tr('导入方案', 'Import plan');
-      newB.onclick = () => { mask.classList.remove('open'); $('#newPlan').click(); };
       impB.onclick = () => { mask.classList.remove('open'); $('#importJson').click(); };
       mask.classList.add('open');
     }
