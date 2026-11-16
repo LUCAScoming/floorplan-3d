@@ -149,7 +149,8 @@
       "c": 5717.18798828125,
       "w": 900,
       "kind": "door",
-      "flip": false
+      "flip": false,
+      "mat": "steel"
     },
     {
       "id": "fmwhui0o493",
@@ -188,14 +189,6 @@
       "kind": "door",
       "flip": false,
       "hflip": true
-    },
-    {
-      "id": "fmwhuwjk895",
-      "wall": "CWfmwhqg4po186",
-      "c": 253.628662109375,
-      "w": 900,
-      "kind": "door",
-      "flip": false
     },
     {
       "id": "fmwhuwl6x96",
@@ -270,16 +263,24 @@
       ]
     },
     {
-      "id": "fmwjanipe93",
+      "id": "fmwjc9qb193",
       "wall": "CWfmwhqg7q7187",
-      "c": 6486.90380859375,
-      "w": 1500,
-      "kind": "bay",
+      "c": 6535.3974609375,
+      "w": 1690,
+      "kind": "dwin",
+      "flip": true,
+      "grille": true,
+      "hflip": true,
+      "mat": "glass"
+    },
+    {
+      "id": "fmwjcswgy93",
+      "wall": "CWfmwhqg4po186",
+      "c": 349.271728515625,
+      "w": 900,
+      "kind": "door",
       "flip": false,
-      "sill": 500,
-      "wh": 1200,
-      "bayDepth": 600,
-      "bayFlip": true
+      "hflip": false
     }
   ],
   "deletedWalls": [
@@ -511,7 +512,7 @@
       "mat": "tile800"
     }
   ],
-  "entryDoor": "Ofmwhuwjk895",
+  "entryDoor": "Ofmwjcswgy93",
   "pillars": [],
   "stairs": [
     {
@@ -531,7 +532,8 @@
         9
       ],
       "railLand": false,
-      "railSide": "left"
+      "railSide": "left",
+      "railMat": "steel"
     }
   ],
   "wallH": {
