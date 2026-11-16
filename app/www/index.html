@@ -9020,6 +9020,7 @@
         if (r.ok) {
           autoSaved = cur; autoSavedName = name;
           if (name !== AUTO_NAME && JSON.stringify({ ...state, layers: ui.layers }) === cur) markDirty(false);   // 已回写到方案里，去掉未保存高亮
+          if (document.visibilityState !== 'hidden') toast(tr('已自动保存', 'Autosaved'));   // 自动保存也给出提示
         }
       } catch (e) { }
     }
@@ -9165,7 +9166,7 @@
       if (quickSaving) return;
       if (!planName || planName === AUTO_NAME) { $('#cloudSave').click(); return; }
       quickSaving = true;
-      try { await savePlanTo(planName); }
+      try { await savePlanTo(planName); toast(tr('已保存：' + planName, 'Saved: ' + planName)); }   // 快速保存后给出提示
       catch (e) { cloudFail(); }
       finally { quickSaving = false; }
     }
