@@ -1564,11 +1564,21 @@
 
     /* ---------- 设计模式子工具（左侧「建筑工具」选项夹） ---------- */
     #designTools {
-      display: none;
+      display: flex;
       flex-direction: column;
       align-items: stretch;
       gap: 2px;
       padding: 2px 10px 16px
+    }
+
+    .archhint {
+      margin: 8px 10px 0;
+      padding: 7px 9px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.45
     }
 
     #wallLenBox {
@@ -1602,36 +1612,35 @@
       text-align: right
     }
 
-    /* ---------- 对象列表（右侧栏顶部，属性面板上方） ---------- */
-    /* 右侧栏分两个独立滚动区：对象列表（上半）/ 属性（下半），各滚各的 */
+    /* ---------- 对象列表 / 属性（右侧栏两个选项夹） ---------- */
     aside.right {
       display: flex;
       flex-direction: column;
       overflow: hidden
     }
 
+    .rightpane {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden
+    }
+
+    .rightpane[hidden] {
+      display: none
+    }
+
     #objPanel {
       display: none;
       flex-direction: column;
-      border-bottom: 1px solid var(--line);
-      max-height: 45vh;
-      font-size: 13px;
-      flex-shrink: 0
+      flex: 1;
+      min-height: 0;
+      font-size: 13px
     }
 
     #objPanel.open {
       display: flex
-    }
-
-    #panelHead {
-      padding: 12px 14px 6px;
-      background: var(--panel);
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 1px;
-      font-weight: 600;
-      flex-shrink: 0;
-      border-bottom: 1px solid var(--line)
     }
 
     #panel {
@@ -2117,6 +2126,7 @@
         <div id="lib"></div>
       </div>
       <div id="libPaneArch" class="only2d" hidden>
+      <div class="archhint" id="archHint">当前为预览模式，工具暂不可用；点顶部「设计」后即可使用。</div>
       <div id="designTools">
         <div class="dtg"><div class="dth">基础</div>
           <button class="btn chip on" data-dt="select"
@@ -2250,9 +2260,16 @@
     </main>
 
     <aside class="right">
-      <div id="objPanel" class="only2d open"></div>
-      <div id="panelHead" data-en="Properties ◨">属性 ◨</div>
-      <div id="panel"></div>
+      <div class="libtabs only2d" id="rightTabs">
+        <button class="btn chip" data-rt="obj" data-en="Objects">对象列表</button>
+        <button class="btn chip on" data-rt="prop" data-en="Properties">属性</button>
+      </div>
+      <div class="rightpane only2d" id="paneObj" hidden>
+        <div id="objPanel" class="open"></div>
+      </div>
+      <div class="rightpane" id="paneProp">
+        <div id="panel"></div>
+      </div>
     </aside>
 
     <footer>
@@ -4893,8 +4910,8 @@
 
     function setTool(t) {
       ui.tool = t; ui.mA = null; ui.mCur = null; ui.dimA = null; ui.dimCur = null; ui.railA = null; ui.railCur = null; ui.beamA = null; ui.beamCur = null; ui.slabA = null; ui.slabCur = null; ui.parapetA = null; ui.parapetCur = null; ui.canopyA = null; ui.canopyCur = null; wStart = wCur = null; renderDraw();
-      $('#designTools').style.display = t === 'draw' ? 'flex' : 'none';
-      setLibTab(t === 'draw' ? 'arch' : 'furn');   // 左侧选项夹跟随模式：设计→建筑工具，其余→家具库
+      if (t === 'draw') setLibTab('arch');   // 进入设计自动显示建筑工具；退出设计不强制切回
+      syncArchHint();
       if (t === 'draw') svg.dataset.subtool = ui.drawTool;
       if (!(t === 'draw' && ui.drawTool === 'select')) select(null);   // 离开「设计+选择」即取消选中（预览只读）
       svg.setAttribute('class', 'tool-' + t);
@@ -6432,6 +6449,7 @@
       viewMode = m;
       if (m === '3d') {
         if (ui.tool !== 'select') setTool('select'); ui.mA = null; document.body.classList.add('m3d'); await window.View3D.enter();
+        setRightTab('prop');   // 3D 下右侧只保留属性（对象列表仅 2D 可用）
         const hasDoors = state.openings.some(o => o.kind === 'door' && openingWallGeom(o.wall)) || DOORS.some((d, i) => !bopenRemoved('d' + i) && !bopenOnDeadWall('d' + i));
         if (hasDoors && !setView.doorTipShown) { setView.doorTipShown = true; toast(tr('小提示：点击门即可开门 / 关门', 'Tip: click a door to open / close')); }
       }
@@ -6444,18 +6462,28 @@
 
     document.querySelectorAll('#tools .btn').forEach(b => b.onclick = () => setTool(b.dataset.tool));
     // 左侧「家具库 / 建筑工具」选项夹
+    function syncArchHint() { const h = $('#archHint'); if (h) h.hidden = ui.tool === 'draw'; }
     function setLibTab(k) {
       const f = $('#libPaneFurn'), a = $('#libPaneArch');
       if (!f || !a) return;
       f.hidden = k !== 'furn'; a.hidden = k !== 'arch';
       document.querySelectorAll('#libTabs [data-libt]').forEach(b => b.classList.toggle('on', b.dataset.libt === k));
+      syncArchHint();
     }
     $('#libTabs')?.addEventListener('click', e => {
       const b = e.target.closest('[data-libt]'); if (!b) return;
-      if (b.dataset.libt === 'arch') {
-        if (ui.tool !== 'draw') setTool('draw'); else setLibTab('arch');
-        if (innerWidth <= 900) document.querySelector('aside.lib')?.classList.remove('open');   // 手机上选完工具收起抽屉
-      } else setLibTab('furn');
+      setLibTab(b.dataset.libt);   // 只切换选项夹，不自动进入设计模式
+    });
+    // 右侧「对象列表 / 属性」选项夹
+    function setRightTab(k) {
+      const o = $('#paneObj'), p = $('#paneProp');
+      if (!o || !p) return;
+      o.hidden = k !== 'obj'; p.hidden = k !== 'prop';
+      document.querySelectorAll('#rightTabs [data-rt]').forEach(b => b.classList.toggle('on', b.dataset.rt === k));
+    }
+    $('#rightTabs')?.addEventListener('click', e => {
+      const b = e.target.closest('[data-rt]'); if (!b) return;
+      setRightTab(b.dataset.rt);
     });
     function setSubTool(dt) {
       if (dt === 'paint') {                   // 材质刷：以当前选中的房间为样板材料（没选房间则沿用上次）
@@ -6474,6 +6502,7 @@
       if (dt !== 'select') select(null);      // 切到创建类子工具时取消选中
       else renderSel();                       // 切回选择：按当前选中对象重画手柄（房间顶点 / 家具手柄立即出现）
       document.querySelectorAll('#designTools .btn').forEach(x => x.classList.toggle('on', x.dataset.dt === dt));
+      if (ui.tool === 'draw' && innerWidth <= 900) document.querySelector('aside.lib')?.classList.remove('open');   // 手机上选完工具收起抽屉
       syncModeHint();
       if (dt === 'paint') toast(tr(`材质刷：当前「${nm(MATS[ui.paintMat].name)}」· 先用「选择」点房间可换样板`, `Paint: "${MATS[ui.paintMat].name}" · select a room to change it`));
       if (dt === 'dim') toast(tr('尺寸标注：点起点，再点终点（可拖动整体移动）', 'Dimension: click the start point, then the end point (drag to move)'));
