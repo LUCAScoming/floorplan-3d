@@ -241,6 +241,14 @@
       "kind": "window",
       "flip": true,
       "grille": true
+    },
+    {
+      "id": "fmwj1f9ac93",
+      "wall": "CWfmwhqg7q7187",
+      "c": 6205.85205078125,
+      "w": 1500,
+      "kind": "dble",
+      "flip": false
     }
   ],
   "deletedWalls": [
@@ -506,7 +514,22 @@
     "CWfmwhqg7q7187": 4200,
     "CWfmwhqg9wc188": 4200
   },
-  "notes": [],
+  "notes": [
+    {
+      "id": "fmwj12oak96",
+      "x": 2090,
+      "y": 8970,
+      "text": "文字标注",
+      "size": 300
+    },
+    {
+      "id": "fmwj13fyz93",
+      "x": 7110,
+      "y": 9050,
+      "text": "文字标注",
+      "size": 300
+    }
+  ],
   "dims": [],
   "rails": [],
   "beams": [],
@@ -523,13 +546,14 @@
   "lifts": [
     {
       "id": "fmwiw6lnm93",
-      "x": 7930,
-      "y": 3250,
-      "w": 1050,
-      "d": 1350,
+      "x": 7900,
+      "y": 3230,
+      "w": 1230,
+      "d": 1310,
       "h": 2400,
-      "dw": 750,
-      "dir": 0
+      "dw": 500,
+      "dir": 0,
+      "stop": 1200
     }
   ],
   "balconies": [],
