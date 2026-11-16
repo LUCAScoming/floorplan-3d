@@ -6,7 +6,7 @@
 import argparse, json, sys, threading, time, webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import unquote, urlsplit
+from urllib.parse import quote, unquote, urlsplit
 
 BASE = Path(__file__).resolve().parent
 # 网页目录：脚本同级有 index.html 就用同级（本地直接运行），否则用 www/ 子目录（fnOS 应用包）
@@ -70,8 +70,11 @@ class Handler(BaseHTTPRequestHandler):
             return True
         return False
 
-    def _plan_name(self):
-        return plan_path(unquote(urlsplit(self.path).path[len("/api/plans/"):]))
+    def _plan_name(self, thumbnail=False):
+        name = urlsplit(self.path).path[len("/api/plans/"):]
+        if thumbnail:
+            name = name[:-len("/thumbnail")]
+        return plan_path(unquote(name))
 
     def do_GET(self):
         path = urlsplit(self.path).path
