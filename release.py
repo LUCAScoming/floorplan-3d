@@ -2,6 +2,7 @@
 
 流程：构建全平台安装包 -> 打版本标签并推送 -> 创建 GitHub Release 并上传产物。
 产物（5 个）：fnOS x86/arm fpk、Windows zip、Linux/macOS tar.gz
+发布说明：自动读取 CHANGELOG.md 中对应版本的条目；发布成功后把「（开发中）」标为发布日期，并预留下一版本的开发中标题。
 用法：python release.py [版本号]        （缺省读 manifest 的 version=）
 凭据：优先 .env 中的 GITHUB_TOKEN（不依赖 gh CLI）；其次 gh（需已登录）。
 """
@@ -16,6 +17,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -65,6 +67,36 @@ def read_version():
     return ""
 
 
+def changelog_section(ver):
+    """取出 CHANGELOG.md 里 v{ver} 的正文（不含标题），作为 Release 说明。"""
+    p = ROOT / "CHANGELOG.md"
+    if not p.exists():
+        return ""
+    text = p.read_text(encoding="utf-8")
+    m = re.search(r"(?ms)^##\s*v?" + re.escape(ver) + r"[^\n]*\n(.*?)(?=^##\s|\Z)", text)
+    return m.group(1).strip() if m else ""
+
+
+def finalize_changelog(ver, nv=None):
+    """发布成功：把 CHANGELOG 的「（开发中）」标成发布日期，并预留下一版本的开发中标题。"""
+    p = ROOT / "CHANGELOG.md"
+    if not p.exists():
+        print("[提示] 未找到 CHANGELOG.md，跳过更新日志标记")
+        return False
+    text = p.read_text(encoding="utf-8")
+    nt = re.sub(r"(?m)^##\s*v?" + re.escape(ver) + r"\s*（开发中）",
+                f"## v{ver}（{date.today().isoformat()}）", text, count=1)
+    if nv and not re.search(r"(?m)^##\s*v" + re.escape(nv) + r"\b", nt):
+        m = re.search(r"(?m)^##\s", nt)
+        if m:
+            nt = nt[:m.start()] + f"## v{nv}（开发中）\n\n" + nt[m.start():]
+    if nt == text:
+        return False
+    p.write_text(nt, encoding="utf-8")
+    print(f"[日志] CHANGELOG.md 已更新：v{ver} 标记发布日期" + (f"，新增 v{nv}（开发中）" if nv else ""))
+    return True
+
+
 def bump_version(ver):
     """发布成功后：manifest 的 version= 自动叠加一位（patch +1），作为下次发布的默认版本；网页状态栏的 APP_VER 同步。"""
     m = re.match(r"(\d+)\.(\d+)\.(\d+)$", ver)
@@ -86,8 +118,8 @@ def bump_version(ver):
 
 
 def commit_bump(nv):
-    """把叠加后的版本号提交并推送（失败不阻断，留待下次 push.py 一起提交）。"""
-    if run(["git", "add", "manifest", "index.html", "app/www/index.html"]) != 0:
+    """把叠加后的版本号与更新日志提交并推送（失败不阻断，留待下次 push.py 一起提交）。"""
+    if run(["git", "add", "manifest", "index.html", "app/www/index.html", "CHANGELOG.md"]) != 0:
         return
     if run(["git", "commit", "-m", f"chore: 发布完成，manifest 版本号自动叠加至 {nv}"]) != 0:
         return
@@ -129,8 +161,12 @@ def api(url, token, data=None, method=None, ctype="application/json"):
 
 
 def release_notes(ver, hashes):
-    lines = [f"## 户型装修设计 v{ver}", "",
-             "| 产物 | 适用平台 | 大小 | SHA256 |", "|---|---|---|---|"]
+    body = changelog_section(ver)
+    lines = [f"## 户型装修设计 v{ver}", ""]
+    if body:
+        lines += [body, ""]
+    lines += ["### 安装包", "",
+              "| 产物 | 适用平台 | 大小 | SHA256 |", "|---|---|---|---|"]
     plat = {"fnos-x86.fpk": "飞牛 fnOS（x86）", "fnos-arm.fpk": "飞牛 fnOS（ARM）",
             "windows": "Windows", "linux": "Linux", "macos": "macOS"}
     for name, sha, size in hashes:
@@ -141,6 +177,7 @@ def release_notes(ver, hashes):
               "- Windows：解压后双击 `启动服务器.bat`（需装有 Python 3）",
               "- Linux：`./start.sh`（需 python3）",
               "- macOS：解压后双击 `start.command`（需 python3）",
+              "", f"完整更新日志：[CHANGELOG.md](https://github.com/{REPO}/blob/main/CHANGELOG.md)",
               "", "纯 Python 标准库实现，无第三方依赖；仅供学习交流使用。"]
     return "\n".join(lines)
 
@@ -230,6 +267,12 @@ def main():
         print("[错误] 无法读取版本号，请显式指定：python release.py 1.0.2")
         return 1
     print(f"[信息] 发布版本：v{ver}，目标仓库：{REPO}")
+    if not changelog_section(ver):
+        print(f"[提示] CHANGELOG.md 中没有找到 v{ver} 的更新内容，建议先补上（否则 Release 说明只含安装包列表）")
+    if MANIFEST.exists():
+        mc = re.search(r"(?m)^changelog=(.*)$", MANIFEST.read_text(encoding="utf-8"))
+        if mc and not mc.group(1).strip().startswith(ver):
+            print(f"[提示] manifest 的 changelog= 仍是旧版本：{mc.group(1).strip()[:20]}…，建议同步为 v{ver} 的说明")
 
     r = subprocess.run(["git", "status", "--porcelain"],
                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
@@ -246,6 +289,7 @@ def main():
     if rel_rc == 0:
         print(f"[成功] v{ver} 发布完成：标签 + Release + 全平台安装包均已就绪")
         nv = bump_version(ver)
+        finalize_changelog(ver, nv)                 # 更新日志标日期 + 预留下一版本
         if nv:
             commit_bump(nv)
             print("[提示] 下次发布将默认使用 v" + nv + "；发布前可顺手更新 manifest 的 changelog=")
