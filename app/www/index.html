@@ -196,6 +196,27 @@
       padding: 0 10px 6px
     }
 
+    /* 左侧选项夹：家具库 / 建筑工具 */
+    .libtabs {
+      display: flex;
+      gap: 4px;
+      padding: 10px 10px 8px;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .libtabs .btn.chip {
+      flex: 1;
+      text-align: center;
+      border: 1px solid var(--line);
+      background: #fff
+    }
+
+    .libtabs .btn.chip.on {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent)
+    }
+
     .lib h4 {
       position: sticky;
       top: 0;
@@ -781,15 +802,43 @@
     .cloud-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 4px 6px;
+      gap: 10px;
+      padding: 6px;
       border-radius: 8px;
       cursor: pointer
     }
 
-    .cloud-row .nm {
+    .cloud-row .th {
+      flex: none;
+      width: 56px;
+      aspect-ratio: 480 / 434;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f7f4ee;
+      color: var(--muted);
+      font-size: 10px
+    }
+
+    .cloud-row .th img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain
+    }
+
+    .cloud-row .info {
       flex: 1;
       min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px
+    }
+
+    .cloud-row .nm {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -802,11 +851,48 @@
       white-space: nowrap
     }
 
-    /* 保存方案弹窗：名称输入行 / 底部按钮 / 选中行高亮 */
+    /* 保存弹窗：已有方案标题固定，列表独立滚动 */
+    #cloudList.rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+      min-height: 0
+    }
+
+    .cloud-sec-title {
+      flex: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted)
+    }
+
+    .cloud-rows {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 1px
+    }
+
+    #cloudBox:not(.welcome) .welcome-sub {
+      margin-bottom: 0
+    }
+
+    /* 保存方案弹窗：名称输入行 / 已有方案列表 / 底部按钮 / 选中行高亮 */
     #cloudNameRow {
       display: flex;
-      gap: 8px;
-      margin-bottom: 10px
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 0
+    }
+
+    #cloudNameLabel {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted)
     }
 
     #cloudName {
@@ -876,9 +962,56 @@
     }
 
     #cloudList.grid {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+      overflow: hidden
+    }
+
+    #cloudList.grid .cloud-actions,
+    #cloudList.grid .cloud-plans {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       gap: 10px
+    }
+
+    #cloudList.grid .cloud-actions {
+      flex: none
+    }
+
+    #cloudList.grid .cloud-plans {
+      flex: 1 1 auto;
+      align-content: start;
+      min-height: 40px;
+      overflow-y: auto;
+      padding: 1px
+    }
+
+    #cloudList.grid .cloud-plans-title {
+      flex: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .04em
+    }
+
+    #cloudSearch {
+      flex: none;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font: inherit;
+      background: var(--paper);
+      color: var(--ink);
+      outline: none
+    }
+
+    #cloudSearch:focus {
+      border-color: var(--accent)
     }
 
     #cloudList.grid .muted {
@@ -898,6 +1031,42 @@
     .plan-card:hover {
       border-color: var(--accent);
       background: var(--accent-soft)
+    }
+
+    .plan-card.action {
+      border-style: dashed
+    }
+
+    .plan-card.action .pc-thumb {
+      border-style: dashed;
+      color: var(--accent);
+      font-size: 38px
+    }
+
+    .plan-card.action .pc-nm {
+      color: var(--accent)
+    }
+
+    .plan-card .pc-thumb {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      aspect-ratio: 480 / 434;
+      margin-bottom: 10px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f7f4ee;
+      color: var(--muted);
+      font-size: 12px
+    }
+
+    .plan-card .pc-thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain
     }
 
     .plan-card .pc-nm {
@@ -1393,24 +1562,23 @@
       background: var(--line)
     }
 
-    /* ---------- 设计模式子工具浮动条 ---------- */
+    /* ---------- 设计模式子工具（左侧「建筑工具」选项夹） ---------- */
     #designTools {
-      position: absolute;
-      left: 14px;
-      top: 12px;
-      transform: translateY(-8px);
-      display: none;
+      display: flex;
       flex-direction: column;
       align-items: stretch;
       gap: 2px;
-      padding: 5px;
-      background: rgba(255, 253, 249, .97);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      box-shadow: 0 8px 26px rgba(40, 30, 20, .16);
-      z-index: 4;
-      transition: transform .2s, opacity .2s;
-      max-width: calc(100% - 24px)
+      padding: 2px 10px 16px
+    }
+
+    .archhint {
+      margin: 8px 10px 0;
+      padding: 7px 9px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.45
     }
 
     #wallLenBox {
@@ -1444,36 +1612,35 @@
       text-align: right
     }
 
-    /* ---------- 对象列表（右侧栏顶部，属性面板上方） ---------- */
-    /* 右侧栏分两个独立滚动区：对象列表（上半）/ 属性（下半），各滚各的 */
+    /* ---------- 对象列表 / 属性（右侧栏两个选项夹） ---------- */
     aside.right {
       display: flex;
       flex-direction: column;
       overflow: hidden
     }
 
+    .rightpane {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden
+    }
+
+    .rightpane[hidden] {
+      display: none
+    }
+
     #objPanel {
       display: none;
       flex-direction: column;
-      border-bottom: 1px solid var(--line);
-      max-height: 45vh;
-      font-size: 13px;
-      flex-shrink: 0
+      flex: 1;
+      min-height: 0;
+      font-size: 13px
     }
 
     #objPanel.open {
       display: flex
-    }
-
-    #panelHead {
-      padding: 12px 14px 6px;
-      background: var(--panel);
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 1px;
-      font-weight: 600;
-      flex-shrink: 0;
-      border-bottom: 1px solid var(--line)
     }
 
     #panel {
@@ -1599,6 +1766,36 @@
       height: 15px;
       flex: none;
       display: block
+    }
+
+    /* 分组：每组标题占整行，按钮两列排布 */
+    #designTools .dtg {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px
+    }
+
+    #designTools .dth {
+      grid-column: 1/-1;
+      padding: 6px 6px 1px;
+      margin-top: 2px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.5;
+      letter-spacing: .8px
+    }
+
+    #designTools .dtg:first-of-type .dth {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0
+    }
+
+    #designTools .dtg .btn {
+      width: 100%;
+      min-width: 0;
+      padding: 4px 6px
     }
 
     /* ---------- 触屏漫游摇杆 ---------- */
@@ -1917,11 +2114,101 @@
     </header>
 
     <aside class="lib">
-      <div id="lib3d" class="only3d">
-        <h4 data-en="Rooms · click to fly there">房间 · 点击飞到该房间</h4>
-        <div id="roomList"></div>
+      <div class="libtabs only2d" id="libTabs">
+        <button class="btn chip on" data-libt="furn" data-en="Furniture">家具库</button>
+        <button class="btn chip" data-libt="arch" data-en="Building">建筑工具</button>
       </div>
-      <div id="lib"></div>
+      <div id="libPaneFurn">
+        <div id="lib3d" class="only3d">
+          <h4 data-en="Rooms · click to fly there">房间 · 点击飞到该房间</h4>
+          <div id="roomList"></div>
+        </div>
+        <div id="lib"></div>
+      </div>
+      <div id="libPaneArch" class="only2d" hidden>
+      <div class="archhint" id="archHint">当前为预览模式，工具暂不可用；点顶部「设计」后即可使用。</div>
+      <div id="designTools">
+        <div class="dtg"><div class="dth">基础</div>
+          <button class="btn chip on" data-dt="select"
+          title="点选墙 / 门 / 窗 / 家具：拖动、改尺寸、删除；在空白处 / 房间内按住左键拖出矩形可框选家具、楼梯、柱子、自画墙（Ctrl+D 复制、Delete 删除；按住 Alt 拖动可从任意位置起手）"
+          data-en-title="Click to edit; drag on empty space or inside a room to marquee-select furniture / stairs / columns / walls (Ctrl+D duplicates, Delete removes, Alt+drag starts anywhere)"><i
+          data-lucide="mouse-pointer-2"></i>选择</button>
+          <button class="btn chip" data-dt="wall" title="点击两点画一段墙，可连续画；也可先点起点，输入长度后回车"><i
+          data-lucide="brick-wall"></i>画墙</button>
+          <button class="btn chip" data-dt="room" title="点击两个对角点拉出一个矩形房间（地面区域），可在属性面板改名称与地面材料"><i
+          data-lucide="square"></i>房间</button>
+          <button class="btn chip" data-dt="paint" title="材质刷：先用「选择」点一个房间作为样板（或在右侧选好材料），再点其他房间逐个刷地面材料"><i
+          data-lucide="paint-bucket"></i>材质刷</button>
+        </div>
+        <div class="dtg"><div class="dth">门</div>
+          <button class="btn chip" data-dt="door" title="点击墙上的位置放一个 900mm 房门"><i data-lucide="door-open"></i>房门</button>
+          <button class="btn chip" data-dt="dble" title="点击墙上的位置放一个 1500mm 双开门（两扇对开，3D 中点击可开合）"><i data-lucide="columns-2"></i>双开门</button>
+          <button class="btn chip" data-dt="zimu" title="点击墙上的位置放一个 1200mm 子母门（大扇 + 小扇，3D 中点击可开合）"><i data-lucide="panel-left"></i>子母门</button>
+          <button class="btn chip" data-dt="yak" title="点击墙上的位置开一个 1200mm 垭口（只有门洞和门套，没有门扇，可直接通行）"><i data-lucide="rectangle-horizontal"></i>垭口</button>
+          <button class="btn chip" data-dt="sd" title="点击墙上的位置放一个 900mm 单扇推拉门（室内用，3D 中点击门扇可推开）"><i
+          data-lucide="panel-right-close"></i>单扇推拉门</button>
+          <button class="btn chip" data-dt="fold" title="点击墙上的位置放一个 1800mm 折叠门（多扇折叠，3D 中显示为折起状态，可直接通行）"><i
+          data-lucide="panel-right-open"></i>折叠门</button>
+          <button class="btn chip" data-dt="slid" title="点击墙上的位置放一个 2400mm 落地推拉门（通顶玻璃双扇，3D 中点击可开合）"><i
+          data-lucide="arrow-left-right"></i>落地推拉门</button>
+          <button class="btn chip" data-dt="elev" title="点击墙上的位置开一个 900mm 电梯门（金属中分双扇，3D 中点击可开合）"><i
+          data-lucide="door-closed"></i>电梯门</button>
+          <button class="btn chip" data-dt="roller" title="点击墙上的位置开一个 1800mm 卷帘门（车库 / 店铺，3D 中常闭不可穿行）"><i
+          data-lucide="panel-top"></i>卷帘门</button>
+          <button class="btn chip" data-dt="entry" title="点击一个门洞（原始门洞或自画的门），把它设为入户门（全局唯一；再次点击其它门洞即转移）"><i
+          data-lucide="log-in"></i>入户</button>
+        </div>
+        <div class="dtg"><div class="dth">窗</div>
+          <button class="btn chip" data-dt="win" title="点击墙上的位置放一个 1200mm 窗户"><i data-lucide="blinds"></i>窗户</button>
+          <button class="btn chip" data-dt="hwin" title="点击墙上的位置放一个 1200mm 高窗（窗台抬高，默认 1400mm，适合卫生间 / 楼梯间）"><i data-lucide="panel-top"></i>高窗</button>
+          <button class="btn chip" data-dt="fwin" title="点击墙上的位置放一个 1800mm 落地窗（通顶玻璃）"><i
+          data-lucide="rectangle-vertical"></i>落地窗</button>
+          <button class="btn chip" data-dt="dwin" title="点击墙上的位置放一个 1500mm 门连窗（左侧门扇 + 右侧固定窗）"><i data-lucide="gallery-vertical-end"></i>门连窗</button>
+          <button class="btn chip" data-dt="bay" title="点击墙上的位置放一个 1500mm 飘窗（窗台 500，向外凸出 600，进深与朝向可改）"><i data-lucide="app-window"></i>飘窗</button>
+          <button class="btn chip" data-dt="louver" title="点击墙上的位置放一个 1200mm 百叶窗（倾斜叶片，3D 中不可开启）"><i data-lucide="align-justify"></i>百叶窗</button>
+          <button class="btn chip" data-dt="cwin" title="点击墙上的位置放一个 900mm 圆窗（圆形洞口，窗台默认 900mm）"><i data-lucide="circle"></i>圆窗</button>
+        </div>
+        <div class="dtg"><div class="dth">楼梯 · 坡道</div>
+          <button class="btn chip" data-dt="stair" title="点击放置一部直跑楼梯（默认 1000×4000，升 2800；方向/尺寸可在右侧改，漫游可走上去）"><i
+          data-lucide="arrow-up-narrow-wide"></i>楼梯</button>
+          <button class="btn chip" data-dt="stair2" title="点击放置双跑（U 形折返）楼梯：两跑并行、端部带休息平台，默认 1000×4000 升 2800"><i
+          data-lucide="corner-up-left"></i>双跑楼梯</button>
+          <button class="btn chip" data-dt="stair3" title="点击放置三跑楼梯：折返两次、三跑并排、中间两块休息平台，默认 1000×5000 升 2800"><i
+          data-lucide="route"></i>三跑楼梯</button>
+          <button class="btn chip" data-dt="stair3s" title="点击放置正三跑楼梯：第三跑叠在第一跑正上方，平面只占两跑宽（1000×4000 升 2800）"><i
+          data-lucide="layers"></i>正三跑</button>
+          <button class="btn chip" data-dt="ramp" title="点击放置一段坡道（默认 1200×4000 升 600，坡度 / 方向可在右侧改）"><i
+          data-lucide="trending-up"></i>坡道</button>
+          <button class="btn chip" data-dt="steps" title="点击放置一组台阶（默认 1200 宽 × 1200 长，3 级共升 450，级数 / 方向可在右侧改）"><i
+          data-lucide="chevrons-up"></i>台阶</button>
+        </div>
+        <div class="dtg"><div class="dth">结构 · 构件</div>
+          <button class="btn chip" data-dt="pillar" title="点击放置一根柱子（默认方柱 400mm，通顶并占位挡路；右侧可改圆/方与尺寸，可直接拖动）"><i
+          data-lucide="columns-3"></i>柱子</button>
+          <button class="btn chip" data-dt="beam" title="梁：第一次点起点，第二次点终点；默认 200 宽 × 300 高、底标高 2400，可在右侧调"><i
+          data-lucide="rectangle-horizontal"></i>梁</button>
+          <button class="btn chip" data-dt="slab" title="楼板 / 挑板：两次点击对角点生成矩形板；板厚、底标高可改（底标高改 0 即落地楼板）"><i
+          data-lucide="box"></i>楼板</button>
+          <button class="btn chip" data-dt="parapet" title="女儿墙：第一次点起点，第二次点终点；默认 120 厚 × 900 高、带压顶，长度 / 厚 / 高 / 底标高可改"><i
+          data-lucide="fence"></i>女儿墙</button>
+          <button class="btn chip" data-dt="rail" title="栏杆：第一次点起点，第二次点终点；默认 1000 高直杆，可换玻璃栏板，长度 / 高度可调"><i
+          data-lucide="fence"></i>栏杆</button>
+          <button class="btn chip" data-dt="canopy" title="雨棚：第一次点起点，第二次点终点；默认挑出 800、板厚 100、底标高 2400，可翻转挑出方向"><i
+          data-lucide="panel-top"></i>雨棚</button>
+          <button class="btn chip" data-dt="lift" title="电梯：点击放置（默认 2000×2000，门宽 900）；宽 / 深 / 高 / 停靠高度 / 门宽 / 开门方向可改，3D 为井道 + 可点击开合的双扇门"><i
+          data-lucide="arrow-up-down"></i>电梯</button>
+        </div>
+        <div class="dtg"><div class="dth">标注</div>
+          <button class="btn chip" data-dt="dim" title="尺寸标注：第一次点起点，第二次点终点，自动标出两点距离；可选中拖动 / 删除"><i
+          data-lucide="ruler"></i>尺寸标注</button>
+          <button class="btn chip" data-dt="level" title="标高：点击位置放一个标高符号，可改标高值与文字；可拖动 / 删除"><i
+          data-lucide="triangle"></i>标高</button>
+          <button class="btn chip" data-dt="text" title="点击平面图放置文字标注；选中后可在右侧改文字、字号与位置"><i
+          data-lucide="type"></i>文字标注</button>
+          <button class="btn chip" data-dt="north" title="指北针：点击放置或移动位置，朝向角度可在右侧改"><i
+          data-lucide="compass"></i>指北针</button>
+        </div>
+      </div>
     </aside>
 
     <main id="stage" class="loading">
@@ -1938,6 +2225,7 @@
         <g id="gLabels" pointer-events="none"></g>
         <g id="gDims" pointer-events="none"></g>
         <g id="gMeasure" pointer-events="none"></g>
+        <g id="gNotes"></g>
         <g id="gDraw" pointer-events="none"></g>
         <g id="gSel"></g>
       </svg>
@@ -1967,51 +2255,21 @@
       </div>
       <div class="modehint" id="modehint"></div>
       <div id="fab"></div>
-      <div id="designTools" style="display:none">
-        <button class="btn chip on" data-dt="select"
-          title="点选墙 / 门 / 窗 / 家具：拖动、改尺寸、删除；在空白处 / 房间内按住左键拖出矩形可框选家具、楼梯、柱子、自画墙（Ctrl+D 复制、Delete 删除；按住 Alt 拖动可从任意位置起手）"
-          data-en-title="Click to edit; drag on empty space or inside a room to marquee-select furniture / stairs / columns / walls (Ctrl+D duplicates, Delete removes, Alt+drag starts anywhere)"><i
-            data-lucide="mouse-pointer-2"></i>选择</button>
-        <button class="btn chip" data-dt="wall" title="点击两点画一段墙，可连续画；也可先点起点，输入长度后回车"><i
-            data-lucide="brick-wall"></i>画墙</button>
-        <button class="btn chip" data-dt="door" title="点击墙上的位置放一个 900mm 房门"><i data-lucide="door-open"></i>房门</button>
-        <button class="btn chip" data-dt="yak" title="点击墙上的位置开一个 1200mm 垭口（只有门洞和门套，没有门扇，可直接通行）"><i data-lucide="rectangle-horizontal"></i>垭口</button>
-        <button class="btn chip" data-dt="dble" title="点击墙上的位置放一个 1500mm 双开门（两扇对开，3D 中点击可开合）"><i data-lucide="columns-2"></i>双开门</button>
-        <button class="btn chip" data-dt="zimu" title="点击墙上的位置放一个 1200mm 子母门（大扇 + 小扇，3D 中点击可开合）"><i data-lucide="panel-left"></i>子母门</button>
-        <button class="btn chip" data-dt="win" title="点击墙上的位置放一个 1200mm 窗户"><i data-lucide="blinds"></i>窗户</button>
-        <button class="btn chip" data-dt="hwin" title="点击墙上的位置放一个 1200mm 高窗（窗台抬高，默认 1400mm，适合卫生间 / 楼梯间）"><i data-lucide="panel-top"></i>高窗</button>
-        <button class="btn chip" data-dt="dwin" title="点击墙上的位置放一个 1500mm 门连窗（左侧门扇 + 右侧固定窗）"><i data-lucide="gallery-vertical-end"></i>门连窗</button>
-        <button class="btn chip" data-dt="roller" title="点击墙上的位置开一个 1800mm 卷帘门（车库 / 店铺，3D 中常闭不可穿行）"><i
-            data-lucide="panel-top"></i>卷帘门</button>
-        <button class="btn chip" data-dt="elev" title="点击墙上的位置开一个 900mm 电梯门（金属中分双扇，3D 中点击可开合）"><i
-            data-lucide="door-closed"></i>电梯门</button>
-        <button class="btn chip" data-dt="fwin" title="点击墙上的位置放一个 1800mm 落地窗（通顶玻璃）"><i
-            data-lucide="rectangle-vertical"></i>落地窗</button>
-        <button class="btn chip" data-dt="slid" title="点击墙上的位置放一个 2400mm 落地推拉门（通顶玻璃双扇，3D 中点击可开合）"><i
-            data-lucide="arrow-left-right"></i>落地推拉门</button>
-        <button class="btn chip" data-dt="room" title="点击两个对角点拉出一个矩形房间（地面区域），可在属性面板改名称与地面材料"><i
-            data-lucide="square"></i>房间</button>
-        <button class="btn chip" data-dt="entry" title="点击一个门洞（原始门洞或自画的门），把它设为入户门（全局唯一；再次点击其它门洞即转移）"><i
-            data-lucide="log-in"></i>入户</button>
-        <button class="btn chip" data-dt="pillar" title="点击放置一根柱子（默认方柱 400mm，通顶并占位挡路；右侧可改圆/方与尺寸，可直接拖动）"><i
-            data-lucide="columns-3"></i>柱子</button>
-        <button class="btn chip" data-dt="stair" title="点击放置一部直跑楼梯（默认 1000×4000，升 2800；方向/尺寸可在右侧改，漫游可走上去）"><i
-            data-lucide="arrow-up-narrow-wide"></i>楼梯</button>
-        <button class="btn chip" data-dt="stair2" title="点击放置双跑（U 形折返）楼梯：两跑并行、端部带休息平台，默认 1000×4000 升 2800"><i
-            data-lucide="corner-up-left"></i>双跑楼梯</button>
-        <button class="btn chip" data-dt="stair3" title="点击放置三跑楼梯：折返两次、三跑并排、中间两块休息平台，默认 1000×5000 升 2800"><i
-            data-lucide="route"></i>三跑楼梯</button>
-        <button class="btn chip" data-dt="stair3s" title="点击放置正三跑楼梯：第三跑叠在第一跑正上方，平面只占两跑宽（1000×4000 升 2800）"><i
-            data-lucide="layers"></i>正三跑</button>
-      </div>
       <div id="wallLenBox"><input id="wallLen" type="number" min="10" step="10" placeholder="长度"><span>mm</span><span
           class="muted">Enter 确认 · Esc 取消</span></div>
     </main>
 
     <aside class="right">
-      <div id="objPanel" class="only2d open"></div>
-      <div id="panelHead" data-en="Properties ◨">属性 ◨</div>
-      <div id="panel"></div>
+      <div class="libtabs only2d" id="rightTabs">
+        <button class="btn chip" data-rt="obj" data-en="Objects">对象列表</button>
+        <button class="btn chip on" data-rt="prop" data-en="Properties">属性</button>
+      </div>
+      <div class="rightpane only2d" id="paneObj" hidden>
+        <div id="objPanel" class="open"></div>
+      </div>
+      <div class="rightpane" id="paneProp">
+        <div id="panel"></div>
+      </div>
     </aside>
 
     <footer>
@@ -2031,7 +2289,7 @@
     /* ======================= 多语言（中文 / English，默认中文） ======================= */
     const LANG_KEY = 'huxing-lang';
     const LANGS = ['zh', 'zht', 'en'];             // 简体 / 繁體（台湾用字）/ English
-    const APP_VER = '1.0.3';                       // 应用版本号：release.py 发布后自动同步 manifest 的 version=
+    const APP_VER = '1.0.4';                       // 应用版本号：release.py 发布后自动同步 manifest 的 version=
     let LANG = (() => { try { const l = localStorage.getItem(LANG_KEY); return LANGS.includes(l) ? l : 'zh'; } catch (e) { return 'zh'; } })();
     // 简 → 繁：先按词替换一字多义的字，再逐字查表（表由 OpenCC s2tw 按本页用到的字生成）
     const S2T_PHRASES = [['布置', '佈置'], ['布局', '佈局'], ['台面', '檯面'], ['复制', '複製']];
@@ -2251,7 +2509,7 @@
 
     function defaultState() {
       const rooms = {}; ROOMS.forEach(r => rooms[r.id] = { name: r.name, mat: r.mat });
-      return { furniture: defaultFurniture(), rooms, demolished: [], measures: [], walls: [], openings: [], deletedWalls: [], removedB: [], bover: {}, roomsExtra: [] };
+      return { furniture: defaultFurniture(), rooms, demolished: [], measures: [], walls: [], openings: [], deletedWalls: [], removedB: [], bover: {}, roomsExtra: [], notes: [], dims: [], rails: [], beams: [], levels: [], slabs: [], parapets: [], canopies: [], north: null, lifts: [] };
     }
 
     /* 完全空白方案：隐藏全部内置房间 / 墙体 / 门窗，家具清零（启动默认与「新建空方案」共用） */
@@ -2268,6 +2526,16 @@
       const d = defaultState();
       s.rooms = (s.rooms && typeof s.rooms === 'object' && !Array.isArray(s.rooms)) ? s.rooms : d.rooms;   // 空对象 = 真正的空方案，原样保留
       s.roomsExtra = Array.isArray(s.roomsExtra) ? s.roomsExtra : [];   // 自己画的房间（设置房间功能）
+      s.notes = Array.isArray(s.notes) ? s.notes : [];                   // 2D 文字标注
+      s.dims = Array.isArray(s.dims) ? s.dims : [];                      // 2D 手动尺寸标注
+      s.rails = Array.isArray(s.rails) ? s.rails : [];                    // 栏杆
+      s.beams = Array.isArray(s.beams) ? s.beams : [];                    // 梁
+      s.levels = Array.isArray(s.levels) ? s.levels : [];                 // 标高符号
+      s.slabs = Array.isArray(s.slabs) ? s.slabs : [];                    // 楼板 / 挑板
+      s.parapets = Array.isArray(s.parapets) ? s.parapets : [];            // 女儿墙
+      s.canopies = Array.isArray(s.canopies) ? s.canopies : [];           // 雨棚
+      s.north = (s.north && typeof s.north === 'object' && !Array.isArray(s.north)) ? s.north : null;   // 指北针（全局唯一）
+      s.lifts = Array.isArray(s.lifts) ? s.lifts : [];                    // 电梯
       s.demolished = s.demolished || []; s.measures = s.measures || [];
       s.walls = Array.isArray(s.walls) ? s.walls : [];
       s.openings = Array.isArray(s.openings) ? s.openings : [];
@@ -2302,7 +2570,7 @@
     /* ======================= 状态 / 历史 ======================= */
     let state = blankState();                      // 启动即空白方案；持久化走「文件 ▾ → 保存方案」
     const ui = {
-      tool: 'select', drawTool: 'select', sel: null, multi: [], mq: null, mA: null, mCur: null,
+      tool: 'select', drawTool: 'select', sel: null, multi: [], mq: null, mA: null, mCur: null, dimA: null, dimCur: null, railA: null, railCur: null, beamA: null, beamCur: null, slabA: null, slabCur: null, parapetA: null, parapetCur: null, canopyA: null, canopyCur: null,
       layers: { dims: true, labels: true, furn: true, grid: false, axis: true, bearing: false, wallSnap: true }
     };
     /* 图层开关随方案保存：存到服务器（挂在方案 JSON 的 layers 字段），打开方案时还原 */
@@ -2332,6 +2600,15 @@
       else if (ui.sel?.kind === 'pillar' && !(state.pillars || []).find(x => x.id === ui.sel.id)) ui.sel = null;
       else if (ui.sel?.kind === 'stair' && !(state.stairs || []).find(x => x.id === ui.sel.id)) ui.sel = null;
       else if (ui.sel?.kind === 'bopen' && !bopenRect(ui.sel.id)) ui.sel = null;
+      else if (ui.sel?.kind === 'dim' && !(state.dims || []).find(x => x.id === ui.sel.id)) ui.sel = null;
+      else if (ui.sel?.kind === 'rail' && !(state.rails || []).find(x => x.id === ui.sel.id)) ui.sel = null;
+      else if (ui.sel?.kind === 'beam' && !(state.beams || []).find(x => x.id === ui.sel.id)) ui.sel = null;
+      else if (ui.sel?.kind === 'level' && !(state.levels || []).find(x => x.id === ui.sel.id)) ui.sel = null;
+      else if (ui.sel?.kind === 'slab' && !(state.slabs || []).find(x => x.id === ui.sel.id)) ui.sel = null;
+      else if (ui.sel?.kind === 'parapet' && !(state.parapets || []).find(x => x.id === ui.sel.id)) ui.sel = null;
+      else if (ui.sel?.kind === 'canopy' && !(state.canopies || []).find(x => x.id === ui.sel.id)) ui.sel = null;
+      else if (ui.sel?.kind === 'lift' && !(state.lifts || []).find(x => x.id === ui.sel.id)) ui.sel = null;
+      else if (ui.sel?.kind === 'north' && !state.north) ui.sel = null;
       const alive = s => s.kind === 'furn' ? !!state.furniture.find(f => f.id === s.id)
         : s.kind === 'stair' ? !!(state.stairs || []).find(x => x.id === s.id)
           : s.kind === 'wall' ? state.walls.some(w => 'CW' + w.id === s.id)
@@ -2621,6 +2898,42 @@
               s += `<line x1="${a[0]}" y1="${a[1]}" x2="${a[0] + n[0] * T}" y2="${a[1] + n[1] * T}" ${WS} ${NE}/>`;
             });
           }
+        } else if (o.kind === 'louver') {                    // 百叶窗：双线窗符号 + 沿宽均分的叶片线（跨墙厚）
+          const LS = 'stroke="#4f7394" stroke-width="1" vector-effect="non-scaling-stroke"';
+          s += shape(`fill="#f7fbfd" ${LS}`);
+          [-T / 6, T / 6].forEach(off => {
+            const a = [P0[0] + n[0] * off, P0[1] + n[1] * off], b = [P1[0] + n[0] * off, P1[1] + n[1] * off];
+            s += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" ${LS} ${NE}/>`;
+          });
+          const nL = Math.max(3, Math.round(L / 150));
+          for (let k = 1; k < nL; k++) {
+            const px = P0[0] + dx * L * k / nL, py = P0[1] + dy * L * k / nL;
+            s += `<line x1="${px - n[0] * T / 2}" y1="${py - n[1] * T / 2}" x2="${px + n[0] * T / 2}" y2="${py + n[1] * T / 2}" ${LS} ${NE}/>`;
+          }
+        } else if (o.kind === 'cwin') {                      // 圆窗：以洞口中心画圆 + 圆心十字
+          const CS = 'stroke="#2e6e8e" stroke-width="1.2" vector-effect="non-scaling-stroke"';
+          const mm = [(P0[0] + P1[0]) / 2, (P0[1] + P1[1]) / 2], r = o.w / 2;
+          s += `<circle cx="${mm[0]}" cy="${mm[1]}" r="${r}" fill="#f7fbfd" ${CS}/>`;
+          s += `<line x1="${mm[0] - r}" y1="${mm[1]}" x2="${mm[0] + r}" y2="${mm[1]}" ${CS} ${NE}/>`;
+          s += `<line x1="${mm[0]}" y1="${mm[1] - r}" x2="${mm[0]}" y2="${mm[1] + r}" ${CS} ${NE}/>`;
+        } else if (o.kind === 'bay') {                       // 飘窗：洞口 + 向外凸出的窗台轮廓 + 三面窗线
+          const BS = 'stroke="#2e6e8e" stroke-width="1.2" vector-effect="non-scaling-stroke"';
+          const dep = Math.max(150, +(o.bayDepth ?? 600)), side = o.bayFlip ? -1 : 1;
+          const ov = [n[0] * side, n[1] * side];
+          const Q0 = [P0[0] + ov[0] * dep, P0[1] + ov[1] * dep], Q1 = [P1[0] + ov[0] * dep, P1[1] + ov[1] * dep];
+          const inF = 70;                                     // 玻璃线离窗台外沿的距离
+          const R0 = [Q0[0] - ov[0] * inF, Q0[1] - ov[1] * inF], R1 = [Q1[0] - ov[0] * inF, Q1[1] - ov[1] * inF];
+          s += shape(`fill="#f7fbfd" ${BS}`);
+          s += `<polygon points="${P0[0]},${P0[1]} ${Q0[0]},${Q0[1]} ${Q1[0]},${Q1[1]} ${P1[0]},${P1[1]}" fill="#f7fbfd" fill-opacity=".7" ${BS} ${NE}/>`;
+          s += `<line x1="${R0[0]}" y1="${R0[1]}" x2="${R1[0]}" y2="${R1[1]}" ${BS} ${NE}/>`;
+          [-T / 6, T / 6].forEach(off => {
+            const a = [R0[0] + n[0] * off, R0[1] + n[1] * off], b = [R1[0] + n[0] * off, R1[1] + n[1] * off];
+            s += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" ${BS} stroke-width=".8" ${NE}/>`;
+          });
+          [1 / 3, 2 / 3].forEach(t2 => {                      // 正面三等分分格线
+            const px = R0[0] + (R1[0] - R0[0]) * t2, py = R0[1] + (R1[1] - R0[1]) * t2;
+            s += `<line x1="${px}" y1="${py}" x2="${px + ov[0] * inF}" y2="${py + ov[1] * inF}" ${BS} stroke-width=".8" ${NE}/>`;
+          });
         } else if (o.kind === 'slid') {                      // 落地推拉门：窗符号 + 中缝线（表示双扇）
           const SS = 'stroke="#2e6e8e" stroke-width="1" vector-effect="non-scaling-stroke"';
           s += shape(`fill="#f7fbfd" ${SS}`);
@@ -2630,6 +2943,25 @@
           });
           const sm = [(P0[0] + P1[0]) / 2, (P0[1] + P1[1]) / 2];
           s += `<line x1="${sm[0] - n[0] * T / 2}" y1="${sm[1] - n[1] * T / 2}" x2="${sm[0] + n[0] * T / 2}" y2="${sm[1] + n[1] * T / 2}" ${SS} ${NE}/>`;
+        } else if (o.kind === 'sd') {                        // 单扇推拉门：双线洞口 + 贴一侧的单扇门板 + 轨道线
+          const SS = 'stroke="#2e6e8e" stroke-width="1" vector-effect="non-scaling-stroke"';
+          s += shape(`fill="#f7fbfd" ${SS}`);
+          [-T / 6, T / 6].forEach(off => {
+            const a = [P0[0] + n[0] * off, P0[1] + n[1] * off], b = [P1[0] + n[0] * off, P1[1] + n[1] * off];
+            s += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" ${SS} ${NE}/>`;
+          });
+          const off = T * .26, th = Math.min(45, T * .34);
+          const A2 = [P0[0] + n[0] * off, P0[1] + n[1] * off], B2 = [P1[0] + n[0] * off, P1[1] + n[1] * off];
+          s += `<polygon points="${A2[0]},${A2[1]} ${B2[0]},${B2[1]} ${B2[0] + n[0] * th},${B2[1] + n[1] * th} ${A2[0] + n[0] * th},${A2[1] + n[1] * th}" fill="#fff" ${SS} ${NE}/>`;
+        } else if (o.kind === 'fold') {                      // 折叠门：洞口内画连续折线（4 扇交替折向两侧）
+          const FS = 'stroke="#8b8272" stroke-width="1" vector-effect="non-scaling-stroke"';
+          s += shape(`fill="#f4f1ea" ${FS}`);
+          const N = 4, pts = [];
+          for (let k = 0; k <= N; k++) {
+            const t2 = k / N, off = (k === 0 || k === N) ? 0 : (k % 2 ? -1 : 1) * T * .3;
+            pts.push(`${P0[0] + dx * t2 + n[0] * off},${P0[1] + dy * t2 + n[1] * off}`);
+          }
+          s += `<polyline points="${pts.join(' ')}" fill="none" ${FS} ${NE}/>`;
         } else if (o.kind === 'yak') {                        // 垭口：洞口 + 两端门套线（无门扇弧线）
           const YS = 'stroke="#8b8272" stroke-width="1" vector-effect="non-scaling-stroke"';
           s += shape(`fill="#f2efe8" ${YS}`);
@@ -2721,10 +3053,34 @@
           : `<rect x="${c.x - r}" y="${c.y - r}" width="${c.w}" height="${c.w}" ${st}/>`;
         const hit = c.round ? body : `<rect x="${c.x - r}" y="${c.y - r}" width="${c.w}" height="${c.w}" fill="#fff" fill-opacity="0"/>`;
         return `<g class="pil" data-pillar="${c.id}">${hit}${body}</g>`;
+      }).join('') + renderLifts2();
+    }
+    function renderLifts2() {                                   // 电梯：矩形井道 + 对角线 + 门洞缺口
+      return (state.lifts || []).map(l => {
+        const on = ui.sel?.kind === 'lift' && ui.sel.id === l.id;
+        const w = Math.max(800, l.w ?? 2000), d = Math.max(800, l.d ?? 2000);
+        const dw = Math.max(400, Math.min(w - 300, l.dw ?? 900)), hf = dw / 2;
+        const col = on ? '#b5653a' : '#5f574b';
+        const ln = `stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke" stroke-dasharray="60 45"`;
+        return `<g data-lift="${l.id}" style="cursor:move" transform="translate(${l.x} ${l.y}) rotate(${l.dir || 0})">
+          <rect x="${-w / 2}" y="${-d / 2}" width="${w}" height="${d}" fill="#f1ede4" stroke="${col}" stroke-width="${on ? 2 : 1.2}" vector-effect="non-scaling-stroke"/>
+          <line x1="${-w / 2}" y1="${-d / 2}" x2="${w / 2}" y2="${d / 2}" ${ln}/>
+          <line x1="${-w / 2}" y1="${d / 2}" x2="${w / 2}" y2="${-d / 2}" ${ln}/>
+          <line x1="${w / 2}" y1="${-d / 2}" x2="${w / 2}" y2="${-hf}" stroke="${col}" stroke-width="2.6" vector-effect="non-scaling-stroke"/>
+          <line x1="${w / 2}" y1="${hf}" x2="${w / 2}" y2="${d / 2}" stroke="${col}" stroke-width="2.6" vector-effect="non-scaling-stroke"/>
+          <line x1="${w / 2}" y1="${-hf}" x2="${w / 2 + 90}" y2="${-hf}" stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <line x1="${w / 2}" y1="${hf}" x2="${w / 2 + 90}" y2="${hf}" stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        </g>
+        <text x="${l.x}" y="${l.y + 70}" font-size="220" text-anchor="middle" fill="${col}" font-weight="600"
+          stroke="#fbf9f4" stroke-width="45" paint-order="stroke" pointer-events="none">${tr('电梯', 'Lift')}</text>` +
+          (Math.max(0, l.stop ?? 0) > 0 ? `<text x="${l.x}" y="${l.y + 330}" font-size="170" text-anchor="middle" fill="${col}" font-weight="500"
+          stroke="#fbf9f4" stroke-width="40" paint-order="stroke" pointer-events="none">${tr('停靠 ', 'Stop ')}${(Math.round(l.stop / 10) / 100).toFixed(3)}</text>` : '');
       }).join('');
     }
 
     function stairLayout(s) {                                // 楼梯布局（mm，局部坐标：x 沿上行方向，y = 横向）
+      if (s.type === 'ramp') { const f = s.flipX ? -1 : 1; return { N: 1, w: s.w, runs: [{ x0: -s.len / 2 * f, x1: s.len / 2 * f, dir: f, z: 0, n: 0, y0: 0, y1: s.rise ?? 600 }], lands: [], total: 0, unit: 0, ramp: true }; }
+      if (s.type === 'steps') { const f = s.flipX ? -1 : 1; return { N: 1, w: s.w, runs: [{ x0: -s.len / 2 * f, x1: s.len / 2 * f, dir: f, z: 0, n: Math.max(1, s.steps || 3), y0: 0, y1: s.rise ?? 450 }], lands: [], total: 0, unit: 0, steps: true }; }
       const N = Math.max(1, Math.min(3, s.runs || 1)), gap = 100, w = s.w;
       const stack = !!(N === 3 && s.stack);                  // 正三跑：第三跑叠在第一跑正上方（平面只占两跑宽）
       const cols = stack ? 2 : N;
@@ -2802,6 +3158,32 @@
       const g = $('#gStairs'); if (!g) return;
       g.innerHTML = (state.stairs || []).map(s => {
         const lay = stairLayout(s), bb = stairBBox(lay);
+        if (s.type === 'ramp') {                                            // 坡道：矩形轮廓 + 坡度线 + 上行箭头
+          const RS = 'stroke="#8b8272" stroke-width="1" vector-effect="non-scaling-stroke"';
+          const fwd = !s.flipX, x0 = bb.x0, x1 = bb.x1, z0 = bb.z0, z1 = bb.z1, Lr = x1 - x0;
+          let o = `<rect x="${x0}" y="${z0}" width="${Lr}" height="${z1 - z0}" fill="#f2eee5" ${RS}/>`;
+          const n = Math.max(3, Math.round(Lr / 400));
+          for (let k = 1; k < n; k++) o += `<line x1="${x0 + k * Lr / n}" y1="${z0}" x2="${x0 + k * Lr / n}" y2="${z1}" stroke="#c9bfae" stroke-width="1" vector-effect="non-scaling-stroke"/>`;
+          const ax0 = fwd ? x0 + 120 : x1 - 120, ax1 = fwd ? x1 - 200 : x0 + 200;
+          o += `<line x1="${ax0}" y1="0" x2="${ax1}" y2="0" stroke="#8b8272" stroke-width="1.4" vector-effect="non-scaling-stroke"/>`;
+          o += `<polygon points="${ax1 + (fwd ? 110 : -110)},0 ${ax1 + (fwd ? 10 : -10)},-80 ${ax1 + (fwd ? 10 : -10)},80" fill="#8b8272"/>`;
+          o += `<text x="0" y="${z1 + 170}" text-anchor="middle" fill="#7a7164" style="font-size:130px">${tr('坡道', 'RAMP')}</text>`;
+          return `<g data-stair="${s.id}" transform="translate(${s.x} ${s.y}) rotate(${s.dir})">
+            <rect x="${x0}" y="${z0}" width="${Lr}" height="${z1 - z0}" fill="#fff" fill-opacity="0"/>${o}</g>`;
+        }
+        if (s.type === 'steps') {                                           // 台阶：矩形轮廓 + 均分踏步线 + 上行箭头
+          const SS = 'stroke="#8b8272" stroke-width="1" vector-effect="non-scaling-stroke"';
+          const fwd = !s.flipX, x0 = bb.x0, x1 = bb.x1, z0 = bb.z0, z1 = bb.z1, Lr = x1 - x0;
+          const n = Math.max(1, Math.round(s.steps || 3));
+          let o = `<rect x="${x0}" y="${z0}" width="${Lr}" height="${z1 - z0}" fill="#f6f2ea" ${SS}/>`;
+          for (let k = 1; k < n; k++) o += `<line x1="${x0 + k * Lr / n}" y1="${z0}" x2="${x0 + k * Lr / n}" y2="${z1}" stroke="#b6ac9c" stroke-width="1" vector-effect="non-scaling-stroke"/>`;
+          const ax0 = fwd ? x0 + 100 : x1 - 100, ax1 = fwd ? x1 - 170 : x0 + 170;
+          o += `<line x1="${ax0}" y1="0" x2="${ax1}" y2="0" ${SS}/>`;
+          o += `<polygon points="${ax1 + (fwd ? 90 : -90)},0 ${ax1 + (fwd ? -10 : 10)},-70 ${ax1 + (fwd ? -10 : 10)},70" fill="#8b8272"/>`;
+          o += `<text x="0" y="${z1 + 170}" text-anchor="middle" fill="#7a7164" style="font-size:130px">${tr(`台阶 ${n} 级`, `Steps ×${n}`)}</text>`;
+          return `<g data-stair="${s.id}" transform="translate(${s.x} ${s.y}) rotate(${s.dir})">
+            <rect x="${x0}" y="${z0}" width="${Lr}" height="${z1 - z0}" fill="#fff" fill-opacity="0"/>${o}</g>`;
+        }
         const st = 'fill="#f6f2ea" stroke="#8b8272" stroke-width="1" vector-effect="non-scaling-stroke"';
         const pl = 'fill="#eee8dc" stroke="#9c9281" stroke-width="1" vector-effect="non-scaling-stroke"';
         let body = '';
@@ -2937,6 +3319,211 @@
       $('#gMeasure').innerHTML = s;
     }
 
+    function noteBBox(n) {                                          // 文字标注的近似范围（mm）
+      const fs = +n.size || 300, w = Math.max(160, String(n.text || '').length * fs * .62);
+      return [n.x - w / 2, n.y - fs * .65, n.x + w / 2, n.y + fs * .65];
+    }
+    function dimGeom(d) {                                       // 手动尺寸标注几何（mm）：a / b 为两个测点
+      const a = d.a, b = d.b, dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
+      const u = [dx / L, dy / L], n = [-u[1], u[0]], off = +(d.off ?? 140);
+      const A = [a[0] + n[0] * off, a[1] + n[1] * off], B = [b[0] + n[0] * off, b[1] + n[1] * off];
+      let ang = Math.atan2(dy, dx) * 180 / Math.PI;
+      if (ang > 90) ang -= 180;
+      if (ang < -90) ang += 180;
+      return { a, b, u, n, off, A, B, L, ang };
+    }
+    function renderDims2() {                                    // 手动尺寸标注（独立于「自动尺寸」图层，始终显示）
+      let s = '';
+      (state.dims || []).forEach(d => {
+        const { a, b, n, A, B, L, ang } = dimGeom(d);
+        const on = ui.sel?.kind === 'dim' && ui.sel.id === d.id, col = on ? '#b5653a' : '#2f5d62';
+        const cs = `stroke="${col}" stroke-width="${on ? 1.8 : 1}" vector-effect="non-scaling-stroke"`;
+        const mid = [(A[0] + B[0]) / 2 + n[0] * 150, (A[1] + B[1]) / 2 + n[1] * 150];
+        s += `<g data-dim="${d.id}" style="cursor:move">
+          <line x1="${a[0]}" y1="${a[1]}" x2="${A[0]}" y2="${A[1]}" ${cs} pointer-events="none"/>
+          <line x1="${b[0]}" y1="${b[1]}" x2="${B[0]}" y2="${B[1]}" ${cs} pointer-events="none"/>
+          <line x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}" ${cs} pointer-events="none"/>
+          <line x1="${A[0] - n[0] * 80}" y1="${A[1] - n[1] * 80}" x2="${A[0] + n[0] * 80}" y2="${A[1] + n[1] * 80}" ${cs} pointer-events="none"/>
+          <line x1="${B[0] - n[0] * 80}" y1="${B[1] - n[1] * 80}" x2="${B[0] + n[0] * 80}" y2="${B[1] + n[1] * 80}" ${cs} pointer-events="none"/>
+          <line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="transparent" stroke-width="300"/>
+          <line x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}" stroke="transparent" stroke-width="300"/>
+          <text x="${mid[0]}" y="${mid[1] + 40}" font-size="170" text-anchor="middle" fill="${col}" font-weight="600"
+            transform="rotate(${ang} ${mid[0]} ${mid[1]})" stroke="#fbf9f4" stroke-width="45" paint-order="stroke">${Math.round(L)}</text>
+          ${on ? `<circle cx="${a[0]}" cy="${a[1]}" r="${60}" fill="#fff" stroke="#b5653a" stroke-width="1.4" vector-effect="non-scaling-stroke" pointer-events="none"/>
+          <circle cx="${b[0]}" cy="${b[1]}" r="${60}" fill="#fff" stroke="#b5653a" stroke-width="1.4" vector-effect="non-scaling-stroke" pointer-events="none"/>` : ''}
+        </g>`;
+      });
+      if (ui.dimA && ui.dimCur) {                              // 打点中的预览线
+        const a = ui.dimA, b = ui.dimCur, L = Math.round(Math.hypot(b.x - a.x, b.y - a.y));
+        s += `<g pointer-events="none"><line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#2f5d62" stroke-width="1.4"
+          stroke-dasharray="50 40" vector-effect="non-scaling-stroke"/>
+          <circle cx="${a.x}" cy="${a.y}" r="60" fill="#2f5d62"/>
+          <text x="${(a.x + b.x) / 2}" y="${(a.y + b.y) / 2 - 90}" font-size="200" text-anchor="middle" fill="#2f5d62" font-weight="600"
+            stroke="#fbf9f4" stroke-width="45" paint-order="stroke">${L}</text></g>`;
+      }
+      return s;
+    }
+    function seg2(a, b) {                                       // 两点距离（mm）
+      return Math.hypot(b[0] - a[0], b[1] - a[1]);
+    }
+    function setSegLen(o, len) {                                // 起点不动，沿原方向把终点拉到指定长度
+      const L0 = seg2(o.a, o.b);
+      if (L0 < 1) { o.b = [o.a[0] + len, o.a[1]]; return; }
+      const u = [(o.b[0] - o.a[0]) / L0, (o.b[1] - o.a[1]) / L0];
+      o.b = [Math.round(o.a[0] + u[0] * len), Math.round(o.a[1] + u[1] * len)];
+    }
+    function renderRails2() {                                   // 栏杆：扶手双线 + 立柱点 + 玻璃栏板
+      let s = '';
+      (state.rails || []).forEach(r => {
+        const [ax, ay] = r.a, [bx, by] = r.b, L = seg2(r.a, r.b) || 1;
+        const u = [(bx - ax) / L, (by - ay) / L], n = [-u[1], u[0]];
+        const on = ui.sel?.kind === 'rail' && ui.sel.id === r.id, col = on ? '#b5653a' : '#6a6256';
+        const cs = `stroke="${col}" stroke-width="${on ? 1.8 : 1}" vector-effect="non-scaling-stroke"`;
+        const N = Math.max(1, Math.round(L / 600));
+        let o = `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" ${cs} pointer-events="none"/>
+          <line x1="${ax + n[0] * 70}" y1="${ay + n[1] * 70}" x2="${bx + n[0] * 70}" y2="${by + n[1] * 70}" ${cs} stroke-width=".7" pointer-events="none"/>`;
+        if (r.style === 'glass') o += `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="#8fb6c4" stroke-opacity=".45" stroke-width="70" pointer-events="none"/>`;
+        for (let i = 0; i <= N; i++) {
+          const px = ax + u[0] * L * i / N, py = ay + u[1] * L * i / N;
+          o += `<circle cx="${px}" cy="${py}" r="${on ? 55 : 42}" fill="${col}" pointer-events="none"/>`;
+        }
+        o += `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="transparent" stroke-width="240"/>`;
+        s += `<g data-rail="${r.id}" style="cursor:move">${o}</g>`;
+      });
+      return s;
+    }
+    function renderBeams2() {                                   // 梁：虚线双线 + 两端封头（表示顶面投影）
+      let s = '';
+      (state.beams || []).forEach(b => {
+        const [ax, ay] = b.a, [bx, by] = b.b, L = seg2(b.a, b.b) || 1;
+        const u = [(bx - ax) / L, (by - ay) / L], n = [-u[1], u[0]], half = Math.max(60, (b.w ?? 200) / 2);
+        const on = ui.sel?.kind === 'beam' && ui.sel.id === b.id, col = on ? '#b5653a' : '#a86b44';
+        const cs = `stroke="${col}" stroke-width="${on ? 1.8 : 1}" stroke-dasharray="140 90" vector-effect="non-scaling-stroke"`;
+        const P = (k, sg) => [k[0] + n[0] * half * sg, k[1] + n[1] * half * sg];
+        const A1 = P([ax, ay], 1), A2 = P([ax, ay], -1), B1 = P([bx, by], 1), B2 = P([bx, by], -1);
+        let o = `<line x1="${A1[0]}" y1="${A1[1]}" x2="${B1[0]}" y2="${B1[1]}" ${cs} pointer-events="none"/>
+          <line x1="${A2[0]}" y1="${A2[1]}" x2="${B2[0]}" y2="${B2[1]}" ${cs} pointer-events="none"/>
+          <line x1="${A1[0]}" y1="${A1[1]}" x2="${A2[0]}" y2="${A2[1]}" ${cs} pointer-events="none"/>
+          <line x1="${B1[0]}" y1="${B1[1]}" x2="${B2[0]}" y2="${B2[1]}" ${cs} pointer-events="none"/>
+          <line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="transparent" stroke-width="300"/>`;
+        s += `<g data-beam="${b.id}" style="cursor:move">${o}</g>`;
+      });
+      return s;
+    }
+    function renderLevels2() {                                  // 标高：倒三角 + 引线 + 数值
+      let s = '';
+      (state.levels || []).forEach(l => {
+        const on = ui.sel?.kind === 'level' && ui.sel.id === l.id, col = on ? '#b5653a' : '#2f5d62';
+        const fs = Math.max(140, +l.size || 200), txt = l.text || `${(Math.round((l.z ?? 0) / 10) / 100).toFixed(3)}`;
+        const top = l.y - 210;
+        s += `<g data-level="${l.id}" style="cursor:move">
+          <polygon points="${l.x},${l.y} ${l.x - 120},${top} ${l.x + 120},${top}" fill="${on ? '#f7e7dc' : '#eef4f5'}" stroke="${col}" stroke-width="${on ? 1.8 : 1.1}" vector-effect="non-scaling-stroke"/>
+          <line x1="${l.x - 260}" y1="${top}" x2="${l.x + 260}" y2="${top}" stroke="${col}" stroke-width="${on ? 1.8 : 1}" vector-effect="non-scaling-stroke"/>
+          <text x="${l.x + 300}" y="${top + fs * .36}" font-size="${fs}" fill="${col}" font-weight="600"
+            stroke="#fbf9f4" stroke-width="${fs * .16}" paint-order="stroke">${esc(txt)}</text>
+          <line x1="${l.x - 260}" y1="${top}" x2="${l.x + 260}" y2="${top}" stroke="transparent" stroke-width="200"/>
+          <line x1="${l.x}" y1="${top}" x2="${l.x}" y2="${l.y}" stroke="transparent" stroke-width="200"/></g>`;
+      });
+      return s;
+    }
+    function renderPending2() {                                  // 栏杆 / 梁 / 雨棚打点中的预览
+      let s = '';
+      const one = (a, b, col) => `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${col}" stroke-width="1.4"
+        stroke-dasharray="60 40" vector-effect="non-scaling-stroke" pointer-events="none"/>
+        <circle cx="${a.x}" cy="${a.y}" r="60" fill="${col}" pointer-events="none"/>
+        <text x="${(a.x + b.x) / 2}" y="${(a.y + b.y) / 2 - 90}" font-size="200" text-anchor="middle" fill="${col}"
+        stroke="#fbf9f4" stroke-width="45" paint-order="stroke" pointer-events="none">${Math.round(seg2([a.x, a.y], [b.x, b.y]))}</text>`;
+      if (ui.railA && ui.railCur) s += one(ui.railA, ui.railCur, '#6a6256');
+      if (ui.beamA && ui.beamCur) s += one(ui.beamA, ui.beamCur, '#a86b44');
+      if (ui.parapetA && ui.parapetCur) s += one(ui.parapetA, ui.parapetCur, '#8a7f6d');
+      if (ui.canopyA && ui.canopyCur) s += one(ui.canopyA, ui.canopyCur, '#6d7a6c');
+      if (ui.slabA && ui.slabCur) {                               // 楼板拖对角点预览
+        const mx = Math.min(ui.slabA.x, ui.slabCur.x), my = Math.min(ui.slabA.y, ui.slabCur.y);
+        const w = Math.abs(ui.slabCur.x - ui.slabA.x), h = Math.abs(ui.slabCur.y - ui.slabA.y);
+        s += `<rect x="${mx}" y="${my}" width="${w}" height="${h}" fill="#5b6656" fill-opacity=".06" stroke="#5b6656"
+          stroke-width="1.4" stroke-dasharray="90 60" vector-effect="non-scaling-stroke" pointer-events="none"/>
+          <text x="${mx + w / 2}" y="${my - 80}" font-size="200" text-anchor="middle" fill="#5b6656"
+          stroke="#fbf9f4" stroke-width="45" paint-order="stroke" pointer-events="none">${Math.round(w)} × ${Math.round(h)}</text>`;
+      }
+      return s;
+    }
+    function renderSlabs2() {                                   // 楼板 / 挑板：虚线矩形 + 板厚
+      return (state.slabs || []).map(s => {
+        const on = ui.sel?.kind === 'slab' && ui.sel.id === s.id;
+        const w = Math.max(100, s.w || 100), d = Math.max(100, s.d || 100);
+        const col = on ? '#b5653a' : '#5b6656';
+        return `<g data-slab="${s.id}" style="cursor:move">
+          <rect x="${s.x - w / 2}" y="${s.y - d / 2}" width="${w}" height="${d}" fill="#5b6656" fill-opacity=".06"
+            stroke="${col}" stroke-width="${on ? 1.8 : 1.1}" stroke-dasharray="90 60" vector-effect="non-scaling-stroke"/>
+          <line x1="${s.x - w / 2}" y1="${s.y - d / 2}" x2="${s.x + w / 2}" y2="${s.y + d / 2}" stroke="${col}" stroke-width=".8" stroke-opacity=".5" vector-effect="non-scaling-stroke"/>
+          <line x1="${s.x - w / 2}" y1="${s.y + d / 2}" x2="${s.x + w / 2}" y2="${s.y - d / 2}" stroke="${col}" stroke-width=".8" stroke-opacity=".5" vector-effect="non-scaling-stroke"/>
+          <text x="${s.x}" y="${s.y - d / 2 - 90}" font-size="200" text-anchor="middle" fill="${col}" font-weight="600"
+            stroke="#fbf9f4" stroke-width="45" paint-order="stroke" pointer-events="none">${tr('楼板', 'Slab')} ${Math.round(s.thick ?? 120)}</text>
+        </g>`;
+      }).join('');
+    }
+    function renderParapets2() {                                  // 女儿墙：双线 + 端封头
+      return (state.parapets || []).map(p => {
+        const on = ui.sel?.kind === 'parapet' && ui.sel.id === p.id;
+        const [ax, ay] = p.a, [bx, by] = p.b, L = seg2(p.a, p.b) || 1;
+        const u = [(bx - ax) / L, (by - ay) / L], n = [-u[1], u[0]], t = Math.max(40, p.t ?? 120) / 2;
+        const A1 = [ax + n[0] * t, ay + n[1] * t], B1 = [bx + n[0] * t, by + n[1] * t];
+        const A2 = [ax - n[0] * t, ay - n[1] * t], B2 = [bx - n[0] * t, by - n[1] * t];
+        const col = on ? '#b5653a' : '#8a7f6d';
+        return `<g data-parapet="${p.id}" style="cursor:move">
+          <line x1="${A1[0]}" y1="${A1[1]}" x2="${B1[0]}" y2="${B1[1]}" stroke="${col}" stroke-width="${on ? 2 : 1.4}" vector-effect="non-scaling-stroke"/>
+          <line x1="${A2[0]}" y1="${A2[1]}" x2="${B2[0]}" y2="${B2[1]}" stroke="${col}" stroke-width="${on ? 2 : 1.4}" vector-effect="non-scaling-stroke"/>
+          <line x1="${A1[0]}" y1="${A1[1]}" x2="${A2[0]}" y2="${A2[1]}" stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <line x1="${B1[0]}" y1="${B1[1]}" x2="${B2[0]}" y2="${B2[1]}" stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <text x="${(ax + bx) / 2}" y="${(ay + by) / 2 - 110}" font-size="190" text-anchor="middle" fill="${col}" font-weight="600"
+            stroke="#fbf9f4" stroke-width="45" paint-order="stroke" pointer-events="none">${tr('女儿墙', 'Parapet')} ${Math.round(p.h ?? 900)}</text>
+        </g>`;
+      }).join('');
+    }
+    function renderCanopies2() {                                  // 雨棚 / 挑板：基线 + 挑出虚线框
+      return (state.canopies || []).map(c => {
+        const on = ui.sel?.kind === 'canopy' && ui.sel.id === c.id;
+        const [ax, ay] = c.a, [bx, by] = c.b, L = seg2(c.a, c.b) || 1;
+        const u = [(bx - ax) / L, (by - ay) / L], side = c.side === -1 ? -1 : 1;
+        const n = [-u[1] * side, u[0] * side], dep = Math.max(100, c.depth ?? 800);
+        const A = [ax + n[0] * dep, ay + n[1] * dep], B = [bx + n[0] * dep, by + n[1] * dep];
+        const col = on ? '#b5653a' : '#6d7a6c';
+        return `<g data-canopy="${c.id}" style="cursor:move">
+          <polygon points="${ax},${ay} ${bx},${by} ${B[0]},${B[1]} ${A[0]},${A[1]}" fill="#6d7a6c" fill-opacity=".07"
+            stroke="${col}" stroke-width="${on ? 1.8 : 1}" stroke-dasharray="90 60" vector-effect="non-scaling-stroke"/>
+          <line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${col}" stroke-width="${on ? 2.6 : 2}" vector-effect="non-scaling-stroke"/>
+        </g>`;
+      }).join('');
+    }
+    function renderNorth2() {                                     // 指北针：圆环 + 箭头 + N
+      const n = state.north; if (!n) return '';
+      const on = ui.sel?.kind === 'north', col = on ? '#b5653a' : '#2f5d62';
+      const R = Math.max(180, +n.r || 380), a = (n.angle || 0) * Math.PI / 180;
+      const d = [Math.sin(a), -Math.cos(a)], pp = [Math.cos(a), Math.sin(a)];       // 箭头方向 / 垂直方向
+      const tip = [n.x + d[0] * R * .8, n.y + d[1] * R * .8];
+      const tail = [n.x - d[0] * R * .45, n.y - d[1] * R * .45];
+      const b0 = [tip[0] - d[0] * 170 + pp[0] * 125, tip[1] - d[1] * 170 + pp[1] * 125];
+      const b1 = [tip[0] - d[0] * 170 - pp[0] * 125, tip[1] - d[1] * 170 - pp[1] * 125];
+      const tx = n.x + d[0] * (R * .8 + 230), ty = n.y + d[1] * (R * .8 + 230);
+      return `<g data-north="1" style="cursor:move">
+        <circle cx="${n.x}" cy="${n.y}" r="${R}" fill="#f7f9f8" fill-opacity=".92" stroke="${col}" stroke-width="${on ? 1.8 : 1}" vector-effect="non-scaling-stroke"/>
+        <line x1="${tail[0]}" y1="${tail[1]}" x2="${tip[0]}" y2="${tip[1]}" stroke="${col}" stroke-width="${on ? 2.2 : 1.6}" vector-effect="non-scaling-stroke"/>
+        <polygon points="${tip.join(',')} ${b0.join(',')} ${b1.join(',')}" fill="${col}" pointer-events="none"/>
+        <text x="${tx}" y="${ty + 90}" font-size="250" text-anchor="middle" fill="${col}" font-weight="700" pointer-events="none"
+          stroke="#fbf9f4" stroke-width="50" paint-order="stroke">N</text>
+        <circle cx="${n.x}" cy="${n.y}" r="${R + 60}" fill="transparent"/>
+      </g>`;
+    }
+    function renderNotes() {
+      const g = $('#gNotes'); if (!g) return;
+      g.innerHTML = (state.notes || []).map(n => {
+        const fs = Math.max(100, +n.size || 300), b = noteBBox(n);
+        return `<g data-note="${n.id}" style="cursor:move">
+        <rect x="${b[0]}" y="${b[1]}" width="${b[2] - b[0]}" height="${b[3] - b[1]}" fill="transparent"/>
+        <text x="${n.x}" y="${n.y + fs * .36}" font-size="${fs}" text-anchor="middle" fill="#2b2824" font-weight="600"
+        stroke="#fbf9f4" stroke-width="${fs * .16}" paint-order="stroke" pointer-events="none">${esc(n.text)}</text></g>`;
+      }).join('') + renderDims2() + renderRails2() + renderBeams2() + renderLevels2() + renderSlabs2() + renderParapets2() + renderCanopies2() + renderNorth2() + renderPending2();
+    }
     function renderSel() {
       const k = 1 / view.s; let s = '';
       if (ui.mq) {                                                   // 框选中的虚线矩形
@@ -2956,6 +3543,14 @@
         stroke-width="1.4" stroke-dasharray="6 3" vector-effect="non-scaling-stroke" pointer-events="none"/>
         <text x="${(mx0 + mx1) / 2}" y="${my0 - 9 * k}" font-size="${12 * k}" text-anchor="middle" fill="#b5653a" font-weight="600"
         stroke="#fff" stroke-width="${3 * k}" paint-order="stroke" pointer-events="none">${ui.multi.length} ${tr('项', 'items')}</text>`;
+      }
+      if (ui.sel?.kind === 'note') {
+        const n = (state.notes || []).find(x => x.id === ui.sel.id);
+        if (n) {                                                     // 文字标注：虚线框标出范围（拖动可移动）
+          const b = noteBBox(n);
+          s += `<rect x="${b[0]}" y="${b[1]}" width="${b[2] - b[0]}" height="${b[3] - b[1]}" fill="#b5653a" fill-opacity=".06"
+          stroke="#b5653a" stroke-width="1.4" stroke-dasharray="5 3" vector-effect="non-scaling-stroke" pointer-events="none"/>`;
+        }
       }
       if (ui.sel?.kind === 'furn') {
         const f = getF(ui.sel.id);
@@ -2987,7 +3582,7 @@
         <circle data-handle="stairW" cx="0" cy="${bb.z1 + p}" r="${6 * hs * k}" fill="#fff" ${A} stroke-width="1.5"><title>${tr('拖动调整梯宽（一侧固定）', 'Drag to change stair width')}</title></circle>
       </g>`;
           s += `<text x="${st.x}" y="${st.y}" font-size="${12 * k}" text-anchor="middle" fill="#b5653a" font-weight="600" pointer-events="none"
-        stroke="#fff" stroke-width="${3 * k}" paint-order="stroke">${tr('楼梯', 'Stair')} · ${tn} ${Math.round(st.w)} × ${Math.round(st.len)}</text>`;
+        stroke="#fff" stroke-width="${3 * k}" paint-order="stroke">${st.type === 'ramp' ? `${tr('坡道', 'Ramp')} ${Math.round(st.w)} × ${Math.round(st.len)} · ${tr('升', 'rise')} ${Math.round(st.rise ?? 600)}` : st.type === 'steps' ? `${tr('台阶', 'Steps')} ${Math.round(st.w)} × ${Math.round(st.len)} · ${tr('级数', 'steps')} ${Math.round(st.steps || 3)}` : `${tr('楼梯', 'Stair')} · ${tn} ${Math.round(st.w)} × ${Math.round(st.len)}`}</text>`;
         }
       } else if (ui.sel?.kind === 'pillar') {
         const c = (state.pillars || []).find(x => x.id === ui.sel.id);
@@ -3072,7 +3667,7 @@
     }
 
     function renderAll() {
-      renderGrid(); renderRooms(); renderFurn(); renderWalls(); renderOpenings(); renderPillars(); renderStairs(); renderAxes(); renderLabels(); renderDims(); renderMeasure(); renderSel(); renderPanel(); updateHeader();
+      renderGrid(); renderRooms(); renderFurn(); renderWalls(); renderOpenings(); renderPillars(); renderStairs(); renderAxes(); renderLabels(); renderDims(); renderNotes(); renderMeasure(); renderSel(); renderPanel(); updateHeader();
       renderObjList();   // 对象列表开着时跟随方案刷新（未开则内部直接返回）
       window.View3D?.sync();
     }
@@ -3094,11 +3689,342 @@
       if (ui.sel?.kind === 'furn') { const f = getF(ui.sel.id); if (f) { p.innerHTML = furnPanel(f); bindFurnPanel(f); return; } }
       if (ui.sel?.kind === 'room') { const rr = allRooms().find(r => r.id === ui.sel.id); if (rr) { p.innerHTML = roomPanel(rr); bindRoomPanel(); return; } }
       if (ui.sel?.kind === 'wall') { const html = wallPanel(ui.sel.id); if (html) { p.innerHTML = html; bindWallPanel(ui.sel.id); return; } }
+      if (ui.sel?.kind === 'note') { const n = (state.notes || []).find(x => x.id === ui.sel.id); if (n) { p.innerHTML = notePanel(n); bindNotePanel(n); return; } }
+      if (ui.sel?.kind === 'dim') { const d = (state.dims || []).find(x => x.id === ui.sel.id); if (d) { p.innerHTML = dimPanel(d); bindDimPanel(d); return; } }
+      if (ui.sel?.kind === 'rail') { const r = (state.rails || []).find(x => x.id === ui.sel.id); if (r) { p.innerHTML = railPanel(r); bindRailPanel(r.id); return; } }
+      if (ui.sel?.kind === 'beam') { const b = (state.beams || []).find(x => x.id === ui.sel.id); if (b) { p.innerHTML = beamPanel(b); bindBeamPanel(b.id); return; } }
+      if (ui.sel?.kind === 'level') { const l = (state.levels || []).find(x => x.id === ui.sel.id); if (l) { p.innerHTML = levelPanel(l); bindLevelPanel(l.id); return; } }
+      if (ui.sel?.kind === 'lift') { const l = (state.lifts || []).find(x => x.id === ui.sel.id); if (l) { p.innerHTML = liftPanel(l); bindLiftPanel(l.id); return; } }
+      if (ui.sel?.kind === 'north' && state.north) { p.innerHTML = northPanel(state.north); bindNorthPanel(); return; }
+      if (ui.sel?.kind === 'slab') { const s = (state.slabs || []).find(x => x.id === ui.sel.id); if (s) { p.innerHTML = slabPanel(s); bindSlabPanel(s.id); return; } }
+      if (ui.sel?.kind === 'parapet') { const q = (state.parapets || []).find(x => x.id === ui.sel.id); if (q) { p.innerHTML = parapetPanel(q); bindParapetPanel(q.id); return; } }
+      if (ui.sel?.kind === 'canopy') { const c = (state.canopies || []).find(x => x.id === ui.sel.id); if (c) { p.innerHTML = canopyPanel(c); bindCanopyPanel(c.id); return; } }
       if (ui.sel?.kind === 'open') { const o = state.openings.find(x => x.id === ui.sel.id); if (o) { p.innerHTML = openPanel(o); bindOpenPanel(o); return; } }
       if (ui.sel?.kind === 'pillar') { const html = pillarPanel(ui.sel.id); if (html) { p.innerHTML = html; bindPillarPanel(ui.sel.id); return; } }
       if (ui.sel?.kind === 'stair') { const html = stairPanel(ui.sel.id); if (html) { p.innerHTML = html; bindStairPanel(ui.sel.id); return; } }
       if (ui.sel?.kind === 'bopen') { p.innerHTML = bopenPanel(ui.sel.id); bindBopenPanel(ui.sel.id); return; }
       p.innerHTML = overviewPanel(); bindOverview();
+    }
+
+    function notePanel(n) {
+      return `<section><h3>${tr('文字标注', 'Text note')}</h3>
+    <div class="form">
+      <label class="full">${tr('内容', 'Text')}<input id="nText" maxlength="60" value="${esc(n.text)}"></label>
+      <label>${tr('字号', 'Font size')} (mm)<input type="number" id="nSize" value="${Math.round(+n.size || 300)}" min="100" max="1200" step="20"></label>
+      <label>${tr('位置', 'Position')} X (mm)<input type="number" id="nX" value="${Math.round(n.x)}" step="10"></label>
+      <label>${tr('位置', 'Position')} Y (mm)<input type="number" id="nY" value="${Math.round(n.y)}" step="10"></label>
+    </div>
+    <div class="muted" style="margin-top:8px">${tr('在平面图上拖动标注可移动；内容边输入边预览。', 'Drag the note on the plan to move it — text previews as you type.')}</div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function bindNotePanel(n) {
+      const live = () => { renderNotes(); renderSel(); };
+      $('#nText').oninput = e => { n.text = e.target.value; live(); };
+      $('#nText').onchange = e => { const v = e.target.value.trim() || tr('文字标注', 'Note'); mutate(() => n.text = v); };
+      $('#nSize').onchange = e => { const v = Math.max(100, Math.min(1200, +e.target.value || 300)); mutate(() => n.size = v); };
+      $('#nX').onchange = e => { const v = Math.round((+e.target.value || 0) / 10) * 10; mutate(() => n.x = v); };
+      $('#nY').onchange = e => { const v = Math.round((+e.target.value || 0) / 10) * 10; mutate(() => n.y = v); };
+      $('#aDel').onclick = () => { ui.sel = { kind: 'note', id: n.id }; deleteSel(); };
+      $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
+    }
+
+    function dimPanel(d) {
+      const g = dimGeom(d), ang = Math.atan2(g.b[1] - g.a[1], g.b[0] - g.a[0]) * 180 / Math.PI;
+      return `<section><h3>${tr('尺寸标注', 'Dimension')}</h3>
+    <div class="form">
+      <label>${tr('标注偏移', 'Offset')} (mm)<input type="number" id="dmOff" value="${Math.round(g.off)}" min="-2000" max="2000" step="10"></label>
+      <label>${tr('长度', 'Length')} (mm)<div style="padding:5px 0;font-variant-numeric:tabular-nums">${Math.round(g.L)}</div></label>
+      <label>${tr('起点', 'Start')} X (mm)<input type="number" id="dmAX" value="${Math.round(d.a[0])}" step="10"></label>
+      <label>${tr('起点', 'Start')} Y (mm)<input type="number" id="dmAY" value="${Math.round(d.a[1])}" step="10"></label>
+      <label>${tr('终点', 'End')} X (mm)<input type="number" id="dmBX" value="${Math.round(d.b[0])}" step="10"></label>
+      <label>${tr('终点', 'End')} Y (mm)<input type="number" id="dmBY" value="${Math.round(d.b[1])}" step="10"></label>
+    </div>
+    <div class="muted" style="margin-top:8px">${tr(`与水平方向约 ${Math.round(ang)}°。偏移为正时标注线偏向起点→终点方向的左侧；在图上拖动可整体移动。`, `About ${Math.round(ang)}° from horizontal. Positive offset puts the dimension line on the left of start → end; drag on the plan to move it.`)}</div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function bindDimPanel(d) {
+      const num = (k, fn) => {
+        const el = $('#' + k); if (!el) return;
+        el.onchange = e => {
+          const v = parseFloat(e.target.value); if (isNaN(v)) return;
+          mutate(() => { const g = (state.dims || []).find(x => x.id === d.id); if (g) fn(g, Math.round(v / 10) * 10); });
+        };
+      };
+      num('dmOff', (g, v) => g.off = Math.max(-2000, Math.min(2000, v)));
+      num('dmAX', (g, v) => g.a = [v, g.a[1]]);
+      num('dmAY', (g, v) => g.a = [g.a[0], v]);
+      num('dmBX', (g, v) => g.b = [v, g.b[1]]);
+      num('dmBY', (g, v) => g.b = [g.b[0], v]);
+      $('#aDel').onclick = () => { ui.sel = { kind: 'dim', id: d.id }; deleteSel(); };
+      $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
+    }
+
+    function railPanel(r) {
+      const L = Math.round(seg2(r.a, r.b));
+      return `<section><h3>${tr('栏杆', 'Railing')}</h3>
+    <div class="form">
+      <label>${tr('长度', 'Length')} (mm)<input type="number" id="rlL" value="${L}" min="100" max="20000" step="10"></label>
+      <label>${tr('高度', 'Height')} (mm)<input type="number" id="rlH" value="${Math.round(r.h ?? 1000)}" min="300" max="1800" step="50"></label>
+      <label>${tr('栏板样式', 'Infill')}<select id="rlStyle">
+        <option value="bar" ${r.style !== 'glass' ? 'selected' : ''}>${tr('直杆', 'Bars')}</option>
+        <option value="glass" ${r.style === 'glass' ? 'selected' : ''}>${tr('玻璃', 'Glass')}</option>
+      </select></label>
+    </div>
+    <div class="muted" style="margin-top:8px">${tr('长度可直接改（起点不动，终点沿原方向伸缩）；在图上拖动可整体移动；默认每 1m 一根立柱。', 'Length is editable (start stays, end extends along the direction). Drag on the plan to move. Posts are spaced about 1 m apart.')}</div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function bindRailPanel(id) {
+      const el = $('#rlH');
+      if (el) el.onchange = e => {
+        const v = parseFloat(e.target.value); if (isNaN(v)) return;
+        mutate(() => { const r = (state.rails || []).find(x => x.id === id); if (r) r.h = Math.max(300, Math.min(1800, Math.round(v / 50) * 50)); });
+      };
+      const lEl = $('#rlL');                                      // 改长度：起点不动，沿原方向伸缩终点
+      if (lEl) lEl.onchange = e => {
+        const v = parseFloat(e.target.value); if (isNaN(v)) return;
+        mutate(() => {
+          const r = (state.rails || []).find(x => x.id === id); if (!r) return;
+          setSegLen(r, Math.max(100, Math.min(20000, Math.round(v / 10) * 10)));
+        });
+      };
+      const st = $('#rlStyle');
+      if (st) st.onchange = e => mutate(() => { const r = (state.rails || []).find(x => x.id === id); if (r) r.style = e.target.value; });
+      $('#aDel').onclick = () => { ui.sel = { kind: 'rail', id }; deleteSel(); };
+      $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
+    }
+    function beamPanel(b) {
+      const L = Math.round(seg2(b.a, b.b));
+      return `<section><h3>${tr('梁', 'Beam')}</h3>
+    <div class="form">
+      <label>${tr('长度', 'Length')} (mm)<input type="number" id="bmL" value="${L}" min="100" max="20000" step="10"></label>
+      <label>${tr('梁宽', 'Width')} (mm)<input type="number" id="bmW" value="${Math.round(b.w ?? 200)}" min="60" max="800" step="10"></label>
+      <label>${tr('梁高', 'Height')} (mm)<input type="number" id="bmH" value="${Math.round(b.h ?? 300)}" min="80" max="1200" step="10"></label>
+      <label>${tr('底标高', 'Bottom level')} (mm)<input type="number" id="bmY" value="${Math.round(b.y ?? 2400)}" min="0" max="6000" step="50"></label>
+    </div>
+    <div class="muted" style="margin-top:8px">${tr('梁宽为水平厚度、梁高为竖向高度；底标高是梁底相对地面的高度。', 'Width is the horizontal thickness, height is vertical. Bottom level is measured from the floor.')}</div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function bindBeamPanel(id) {
+      const num = (k, lo, hi, st, fn) => {
+        const el = $('#' + k); if (!el) return;
+        el.onchange = e => {
+          const v = parseFloat(e.target.value); if (isNaN(v)) return;
+          mutate(() => { const b = (state.beams || []).find(x => x.id === id); if (b) fn(b, Math.max(lo, Math.min(hi, Math.round(v / st) * st))); });
+        };
+      };
+      num('bmW', 60, 800, 10, (b, v) => b.w = v);
+      num('bmH', 80, 1200, 10, (b, v) => b.h = v);
+      num('bmY', 0, 6000, 50, (b, v) => b.y = v);
+      const lEl = $('#bmL');                                      // 改长度：起点不动，沿原方向伸缩终点
+      if (lEl) lEl.onchange = e => {
+        const v = parseFloat(e.target.value); if (isNaN(v)) return;
+        mutate(() => {
+          const b = (state.beams || []).find(x => x.id === id); if (!b) return;
+          setSegLen(b, Math.max(100, Math.min(20000, Math.round(v / 10) * 10)));
+        });
+      };
+      $('#aDel').onclick = () => { ui.sel = { kind: 'beam', id }; deleteSel(); };
+      $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
+    }
+    function levelPanel(l) {
+      const txt = l.text || `${(Math.round((l.z ?? 0) / 10) / 100).toFixed(3)}`;
+      return `<section><h3>${tr('标高符号', 'Level marker')}</h3>
+    <div class="form">
+      <label>${tr('标高', 'Level')} (mm)<input type="number" id="lvZ" value="${Math.round(l.z ?? 0)}" min="-10000" max="10000" step="10"></label>
+      <label>${tr('显示文字', 'Text')}<input type="text" id="lvText" value="${esc(txt)}" placeholder="${tr('留空则自动按标高显示', 'Empty = use the level value')}"></label>
+      <label>X (mm)<input type="number" id="lvX" value="${Math.round(l.x)}" step="10"></label>
+      <label>Y (mm)<input type="number" id="lvY" value="${Math.round(l.y)}" step="10"></label>
+    </div>
+    <div class="muted" style="margin-top:8px">${tr('标高按 mm 输入，数字显示为米（保留三位小数）；可自定义文字覆盖显示内容。', 'Enter millimetres; it is shown in metres with 3 decimals. Custom text overrides the display.')}</div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function bindLevelPanel(id) {
+      const num = (k, fn) => {
+        const el = $('#' + k); if (!el) return;
+        el.onchange = e => {
+          const v = parseFloat(e.target.value); if (isNaN(v)) return;
+          mutate(() => { const l = (state.levels || []).find(x => x.id === id); if (l) fn(l, Math.round(v / 10) * 10); });
+        };
+      };
+      num('lvZ', (l, v) => l.z = v);
+      num('lvX', (l, v) => l.x = v);
+      num('lvY', (l, v) => l.y = v);
+      const tx = $('#lvText');
+      if (tx) tx.onchange = e => mutate(() => { const l = (state.levels || []).find(x => x.id === id); if (l) l.text = e.target.value.trim(); });
+      $('#aDel').onclick = () => { ui.sel = { kind: 'level', id }; deleteSel(); };
+      $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
+    }
+    function slabPanel(s) {
+      return `<section><h3>${tr('楼板 / 挑板', 'Slab')}</h3>
+    <div class="form">
+      <label>${tr('宽', 'Width')} (mm)<input type="number" id="slW" value="${Math.round(s.w || 0)}" min="100" max="30000" step="10"></label>
+      <label>${tr('进深', 'Depth')} (mm)<input type="number" id="slD" value="${Math.round(s.d || 0)}" min="100" max="30000" step="10"></label>
+      <label>${tr('板厚', 'Thickness')} (mm)<input type="number" id="slT" value="${Math.round(s.thick ?? 120)}" min="40" max="1000" step="10"></label>
+      <label>${tr('底标高', 'Bottom')} (mm)<input type="number" id="slZ" value="${Math.round(s.z ?? 0)}" min="-5000" max="20000" step="50"></label>
+      <label>X (mm)<input type="number" id="slX" value="${Math.round(s.x)}" step="10"></label>
+      <label>Y (mm)<input type="number" id="slY" value="${Math.round(s.y)}" step="10"></label>
+    </div>
+    <div class="muted" style="margin-top:8px">${tr('底标高 = 板底高度：改成 0 即落地楼板，改 2400 可当挑板 / 雨棚 / 空调板；在图上拖动可整体移动。', 'Bottom = underside elevation. 0 makes a ground slab; 2400 works as a cantilever / canopy / AC platform. Drag on the plan to move.')}</div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function bindSlabPanel(id) {
+      const num = (k, min, max, step, fn) => {
+        const el = $('#' + k); if (!el) return;
+        el.onchange = e => {
+          const v = parseFloat(e.target.value); if (isNaN(v)) return;
+          mutate(() => { const s = (state.slabs || []).find(x => x.id === id); if (!s) return; fn(s, Math.max(min, Math.min(max, Math.round(v / step) * step))); });
+        };
+      };
+      num('slW', 100, 30000, 10, (s, v) => s.w = v);
+      num('slD', 100, 30000, 10, (s, v) => s.d = v);
+      num('slT', 40, 1000, 10, (s, v) => s.thick = v);
+      num('slZ', -5000, 20000, 10, (s, v) => s.z = v);
+      num('slX', -1e6, 1e6, 10, (s, v) => s.x = v);
+      num('slY', -1e6, 1e6, 10, (s, v) => s.y = v);
+      $('#aDel').onclick = () => { ui.sel = { kind: 'slab', id }; deleteSel(); };
+      $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
+    }
+    function parapetPanel(p) {
+      const L = Math.round(seg2(p.a, p.b));
+      return `<section><h3>${tr('女儿墙', 'Parapet')}</h3>
+    <div class="form">
+      <label>${tr('长度', 'Length')} (mm)<input type="number" id="ppL" value="${L}" min="100" max="30000" step="10"></label>
+      <label>${tr('墙厚', 'Thickness')} (mm)<input type="number" id="ppT" value="${Math.round(p.t ?? 120)}" min="60" max="600" step="10"></label>
+      <label>${tr('墙高', 'Height')} (mm)<input type="number" id="ppH" value="${Math.round(p.h ?? 900)}" min="200" max="3000" step="50"></label>
+      <label>${tr('底标高', 'Bottom')} (mm)<input type="number" id="ppZ" value="${Math.round(p.z ?? 2800)}" min="-5000" max="20000" step="50"></label>
+    </div>
+    <div class="muted" style="margin-top:8px">${tr('底标高默认 2800（墙顶），即在屋面上起 900 高的女儿墙；改长度时起点不动、终点沿原方向伸缩。', 'Default bottom is 2800 (wall top), so a 900-high parapet sits on the roof. Length keeps the start point and extends the end.')}</div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function bindParapetPanel(id) {
+      const num = (k, min, max, step, fn) => {
+        const el = $('#' + k); if (!el) return;
+        el.onchange = e => {
+          const v = parseFloat(e.target.value); if (isNaN(v)) return;
+          mutate(() => { const p = (state.parapets || []).find(x => x.id === id); if (!p) return; fn(p, Math.max(min, Math.min(max, Math.round(v / step) * step))); });
+        };
+      };
+      num('ppT', 60, 600, 10, (p, v) => p.t = v);
+      num('ppH', 200, 3000, 10, (p, v) => p.h = v);
+      num('ppZ', -5000, 20000, 10, (p, v) => p.z = v);
+      const lEl = $('#ppL');
+      if (lEl) lEl.onchange = e => {
+        const v = parseFloat(e.target.value); if (isNaN(v)) return;
+        mutate(() => {
+          const p = (state.parapets || []).find(x => x.id === id); if (!p) return;
+          setSegLen(p, Math.max(100, Math.min(30000, Math.round(v / 10) * 10)));
+        });
+      };
+      $('#aDel').onclick = () => { ui.sel = { kind: 'parapet', id }; deleteSel(); };
+      $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
+    }
+    function canopyPanel(c) {
+      const L = Math.round(seg2(c.a, c.b));
+      return `<section><h3>${tr('雨棚', 'Canopy')}</h3>
+    <div class="form">
+      <label>${tr('长度', 'Length')} (mm)<input type="number" id="cpL" value="${L}" min="100" max="20000" step="10"></label>
+      <label>${tr('挑出', 'Projection')} (mm)<input type="number" id="cpD" value="${Math.round(c.depth ?? 800)}" min="100" max="3000" step="50"></label>
+      <label>${tr('板厚', 'Thickness')} (mm)<input type="number" id="cpT" value="${Math.round(c.thick ?? 100)}" min="40" max="500" step="10"></label>
+      <label>${tr('底标高', 'Bottom')} (mm)<input type="number" id="cpZ" value="${Math.round(c.z ?? 2400)}" min="-5000" max="20000" step="50"></label>
+    </div>
+    <div class="actions"><button class="btn" id="cpFlip">${tr('翻转挑出方向', 'Flip side')}</button></div>
+    <div class="muted" style="margin-top:8px">${tr('沿基线向一侧挑出板体；改长度时起点不动、终点沿原方向伸缩，可直接在图上拖动。', 'The slab projects to one side of the baseline. Length keeps the start point; drag on the plan to move.')}</div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function bindCanopyPanel(id) {
+      const num = (k, min, max, step, fn) => {
+        const el = $('#' + k); if (!el) return;
+        el.onchange = e => {
+          const v = parseFloat(e.target.value); if (isNaN(v)) return;
+          mutate(() => { const c = (state.canopies || []).find(x => x.id === id); if (!c) return; fn(c, Math.max(min, Math.min(max, Math.round(v / step) * step))); });
+        };
+      };
+      num('cpD', 100, 3000, 10, (c, v) => c.depth = v);
+      num('cpT', 40, 500, 10, (c, v) => c.thick = v);
+      num('cpZ', -5000, 20000, 10, (c, v) => c.z = v);
+      const lEl = $('#cpL');
+      if (lEl) lEl.onchange = e => {
+        const v = parseFloat(e.target.value); if (isNaN(v)) return;
+        mutate(() => {
+          const c = (state.canopies || []).find(x => x.id === id); if (!c) return;
+          setSegLen(c, Math.max(100, Math.min(20000, Math.round(v / 10) * 10)));
+        });
+      };
+      const fl = $('#cpFlip');
+      if (fl) fl.onclick = () => mutate(() => { const c = (state.canopies || []).find(x => x.id === id); if (c) c.side = (c.side === -1 ? 1 : -1); });
+      $('#aDel').onclick = () => { ui.sel = { kind: 'canopy', id }; deleteSel(); };
+      $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
+    }
+    function liftPanel(l) {
+      const dirs = [[0, tr('向右 (+X)', 'Right (+X)')], [90, tr('向下 (+Y)', 'Down (+Y)')], [180, tr('向左 (-X)', 'Left (−X)')], [270, tr('向上 (-Y)', 'Up (−Y)')]];
+      return `<section><h3>${tr('电梯', 'Elevator')}</h3>
+    <div class="form">
+      <label>${tr('梯宽', 'Width')} (mm)<input type="number" id="lfW" value="${Math.round(l.w ?? 2000)}" min="800" max="6000" step="50"></label>
+      <label>${tr('进深', 'Depth')} (mm)<input type="number" id="lfD" value="${Math.round(l.d ?? 2000)}" min="800" max="6000" step="50"></label>
+      <label>${tr('停靠高度', 'Stop level')} (mm)<input type="number" id="lfStop" value="${Math.round(l.stop ?? 0)}" min="0" max="20000" step="50"></label>
+      <label>${tr('轿厢高', 'Height')} (mm)<input type="number" id="lfH" value="${Math.round(l.h ?? 2400)}" min="1800" max="4000" step="50"></label>
+      <label>${tr('门宽', 'Door width')} (mm)<input type="number" id="lfDW" value="${Math.round(l.dw ?? 900)}" min="500" max="2000" step="50"></label>
+      <label>${tr('开门方向', 'Doors face')}<select id="lfDir">${dirs.map(([v, t]) => `<option value="${v}" ${(+l.dir || 0) === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
+      <label>X (mm)<input type="number" id="lfX" value="${Math.round(l.x)}" step="10"></label>
+      <label>Y (mm)<input type="number" id="lfY" value="${Math.round(l.y)}" step="10"></label>
+    </div>
+    <div class="muted" style="margin-top:8px">${tr('2D 中可直接拖动；3D 从「停靠高度」向上生成井道与金属双扇门，切到 3D 后点击门扇（或门边呼叫面板）即可开合，门朝「开门方向」一侧（门宽自动限制在梯宽内）。', 'Drag on the plan. In 3D the shaft is built from the stop level upward; click a door leaf (or the call panel beside it) to open/close. Door width is clamped to the shaft.')}</div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function bindLiftPanel(id) {
+      const num = (k, min, max, step, fn) => {
+        const el = $('#' + k); if (!el) return;
+        el.onchange = e => {
+          const v = parseFloat(e.target.value); if (isNaN(v)) return;
+          mutate(() => { const l = (state.lifts || []).find(x => x.id === id); if (!l) return; fn(l, Math.max(min, Math.min(max, Math.round(v / step) * step))); });
+        };
+      };
+      num('lfW', 800, 6000, 10, (l, v) => { l.w = v; l.dw = Math.min(l.dw ?? 900, v - 300); });
+      num('lfD', 800, 6000, 10, (l, v) => l.d = v);
+      num('lfStop', 0, 20000, 10, (l, v) => l.stop = v);
+      num('lfH', 1800, 4000, 10, (l, v) => l.h = v);
+      num('lfDW', 500, 2000, 10, (l, v) => l.dw = Math.min(v, (l.w ?? 2000) - 300));
+      num('lfX', -1e6, 1e6, 10, (l, v) => l.x = v);
+      num('lfY', -1e6, 1e6, 10, (l, v) => l.y = v);
+      const dEl = $('#lfDir');
+      if (dEl) dEl.onchange = e => {
+        const v = +e.target.value;
+        mutate(() => { const l = (state.lifts || []).find(x => x.id === id); if (l) l.dir = v; });
+      };
+      $('#aDel').onclick = () => { ui.sel = { kind: 'lift', id }; deleteSel(); };
+      $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
+    }
+    function northPanel(n) {
+      return `<section><h3>${tr('指北针', 'North arrow')}</h3>
+    <div class="form">
+      <label>${tr('朝向角', 'Angle')} (°)<input type="number" id="nA" value="${Math.round(n.angle || 0)}" min="0" max="359" step="15"></label>
+      <label>${tr('符号直径', 'Diameter')} (mm)<input type="number" id="nR" value="${Math.round((n.r || 380) * 2)}" min="400" max="3000" step="40"></label>
+      <label>X (mm)<input type="number" id="nX" value="${Math.round(n.x)}" step="10"></label>
+      <label>Y (mm)<input type="number" id="nY" value="${Math.round(n.y)}" step="10"></label>
+    </div>
+    <div class="muted" style="margin-top:8px">${tr('0° = 正北朝上，角度按顺时针增加；2D 中可直接拖动位置，全局只保留一个指北针。', '0° = north up; the angle increases clockwise. Drag on the plan to move it; only one north arrow per plan.')}</div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function bindNorthPanel() {
+      const setN = (fn) => mutate(() => { if (state.north) fn(state.north); });
+      const aEl = $('#nA');
+      if (aEl) aEl.onchange = e => {
+        const v = parseFloat(e.target.value); if (isNaN(v)) return;
+        setN(n => n.angle = ((Math.round(v) % 360) + 360) % 360);
+      };
+      const num = (k, fn) => {
+        const el = $('#' + k); if (!el) return;
+        el.onchange = e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setN(n => fn(n, Math.round(v / 10) * 10)); };
+      };
+      num('nX', (n, v) => n.x = v);
+      num('nY', (n, v) => n.y = v);
+      const rEl = $('#nR');
+      if (rEl) rEl.onchange = e => {
+        const v = parseFloat(e.target.value); if (isNaN(v)) return;
+        setN(n => n.r = Math.max(200, Math.min(1500, Math.round(v / 2 / 10) * 10)));   // 面板填直径，存储半径
+      };
+      $('#aDel').onclick = () => { ui.sel = { kind: 'north' }; deleteSel(); };
+      $('#back').onclick = () => { ui.sel = null; renderSel(); renderPanel(); };
     }
 
     function multiPanel() {
@@ -3202,7 +4128,7 @@
       const bid = ui.sel?.kind === 'bopen' ? ui.sel.id : null;
       if (!f && !r && !wid && !oid && !bid) { fab.classList.remove('show'); return; }
       if (wid || oid || bid) {
-        fab.innerHTML = `<span class="name">${wid ? tr('墙体', 'Wall') : bid ? bopenName(bid) : (oid.kind === 'door' ? tr('房门', 'Door') : oid.kind === 'roller' ? tr('卷帘门', 'Roller shutter') : oid.kind === 'elev' ? tr('电梯门', 'Elevator door') : oid.kind === 'fwin' ? tr('落地窗', 'Floor-to-ceiling window') : oid.kind === 'slid' ? tr('落地推拉门', 'Sliding glass door') : oid.kind === 'yak' ? tr('垭口', 'Cased opening') : oid.kind === 'dble' ? tr('双开门', 'Double door') : oid.kind === 'zimu' ? tr('子母门', 'Unequal double door') : oid.kind === 'hwin' ? tr('高窗', 'High window') : oid.kind === 'dwin' ? tr('门连窗', 'Door + window') : tr('窗户', 'Window'))}</span>
+        fab.innerHTML = `<span class="name">${wid ? tr('墙体', 'Wall') : bid ? bopenName(bid) : (oid.kind === 'door' ? tr('房门', 'Door') : oid.kind === 'roller' ? tr('卷帘门', 'Roller shutter') : oid.kind === 'elev' ? tr('电梯门', 'Elevator door') : oid.kind === 'fwin' ? tr('落地窗', 'Floor-to-ceiling window') : oid.kind === 'slid' ? tr('落地推拉门', 'Sliding glass door') : oid.kind === 'yak' ? tr('垭口', 'Cased opening') : oid.kind === 'dble' ? tr('双开门', 'Double door') : oid.kind === 'zimu' ? tr('子母门', 'Unequal double door') : oid.kind === 'hwin' ? tr('高窗', 'High window') : oid.kind === 'louver' ? tr('百叶窗', 'Louver window') : oid.kind === 'cwin' ? tr('圆窗', 'Round window') : oid.kind === 'dwin' ? tr('门连窗', 'Door + window') : tr('窗户', 'Window'))}</span>
       <button class="btn danger" data-a="del">${tr('删除', 'Delete')}</button>
       <button class="btn narrow-only" data-a="prop">${tr('属性', 'Properties')}</button><button class="btn" data-a="done">${tr('完成', 'Done')}</button>`;
         fab.classList.add('show');
@@ -3491,16 +4417,22 @@
       const wallH = wallHMM(o.wall), sillMM = Math.round(o.sill ?? 0);          // 墙高 / 门槛高（mm）
       const maxDh = Math.max(300, wallH - sillMM);                             // 门高上限 = 墙高 − 门槛高
       const dhMM = Math.min(Math.round(o.dh ?? (o.kind === 'slid' ? 2400 : 2100)), maxDh);
-      return `<section><h3>${o.kind === 'door' ? tr('房门', 'Door') : o.kind === 'roller' ? tr('卷帘门', 'Roller shutter') : o.kind === 'elev' ? tr('电梯门', 'Elevator door') : o.kind === 'fwin' ? tr('落地窗', 'Floor-to-ceiling window') : o.kind === 'slid' ? tr('落地推拉门', 'Sliding glass door') : o.kind === 'yak' ? tr('垭口', 'Cased opening') : o.kind === 'dble' ? tr('双开门', 'Double door') : o.kind === 'zimu' ? tr('子母门', 'Unequal double door') : o.kind === 'hwin' ? tr('高窗', 'High window') : o.kind === 'dwin' ? tr('门连窗', 'Door + window') : tr('窗户', 'Window')}</h3>
+      const sillDef = Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : o.kind === 'bay' ? 500 : 900));
+      const whDef = Math.round(o.wh ?? (o.kind === 'louver' ? 1200 : o.kind === 'bay' ? 1200 : Math.max(300, 2400 - sillDef)));
+      const whMax = Math.max(300, wallH - sillDef);
+      return `<section><h3>${o.kind === 'door' ? tr('房门', 'Door') : o.kind === 'roller' ? tr('卷帘门', 'Roller shutter') : o.kind === 'elev' ? tr('电梯门', 'Elevator door') : o.kind === 'fwin' ? tr('落地窗', 'Floor-to-ceiling window') : o.kind === 'slid' ? tr('落地推拉门', 'Sliding glass door') : o.kind === 'sd' ? tr('单扇推拉门', 'Single sliding door') : o.kind === 'fold' ? tr('折叠门', 'Folding door') : o.kind === 'yak' ? tr('垭口', 'Cased opening') : o.kind === 'dble' ? tr('双开门', 'Double door') : o.kind === 'zimu' ? tr('子母门', 'Unequal double door') : o.kind === 'hwin' ? tr('高窗', 'High window') : o.kind === 'louver' ? tr('百叶窗', 'Louver window') : o.kind === 'cwin' ? tr('圆窗', 'Round window') : o.kind === 'bay' ? tr('飘窗', 'Bay window') : o.kind === 'dwin' ? tr('门连窗', 'Door + window') : tr('窗户', 'Window')}</h3>
     <div class="form">
       <label>${tr('宽度', 'Width')} (mm)<input type="number" id="oW" value="${Math.round(o.w)}" min="300" step="50"></label>
       <label>${tr('距墙起点', 'From wall start')} (mm)<input type="number" id="oC" value="${Math.round(o.c)}" step="10"></label>
     </div>
-    ${(o.kind === 'window' || o.kind === 'hwin') ? `<div class="form"><label>${tr('窗台高', 'Sill height')} (mm)<input type="number" id="oSill" value="${Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : 900))}" min="0" max="2200" step="50"></label><label title="${tr(`窗台 ${Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : 900))} + 窗高 ≤ 墙高 ${wallH}`, `Sill ${Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : 900))} + window height ≤ wall ${wallH}`)}">${tr('窗户高度', 'Window height')} (mm)<input type="number" id="oWh" value="${Math.round(o.wh ?? Math.max(300, 2400 - Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : 900))))}" min="300" max="${Math.max(300, wallH - Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : 900)))}" step="50"></label></div>` : ''}
+    ${(o.kind === 'window' || o.kind === 'hwin' || o.kind === 'louver' || o.kind === 'bay') ? `<div class="form"><label>${tr('窗台高', 'Sill height')} (mm)<input type="number" id="oSill" value="${sillDef}" min="0" max="2200" step="50"></label><label title="${tr(`窗台 ${sillDef} + 窗高 ≤ 墙高 ${wallH}`, `Sill ${sillDef} + window height ≤ wall ${wallH}`)}">${tr('窗户高度', 'Window height')} (mm)<input type="number" id="oWh" value="${whDef}" min="300" max="${whMax}" step="50"></label></div>` : ''}
+    ${o.kind === 'bay' ? `<div class="form"><label title="${tr('向外凸出的进深（垂直于墙面）', 'Depth protruding from the wall')}">${tr('外凸进深', 'Depth')} (mm)<input type="number" id="oBayD" value="${Math.round(o.bayDepth ?? 600)}" min="150" max="1500" step="50"></label></div>
+    <div class="actions"><button class="btn" id="oBayFlip" title="${tr('凸窗换到墙的另一侧', 'Flip the bay to the other side of the wall')}">${tr('换到墙另一侧', 'Flip side')}</button></div>` : ''}
+    ${o.kind === 'cwin' ? `<div class="form"><label title="${tr('圆窗直径 = 宽度，窗台为圆心以下的高度', 'Diameter = width; sill is measured below the circle')}">${tr('窗台高（圆底离地）', 'Sill height')} (mm)<input type="number" id="oSill" value="${sillDef}" min="0" max="2200" step="50"></label></div>` : ''}
     ${['window', 'hwin', 'dwin'].includes(o.kind) ? `<div class="form"><label class="chk full"><input type="checkbox" id="oGrille" ${openGrille(o) ? 'checked' : ''}>${tr('窗花（窗上亮子：横向带框玻璃带）', 'Transom: framed glass band above the window')}</label></div>` : ''}
     ${['window', 'hwin', 'dwin'].includes(o.kind) && openGrille(o) ? `<div class="form"><label title="${tr('窗花高度不能超过窗户高度', 'Transom height cannot exceed the window height')}">${tr('窗花高度', 'Transom height')} (mm · ≤ ${Math.round(o.wh ?? Math.max(300, 2400 - Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : 900))))})<input type="number" id="oTh" value="${Math.round(o.th ?? 500)}" min="150" max="${Math.round(o.wh ?? Math.max(300, 2400 - Math.round(o.sill ?? (o.kind === 'hwin' ? 1400 : 900))))}" step="50"></label></div>` : ''}
-    ${['door', 'dble', 'zimu', 'yak', 'dwin', 'slid', 'elev', 'roller'].includes(o.kind) ? `<div class="form"><label title="${tr(`墙高 ${wallH} − 门槛 ${sillMM} = 最大 ${maxDh} mm`, `Wall ${wallH} − threshold ${sillMM} = max ${maxDh} mm`)}">${tr('门高', 'Door height')} (mm · ≤ ${maxDh})<input type="number" id="oDh" value="${dhMM}" min="300" max="${maxDh}" step="50"></label><label>${tr('门槛高（门洞下沿离地）', 'Threshold height')} (mm)<input type="number" id="oBase" value="${sillMM}" min="0" max="${Math.max(0, wallH - dhMM)}" step="10"></label></div>` : ''}
-    <div class="muted" style="margin-top:8px">${tr('在 2D 里拖动门窗可沿墙滑动。', 'Drag the opening in 2D to slide it along its wall.')}${(o.kind === 'window' || o.kind === 'hwin') ? tr(' 3D 里点窗户可左右推拉开合。', ' Click the window in 3D to slide it open.') : ''}</div>
+    ${['door', 'dble', 'zimu', 'yak', 'dwin', 'slid', 'sd', 'fold', 'elev', 'roller'].includes(o.kind) ? `<div class="form"><label title="${tr(`墙高 ${wallH} − 门槛 ${sillMM} = 最大 ${maxDh} mm`, `Wall ${wallH} − threshold ${sillMM} = max ${maxDh} mm`)}">${tr('门高', 'Door height')} (mm · ≤ ${maxDh})<input type="number" id="oDh" value="${dhMM}" min="300" max="${maxDh}" step="50"></label><label>${tr('门槛高（门洞下沿离地）', 'Threshold height')} (mm)<input type="number" id="oBase" value="${sillMM}" min="0" max="${Math.max(0, wallH - dhMM)}" step="10"></label></div>` : ''}
+    <div class="muted" style="margin-top:8px">${tr('在 2D 里拖动门窗可沿墙滑动。', 'Drag the opening in 2D to slide it along its wall.')}${(o.kind === 'window' || o.kind === 'hwin') ? tr(' 3D 里点窗户可左右推拉开合。', ' Click the window in 3D to slide it open.') : o.kind === 'louver' ? tr(' 百叶窗为固定叶片，3D 中不可开启。', ' Louver blades are fixed (not openable in 3D).') : o.kind === 'cwin' ? tr(' 圆窗直径跟随宽度，高度不可单独设置。', ' The circle diameter follows the width.') : o.kind === 'bay' ? tr(' 飘窗向外凸出，进深与朝向可改；3D 中为固定窗不可开启。', ' The bay protrudes outward; depth and side are editable. Fixed glass (not openable) in 3D.') : o.kind === 'sd' ? tr(' 3D 里点门扇可沿墙推开。', ' Click the door in 3D to slide it open.') : o.kind === 'fold' ? tr(' 3D 里点门扇可折起 / 展开；折起后中间可直接通行。', ' Click the door in 3D to fold / unfold it.') : ''}</div>
     ${o.kind === 'elev' ? `<div class="form"><label>${tr('呼叫按钮位置', 'Call button side')}<select id="oBtn"><option value="r" ${(o.btn || 'r') === 'r' ? 'selected' : ''}>${tr('门右侧', 'Right of door')}</option><option value="l" ${o.btn === 'l' ? 'selected' : ''}>${tr('门左侧', 'Left of door')}</option></select></label></div>` : ''}
     ${o.kind === 'door' ? `<div class="actions"><button class="btn" id="oDir" title="点击循环切换开启方式：左开 → 右开 → 左开反向 → 右开反向">${tr('改变开门方向', 'Change swing')}</button></div>` : ''}
     ${(o.kind === 'dble' || o.kind === 'zimu') ? `<div class="actions"><button class="btn" id="oFlip2" title="两扇一起翻到墙的另一侧开启">${tr('换到墙另一侧开', 'Flip to other side')}</button></div>` : ''}
@@ -3532,6 +4464,13 @@
       if (ogr) ogr.onchange = () => {
         mutate(() => { const g = state.openings.find(x => x.id === o.id); if (g) g.grille = ogr.checked; });
       };
+      const obd = $('#oBayD');                                       // 飘窗外凸进深
+      if (obd) obd.onchange = e => {
+        const v = parseFloat(e.target.value); if (isNaN(v)) return;
+        mutate(() => { const g = state.openings.find(x => x.id === o.id); if (g) g.bayDepth = Math.max(150, Math.min(1500, Math.round(v / 50) * 50)); });
+      };
+      const obf = $('#oBayFlip');                                    // 飘窗凸出朝向：换到墙另一侧
+      if (obf) obf.onclick = () => mutate(() => { const g = state.openings.find(x => x.id === o.id); if (g) g.bayFlip = !g.bayFlip; });
       const owh = $('#oWh');                                         // 窗户高度（总高，含窗花）：窗台 + 窗高 ≤ 墙高
       if (owh) owh.onchange = e => {
         const v = parseFloat(e.target.value); if (isNaN(v)) return;
@@ -3612,8 +4551,58 @@
       $('#back').onclick = () => select(null);
     }
 
+    function rampPanel(s) {
+      const dirs = [[0, tr('向右 (+X)', '+X')], [90, tr('向上 (+Y)', '+Y')], [180, tr('向左 (-X)', '−X')], [270, tr('向下 (-Y)', '−Y')]];
+      const rise = Math.round(s.rise ?? 600), deg = (Math.atan2(rise, Math.max(1, s.len)) * 180 / Math.PI).toFixed(1);
+      return `<section><h3>${tr('坡道', 'Ramp')}</h3>
+    <div class="form">
+      <label>${tr('坡宽', 'Width')} (mm)<input type="number" id="sW" value="${Math.round(s.w)}" min="600" max="4000" step="50"></label>
+      <label>${tr('坡长', 'Length')} (mm)<input type="number" id="sLen" value="${Math.round(s.len)}" min="800" max="12000" step="50"></label>
+      <label>${tr('上行方向', 'Ascend')}<select id="sDir">${dirs.map(([v, t]) => `<option value="${v}" ${s.dir === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
+      <label>${tr('爬升高度', 'Rise')} (mm)<input type="number" id="sRise" value="${rise}" min="50" max="6000" step="10"></label>
+      <label>X (mm)<input type="number" id="sX" value="${Math.round(s.x)}" step="10"></label>
+      <label>Y (mm)<input type="number" id="sY" value="${Math.round(s.y)}" step="10"></label>
+    </div>
+    <div class="muted" style="margin-top:8px">${tr(`坡度约 ${deg}°。2D 里拖右侧方块改长度、上方方块改坡宽；3D 为斜面踏板 + 两侧挡条，漫游可沿坡面上下。`, `Slope about ${deg}°. Drag the right square to change length, the top square to change width. 3D shows an inclined deck with side curbs; you can walk up / down it in roam mode.`)}</div>
+    <div class="actions"><button class="btn" id="aFlipX" title="${tr('起步端换到另一头，上坡方向反过来', 'Start from the opposite end')}">${tr('前后翻转', 'Flip F-B')}</button></div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function stepsPanel(s) {
+      const dirs = [[0, tr('向右 (+X)', '+X')], [90, tr('向上 (+Y)', '+Y')], [180, tr('向左 (-X)', '−X')], [270, tr('向下 (-Y)', '−Y')]];
+      const n = Math.max(1, Math.round(s.steps || 3)), rise = Math.round(s.rise ?? 450);
+      return `<section><h3>${tr('台阶', 'Steps')}</h3>
+    <div class="form">
+      <label>${tr('台阶宽', 'Width')} (mm)<input type="number" id="sW" value="${Math.round(s.w)}" min="400" max="6000" step="50"></label>
+      <label>${tr('台阶长', 'Length')} (mm)<input type="number" id="sLen" value="${Math.round(s.len)}" min="300" max="6000" step="50"></label>
+      <label>${tr('级数', 'Steps')}<input type="number" id="sSteps" value="${n}" min="1" max="20" step="1"></label>
+      <label>${tr('总爬升', 'Total rise')} (mm)<input type="number" id="sRise" value="${rise}" min="30" max="3000" step="10"></label>
+      <label>${tr('上行方向', 'Ascend')}<select id="sDir">${dirs.map(([v, t]) => `<option value="${v}" ${s.dir === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
+      <label>X (mm)<input type="number" id="sX" value="${Math.round(s.x)}" step="10"></label>
+      <label>Y (mm)<input type="number" id="sY" value="${Math.round(s.y)}" step="10"></label>
+    </div>
+    <div class="muted" style="margin-top:8px">${tr(`每级 ${Math.round(rise / n)} mm 高、${Math.round(s.len / n)} mm 深。2D 里拖右侧方块改长度、上方方块改宽度；3D 为实心踏步，漫游可逐级上下。`, `Each step ${Math.round(rise / n)} mm high, ${Math.round(s.len / n)} mm deep. Drag the right square to change length, the top square to change width. 3D shows solid steps you can walk up / down.`)}</div>
+    <div class="actions"><button class="btn" id="aFlipX" title="${tr('起步端换到另一头，上行方向反过来', 'Start from the opposite end')}">${tr('前后翻转', 'Flip F-B')}</button></div>
+    <div class="actions"><button class="btn danger" id="aDel">${tr('删除', 'Delete')}</button><button class="btn" id="back">${tr('← 返回', '← Back')}</button></div></section>`;
+    }
+    function bindStepsPanel(id) {
+      const g = () => (state.stairs || []).find(x => x.id === id);
+      const set = (k, fn) => { const el = $('#' + k); if (el) el.onchange = e => { const v = parseFloat(e.target.value); if (isNaN(v)) return; mutate(() => { const s = g(); if (s) fn(s, v); }); }; };
+      set('sW', (s, v) => s.w = Math.max(400, Math.min(6000, Math.round(v / 50) * 50)));
+      set('sLen', (s, v) => s.len = Math.max(300, Math.min(6000, Math.round(v / 50) * 50)));
+      set('sSteps', (s, v) => s.steps = Math.max(1, Math.min(20, Math.round(v))));
+      set('sRise', (s, v) => s.rise = Math.max(30, Math.min(3000, Math.round(v / 10) * 10)));
+      set('sDir', (s, v) => s.dir = v);
+      set('sX', (s, v) => s.x = Math.round(v / 10) * 10);
+      set('sY', (s, v) => s.y = Math.round(v / 10) * 10);
+      const fx = $('#aFlipX');
+      if (fx) fx.onclick = () => mutate(() => { const s = g(); if (s) s.flipX = !s.flipX; });
+      $('#aDel').onclick = () => { ui.sel = null; mutate(() => state.stairs = (state.stairs || []).filter(x => x.id !== id)); toast(tr('已删除台阶 · Ctrl+Z 可撤销', 'Steps deleted · Ctrl+Z to undo')); };
+      $('#back').onclick = () => select(null);
+    }
     function stairPanel(id) {
       const s = (state.stairs || []).find(x => x.id === id); if (!s) return '';
+      if (s.type === 'ramp') return rampPanel(s);
+      if (s.type === 'steps') return stepsPanel(s);
       const dirs = [[0, tr('向右 (+X)', '+X')], [90, tr('向上 (+Y)', '+Y')], [180, tr('向左 (-X)', '−X')], [270, tr('向下 (-Y)', '−Y')]];
       const runs = s.runs || 1, stack = !!s.stack, cur = stack ? '3s' : String(runs), lay = stairLayout(s);
       const types = [[1, tr('直跑', 'Straight')], [2, tr('双跑（U 形折返）', 'Double (U-turn)')],
@@ -3646,6 +4635,8 @@
     }
     function bindStairPanel(id) {
       const g = () => (state.stairs || []).find(x => x.id === id);
+      if (g()?.type === 'ramp') return bindRampPanel(id);
+      if (g()?.type === 'steps') return bindStepsPanel(id);
       const set = (k, fn) => { const el = $('#' + k); if (el) el.onchange = e => { const v = parseFloat(e.target.value); if (isNaN(v)) return; mutate(() => { const s = g(); if (s) fn(s, v); }); }; };
       set('sW', (s, v) => s.w = Math.max(600, Math.min(2000, Math.round(v / 50) * 50)));
       set('sLen', (s, v) => s.len = Math.max(1000, Math.min(9000, Math.round(v / 50) * 50)));
@@ -3695,9 +4686,23 @@
       $('#aDel').onclick = () => { ui.sel = null; mutate(() => state.stairs = (state.stairs || []).filter(x => x.id !== id)); toast(tr('已删除楼梯 · Ctrl+Z 可撤销', 'Stair deleted · Ctrl+Z to undo')); };
       $('#back').onclick = () => select(null);
     }
+    function bindRampPanel(id) {
+      const g = () => (state.stairs || []).find(x => x.id === id);
+      const set = (k, fn) => { const el = $('#' + k); if (el) el.onchange = e => { const v = parseFloat(e.target.value); if (isNaN(v)) return; mutate(() => { const s = g(); if (s) fn(s, v); }); }; };
+      set('sW', (s, v) => s.w = Math.max(600, Math.min(4000, Math.round(v / 50) * 50)));
+      set('sLen', (s, v) => s.len = Math.max(800, Math.min(12000, Math.round(v / 50) * 50)));
+      set('sRise', (s, v) => s.rise = Math.max(50, Math.min(6000, Math.round(v / 10) * 10)));
+      set('sDir', (s, v) => s.dir = v);
+      set('sX', (s, v) => s.x = Math.round(v / 10) * 10);
+      set('sY', (s, v) => s.y = Math.round(v / 10) * 10);
+      const fx = $('#aFlipX');
+      if (fx) fx.onclick = () => mutate(() => { const s = g(); if (s) s.flipX = !s.flipX; });
+      $('#aDel').onclick = () => { ui.sel = null; mutate(() => state.stairs = (state.stairs || []).filter(x => x.id !== id)); toast(tr('已删除坡道 · Ctrl+Z 可撤销', 'Ramp deleted · Ctrl+Z to undo')); };
+      $('#back').onclick = () => select(null);
+    }
 
     /* ======================= 操作 ======================= */
-    function select(sel) { ui.sel = sel; ui.multi = []; renderSel(); renderPanel(); }
+    function select(sel) { ui.sel = sel; ui.multi = []; renderPillars(); renderSel(); renderPanel(); renderNotes(); }   // 电梯高亮画在柱层，需一起重绘
 
     /* ---------- 多选 / 框选（设计模式）---------- */
     const getS = id => (state.stairs || []).find(x => x.id === id);
@@ -3824,6 +4829,16 @@
       else if (ui.sel?.kind === 'bopen') { const id = ui.sel.id; ui.sel = null; mutate(() => state.removedB.push(id)); toast(tr('已删除原始门窗 · Ctrl+Z 可撤销', 'Original opening removed · Ctrl+Z to undo')); }
       else if (ui.sel?.kind === 'pillar') { const id = ui.sel.id; ui.sel = null; mutate(() => state.pillars = (state.pillars || []).filter(x => x.id !== id)); }
       else if (ui.sel?.kind === 'stair') { const id = ui.sel.id; ui.sel = null; mutate(() => state.stairs = (state.stairs || []).filter(x => x.id !== id)); }
+      else if (ui.sel?.kind === 'note') { const id = ui.sel.id; ui.sel = null; mutate(() => state.notes = (state.notes || []).filter(n => n.id !== id)); toast(tr('已删除文字标注 · Ctrl+Z 可撤销', 'Note deleted · Ctrl+Z to undo')); }
+      else if (ui.sel?.kind === 'dim') { const id = ui.sel.id; ui.sel = null; mutate(() => state.dims = (state.dims || []).filter(n => n.id !== id)); toast(tr('已删除尺寸标注 · Ctrl+Z 可撤销', 'Dimension deleted · Ctrl+Z to undo')); }
+      else if (ui.sel?.kind === 'rail') { const id = ui.sel.id; ui.sel = null; mutate(() => state.rails = (state.rails || []).filter(n => n.id !== id)); toast(tr('已删除栏杆 · Ctrl+Z 可撤销', 'Railing deleted · Ctrl+Z to undo')); }
+      else if (ui.sel?.kind === 'beam') { const id = ui.sel.id; ui.sel = null; mutate(() => state.beams = (state.beams || []).filter(n => n.id !== id)); toast(tr('已删除梁 · Ctrl+Z 可撤销', 'Beam deleted · Ctrl+Z to undo')); }
+      else if (ui.sel?.kind === 'level') { const id = ui.sel.id; ui.sel = null; mutate(() => state.levels = (state.levels || []).filter(n => n.id !== id)); toast(tr('已删除标高符号 · Ctrl+Z 可撤销', 'Level marker deleted · Ctrl+Z to undo')); }
+      else if (ui.sel?.kind === 'slab') { const id = ui.sel.id; ui.sel = null; mutate(() => state.slabs = (state.slabs || []).filter(n => n.id !== id)); toast(tr('已删除楼板 · Ctrl+Z 可撤销', 'Slab deleted · Ctrl+Z to undo')); }
+      else if (ui.sel?.kind === 'parapet') { const id = ui.sel.id; ui.sel = null; mutate(() => state.parapets = (state.parapets || []).filter(n => n.id !== id)); toast(tr('已删除女儿墙 · Ctrl+Z 可撤销', 'Parapet deleted · Ctrl+Z to undo')); }
+      else if (ui.sel?.kind === 'canopy') { const id = ui.sel.id; ui.sel = null; mutate(() => state.canopies = (state.canopies || []).filter(n => n.id !== id)); toast(tr('已删除雨棚 · Ctrl+Z 可撤销', 'Canopy deleted · Ctrl+Z to undo')); }
+      else if (ui.sel?.kind === 'lift') { const id = ui.sel.id; ui.sel = null; mutate(() => state.lifts = (state.lifts || []).filter(n => n.id !== id)); toast(tr('已删除电梯 · Ctrl+Z 可撤销', 'Elevator deleted · Ctrl+Z to undo')); }
+      else if (ui.sel?.kind === 'north') { ui.sel = null; mutate(() => state.north = null); toast(tr('已删除指北针 · Ctrl+Z 可撤销', 'North arrow deleted · Ctrl+Z to undo')); }
       else if (ui.sel?.kind === 'room') {
         const id = ui.sel.id; ui.sel = null;
         mutate(() => {
@@ -3894,15 +4909,18 @@
     }
 
     function setTool(t) {
-      ui.tool = t; ui.mA = null; ui.mCur = null; wStart = wCur = null; renderDraw();
-      $('#designTools').style.display = t === 'draw' ? 'flex' : 'none';
+      ui.tool = t; ui.mA = null; ui.mCur = null; ui.dimA = null; ui.dimCur = null; ui.railA = null; ui.railCur = null; ui.beamA = null; ui.beamCur = null; ui.slabA = null; ui.slabCur = null; ui.parapetA = null; ui.parapetCur = null; ui.canopyA = null; ui.canopyCur = null; wStart = wCur = null; renderDraw();
+      if (t === 'draw') setLibTab('arch');   // 进入设计自动显示建筑工具；退出设计不强制切回
+      syncArchHint();
       if (t === 'draw') svg.dataset.subtool = ui.drawTool;
       if (!(t === 'draw' && ui.drawTool === 'select')) select(null);   // 离开「设计+选择」即取消选中（预览只读）
       svg.setAttribute('class', 'tool-' + t);
       document.querySelectorAll('#tools .btn').forEach(b => b.classList.toggle('on', b.dataset.tool === t));
       syncModeHint();
       renderMeasure();
+      renderNotes();
     }
+    let hintTimer = 0;
     function syncModeHint() {
       const hints = {
         select: COARSE ? tr('预览模式：拖动平移 / 双指缩放 · 点击房间查看面积与地面 · 编辑请进「设计」', 'Preview: pan / pinch to zoom · tap a room for area & flooring · switch to "Design" to edit')
@@ -3910,13 +4928,17 @@
         measure: COARSE ? tr('按住拖出测量线，或依次点两点 · 靠近墙面自动吸附 · 点「预览」或右击退出', 'Hold and drag a line, or tap two points · snaps to walls · tap "Preview" or right-click to exit')
           : tr('点击两点（或按住拖动）测量距离 · 靠近墙面自动吸附 · Shift 锁定水平/垂直 · Esc 取消 · 右击回到预览', 'Click two points (or drag) to measure · snaps to walls · Shift locks horizontal/vertical · Esc cancels · right-click back to preview'),
         draw: COARSE ? tr('子工具「选择」= 点选编辑：选中后 Delete 或底部按钮删除（内置墙=标记拆除）· 空白处拖动可框选（双指缩放 / 平移）· 画墙（点两点）/ 房门 / 窗户（点墙上的位置）', '"Select" edits: Delete or the bottom bar removes (original walls are marked for removal) · drag on empty space to marquee-select (two fingers to pan / zoom) · draw walls, add doors / windows')
-          : tr('子工具「选择」= 点选墙 / 门 / 窗 / 家具编辑，在空白处 / 房间内拖出矩形可框选家具 / 楼梯 / 柱子 / 自画墙（Ctrl+D 复制、Delete 删除；按住 Alt 拖动可从任意位置起手），Delete 删除（内置墙 = 标记拆除，点拆除残留可恢复，黑色承重墙不可拆）· 画墙 = 点两点（吸附 0°/90°/45°，Shift 锁轴，右键 / Esc 取消，靠近旧墙自动吸上融合；也可点起点后直接输入长度回车）· 房门 / 垭口 / 双开门 / 子母门 / 卷帘门 / 电梯门 / 落地窗 / 落地推拉门 / 窗户 / 高窗 / 门连窗 = 点墙上的位置 · 入户 = 点一个门洞设为唯一入户门 · 柱子 / 楼梯（直跑 · 双跑 · 三跑 · 正三跑）= 点任意位置放置（可拖动）', '"Select" = click walls / doors / windows / furniture to edit; drag on empty space or inside a room to marquee-select furniture / stairs / columns / walls (Ctrl+D duplicates, Alt+drag starts anywhere); Delete removes (original walls = mark for removal, click the dashed remains to restore, black load-bearing walls protected) · Draw = two points (snaps, Shift locks axis, right-click / Esc cancels, snaps onto existing walls to fuse; or click the start point and type a length, Enter to confirm) · Door / Roller / Elevator / Window = click a wall · Entry = click a door opening to set the unique entry')
+          : tr('子工具「选择」= 点选墙 / 门 / 窗 / 家具编辑，在空白处 / 房间内拖出矩形可框选家具 / 楼梯 / 柱子 / 自画墙（Ctrl+D 复制、Delete 删除；按住 Alt 拖动可从任意位置起手），Delete 删除（内置墙 = 标记拆除，点拆除残留可恢复，黑色承重墙不可拆）· 画墙 = 点两点（吸附 0°/90°/45°，Shift 锁轴，右键 / Esc 取消，靠近旧墙自动吸上融合；也可点起点后直接输入长度回车）· 房门 / 垭口 / 双开门 / 子母门 / 卷帘门 / 电梯门 / 落地窗 / 落地推拉门 / 单扇推拉门 / 折叠门 / 窗户 / 高窗 / 门连窗 / 飘窗 = 点墙上的位置 · 文字标注 = 点位置放文字（右侧改内容/字号，可拖动）· 台阶 = 点位置放一组台阶（级数可改）· 栏杆 = 点起点再点终点（高度 / 直杆或玻璃可改）· 梁 = 点起点再点终点（宽 / 高 / 底标高可改）· 标高 = 点位置放标高符号 · 尺寸标注 = 点起点再点终点 · 材质刷 = 点房间刷地面材料（先用「选择」点一个样板房间换材料）· 入户 = 点一个门洞设为唯一入户门 · 柱子 / 楼梯（直跑 · 双跑 · 三跑 · 正三跑）= 点任意位置放置（可拖动）· 楼板 = 点两个对角点（板厚 / 底标高可改）· 女儿墙 = 点起点再点终点（厚 / 高 / 底标高可改）· 雨棚 = 点起点再点终点（挑出 / 板厚 / 底标高可改）· 指北针 = 点位置放置（全局唯一，角度可改）· 电梯 = 点位置放置（宽 / 深 / 停靠高度 / 门宽 / 开门方向可改）', '"Select" = click walls / doors / windows / furniture to edit; drag on empty space or inside a room to marquee-select furniture / stairs / columns / walls (Ctrl+D duplicates, Alt+drag starts anywhere); Delete removes (original walls = mark for removal, click the dashed remains to restore, black load-bearing walls protected) · Draw = two points (snaps, Shift locks axis, right-click / Esc cancels, snaps onto existing walls to fuse; or click the start point and type a length, Enter to confirm) · Door / Roller / Elevator / Window = click a wall · Entry = click a door opening to set the unique entry · Railing / beam / parapet / canopy = click two points · Slab = two opposite corners · North arrow / elevator = click to place · Level / dimension = click to place')
       };
-      const h = $('#modehint'); h.textContent = hints[ui.tool]; h.classList.toggle('show', !!hints[ui.tool]);
+      const h = $('#modehint'); h.textContent = hints[ui.tool] || '';
+      clearTimeout(hintTimer);
+      if (!hints[ui.tool]) { h.classList.remove('show'); return; }
+      h.classList.add('show');
+      hintTimer = setTimeout(() => h.classList.remove('show'), 4000);   // 4 秒后自动淡出，避免常显挡住工具栏
     }
 
     /* ======================= 视图 ======================= */
-    const ROT_GROUPS = ['gGrid', 'gRooms', 'gFurn', 'gWalls', 'gOpen', 'gPillars', 'gStairs', 'gAxis', 'gLabels', 'gDims', 'gMeasure', 'gDraw', 'gSel'];
+    const ROT_GROUPS = ['gGrid', 'gRooms', 'gFurn', 'gWalls', 'gOpen', 'gPillars', 'gStairs', 'gAxis', 'gLabels', 'gDims', 'gMeasure', 'gNotes', 'gDraw', 'gSel'];
     function applyView() {
       const W = svg.clientWidth, H = svg.clientHeight, vw = W / view.s, vh = H / view.s;
       svg.setAttribute('viewBox', `${view.x0} ${view.y0} ${vw} ${vh}`);
@@ -4159,7 +5181,7 @@
     }
     $('#wallLen').addEventListener('keydown', e => {
       if (e.key === 'Enter') { e.preventDefault(); commitWallLen(); }
-      else if (e.key === 'Escape') { wStart = wCur = null; renderDraw(); }
+      else if (e.key === 'Escape') { wStart = wCur = null; ui.dimA = null; ui.dimCur = null; ui.railA = null; ui.railCur = null; ui.beamA = null; ui.beamCur = null; ui.slabA = null; ui.slabCur = null; ui.parapetA = null; ui.parapetCur = null; ui.canopyA = null; ui.canopyCur = null; renderDraw(); renderNotes(); }
     });
     // ---------- 设计模式公共几何：墙段切割 / 拾取 ----------
     function openingsOf(ref) { return state.openings.filter(o => o.wall === ref).sort((x, y) => x.c - y.c); }
@@ -4409,12 +5431,14 @@
     function placeOpening(hit, kind) {
       const { ref, L, t } = hit;
       if (L < 300) return toast(tr('这面墙太短，放不下门 / 窗', 'Wall is too short for an opening'));
-      const defW = kind === 'door' ? 900 : kind === 'roller' ? 1800 : kind === 'elev' ? 900 : kind === 'fwin' ? 1800 : kind === 'slid' ? 2400 : kind === 'yak' ? 1200 : kind === 'dble' ? 1500 : kind === 'dwin' ? 1500 : 1200;
+      const defW = kind === 'door' ? 900 : kind === 'roller' ? 1800 : kind === 'elev' ? 900 : kind === 'fwin' ? 1800 : kind === 'slid' ? 2400 : kind === 'sd' ? 900 : kind === 'fold' ? 1800 : kind === 'yak' ? 1200 : kind === 'dble' ? 1500 : kind === 'dwin' ? 1500 : kind === 'louver' ? 1200 : kind === 'cwin' ? 900 : kind === 'bay' ? 1500 : 1200;
       const w = Math.min(defW, L);
       const c = Math.max(0, Math.min(L - w, t - w / 2));
       for (const o of openingsOf(ref)) if (c < o.c + o.w && o.c < c + w)
         return toast(tr('和已有的门窗重叠，换个位置试试', 'Overlaps another opening — try another spot'));
-      mutate(() => state.openings.push({ id: uid(), wall: ref, c, w, kind, flip: openingsOf(ref).length % 2 === 1, ...(kind === 'hwin' ? { sill: 1400 } : {}) }));
+      mutate(() => state.openings.push({ id: uid(), wall: ref, c, w, kind, flip: openingsOf(ref).length % 2 === 1, ...(kind === 'hwin' ? { sill: 1400 } : kind === 'louver' ? { sill: 900, wh: 1200 } : kind === 'cwin' ? { sill: 900 } : kind === 'bay' ? { sill: 500, wh: 1200, bayDepth: 600 } : {}) }));
+      const no = state.openings[state.openings.length - 1];
+      select({ kind: 'open', id: no.id });
       toast(kind === 'door'
         ? tr(`已放房门 ${Math.round(w)} mm · 点 3D 中的门可开关`, `Door ${Math.round(w)} mm added · click it in 3D to open/close`)
         : kind === 'roller'
@@ -4425,6 +5449,10 @@
               ? tr(`已放落地窗 ${Math.round(w)} mm`, `Floor-to-ceiling window ${Math.round(w)} mm added`)
               : kind === 'slid'
                 ? tr(`已放落地推拉门 ${Math.round(w)} mm · 点 3D 中的门可开关`, `Sliding glass door ${Math.round(w)} mm added · click it in 3D to open/close`)
+                : kind === 'sd'
+                  ? tr(`已放单扇推拉门 ${Math.round(w)} mm · 点 3D 中的门扇可推开`, `Single sliding door ${Math.round(w)} mm added · click it in 3D to slide open`)
+                  : kind === 'fold'
+                    ? tr(`已放折叠门 ${Math.round(w)} mm · 点 3D 中的门扇可折起 / 展开`, `Folding door ${Math.round(w)} mm added · click it in 3D to fold / unfold`)
                 : kind === 'yak'
                   ? tr(`已放垭口 ${Math.round(w)} mm（无门扇，可直接通行）`, `Cased opening ${Math.round(w)} mm added (walk-through)`)
                   : kind === 'dble'
@@ -4435,7 +5463,13 @@
                         ? tr(`已放高窗 ${Math.round(w)} mm（窗台默认 1400 mm，可在右侧属性里调）`, `High window ${Math.round(w)} mm added (sill 1400 mm, editable in the panel)`)
                         : kind === 'dwin'
                           ? tr(`已放门连窗 ${Math.round(w)} mm · 点 3D 中的门扇可开合`, `Door + window ${Math.round(w)} mm added`)
-                          : tr(`已放窗户 ${Math.round(w)} mm（窗台默认 900，可在属性里调）`, `Window ${Math.round(w)} mm added (sill 900, editable in the panel)`));
+                          : kind === 'louver'
+                            ? tr(`已放百叶窗 ${Math.round(w)} mm（窗台默认 900，可在右侧属性里调）`, `Louver window ${Math.round(w)} mm added (sill 900, editable in the panel)`)
+                            : kind === 'cwin'
+                              ? tr(`已放圆窗 ${Math.round(w)} mm（直径 = 宽度，窗台默认 900）`, `Round window ${Math.round(w)} mm added (diameter = width, sill 900)`)
+                              : kind === 'bay'
+                                ? tr(`已放飘窗 ${Math.round(w)} mm（窗台 500，向外凸出 600，进深 / 朝向可在右侧改）`, `Bay window ${Math.round(w)} mm added (sill 500, 600 deep; depth / side editable in the panel)`)
+                                : tr(`已放窗户 ${Math.round(w)} mm（窗台默认 900，可在属性里调）`, `Window ${Math.round(w)} mm added (sill 900, editable in the panel)`));
     }
     // 设置房间：两个对角点拉出矩形房间（地面区域），存入 state.roomsExtra，配置进 state.rooms
     function roomCommit(a, b) {
@@ -4612,7 +5646,7 @@
         else { const a = ui.mA; ui.mA = null; ui.mCur = null; if (Math.hypot(q.x - a.x, q.y - a.y) > 20) mutate(() => state.measures.push({ a, b: q })); }
         renderMeasure(); return;
       }
-      if (ui.tool === 'draw' && ['wall', 'door', 'win', 'roller', 'elev', 'fwin', 'slid', 'yak', 'dble', 'zimu', 'hwin', 'dwin', 'room', 'entry', 'pillar', 'stair', 'stair2', 'stair3', 'stair3s'].includes(ui.drawTool)) {   // 选择子工具不创建，落到下面的编辑链
+      if (ui.tool === 'draw' && ['wall', 'door', 'win', 'louver', 'cwin', 'bay', 'roller', 'elev', 'fwin', 'slid', 'sd', 'fold', 'yak', 'dble', 'zimu', 'hwin', 'dwin', 'room', 'entry', 'pillar', 'stair', 'stair2', 'stair3', 'stair3s', 'ramp', 'steps', 'rail', 'beam', 'level', 'slab', 'parapet', 'canopy', 'north', 'lift', 'text', 'dim', 'paint'].includes(ui.drawTool)) {   // 选择子工具不创建，落到下面的编辑链
         if (ui.drawTool === 'entry') {                                   // 入户工具：点门洞（原始门洞或自画的门）→ 设为全局唯一的入户门
           const og = t.closest('[data-bopen]'), oc = t.closest('[data-open]');
           let id = null;
@@ -4637,6 +5671,13 @@
           toast(tr('已放柱子（400mm 方柱）· 可直接拖动、在属性里改圆/方与尺寸', 'Column added (400mm square) · drag it or edit shape/size in the panel'));
           return;
         }
+        if (ui.drawTool === 'ramp') {                                     // 坡道：点哪里放哪里，宽度 / 长度 / 爬升在右侧改
+          const q = snapPoint(p, e.shiftKey), id = uid();
+          mutate(() => { state.stairs = state.stairs || []; state.stairs.push({ id, x: Math.round(q.x), y: Math.round(q.y), w: 1200, len: 4000, dir: 0, rise: 600, runs: 1, type: 'ramp' }); });
+          select({ kind: 'stair', id });
+          toast(tr('已放坡道（1200×4000 升 600）· 宽度 / 长度 / 坡度在右侧改', 'Ramp added (1200×4000, rise 600) · edit width / length / rise in the panel'));
+          return;
+        }
         if (ui.drawTool === 'stair' || ui.drawTool === 'stair2' || ui.drawTool === 'stair3' || ui.drawTool === 'stair3s') {   // 楼梯：点哪里放哪里（直跑 / 双跑 / 三跑 / 正三跑）
           const st = ui.drawTool === 'stair3s', runs = st ? 3 : ui.drawTool === 'stair2' ? 2 : ui.drawTool === 'stair3' ? 3 : 1;
           const q = snapPoint(p, e.shiftKey), id = uid();
@@ -4651,11 +5692,169 @@
                 : tr('已放三跑楼梯 · 折返两次，三跑并排、中间两块休息平台', 'Triple-run stair added with two landings'));
           return;
         }
-        if (['door', 'win', 'roller', 'elev', 'fwin', 'slid', 'yak', 'dble', 'zimu', 'hwin', 'dwin'].includes(ui.drawTool)) {
+        if (ui.drawTool === 'steps') {                                    // 台阶：点哪里放哪里，级数 / 尺寸在右侧改
+          const q = snapPoint(p, e.shiftKey), id = uid();
+          mutate(() => { state.stairs = state.stairs || []; state.stairs.push({ id, x: Math.round(q.x), y: Math.round(q.y), w: 1200, len: 1200, dir: 0, rise: 450, steps: 3, type: 'steps' }); });
+          select({ kind: 'stair', id });
+          toast(tr('已放台阶（1200 宽 × 1200 长，3 级共升 450）· 级数 / 尺寸在右侧改', 'Steps added (1200 × 1200, 3 steps, rise 450) · edit steps / size in the panel'));
+          return;
+        }
+        if (ui.drawTool === 'dim') {                                      // 尺寸标注：两次点击定起点 / 终点
+          const q = snapPoint(p, e.shiftKey);
+          if (!ui.dimA) {
+            ui.dimA = q; ui.dimCur = q; renderNotes();
+            toast(tr('已定起点，再点一下终点', 'Start point set — click the end point'));
+          } else {
+            const a = ui.dimA; ui.dimA = null; ui.dimCur = null;
+            if (Math.hypot(q.x - a.x, q.y - a.y) < 50) { renderNotes(); return; }   // 太短视为误触
+            const id = uid();
+            mutate(() => (state.dims = state.dims || []).push({
+              id, a: [Math.round(a.x / 10) * 10, Math.round(a.y / 10) * 10],
+              b: [Math.round(q.x / 10) * 10, Math.round(q.y / 10) * 10], off: 140
+            }));
+            select({ kind: 'dim', id });
+            toast(tr('已加尺寸标注 · 可拖动移动，偏移 / 删除在右侧', 'Dimension added · drag to move, edit offset / delete in the panel'));
+          }
+          renderNotes(); return;
+        }
+        if (ui.drawTool === 'rail') {                                     // 栏杆：两次点击定起终点
+          const q = snapPoint(p, e.shiftKey);
+          if (!ui.railA) {
+            ui.railA = q; ui.railCur = q; renderNotes();
+            toast(tr('已定栏杆起点，再点一下终点', 'Rail start set — click the end point'));
+          } else {
+            const a = ui.railA; ui.railA = null; ui.railCur = null;
+            if (seg2([a.x, a.y], [q.x, q.y]) < 100) { renderNotes(); return; }
+            const id = uid();
+            mutate(() => (state.rails = state.rails || []).push({
+              id, a: [Math.round(a.x / 10) * 10, Math.round(a.y / 10) * 10],
+              b: [Math.round(q.x / 10) * 10, Math.round(q.y / 10) * 10], h: 1000, style: 'bar'
+            }));
+            select({ kind: 'rail', id });
+            toast(tr('已加栏杆 · 高度 / 栏板样式在右侧改，拖动可整体移动', 'Railing added · edit height / style in the panel, drag to move'));
+          }
+          renderNotes(); return;
+        }
+        if (ui.drawTool === 'beam') {                                     // 梁：两次点击定起终点
+          const q = snapPoint(p, e.shiftKey);
+          if (!ui.beamA) {
+            ui.beamA = q; ui.beamCur = q; renderNotes();
+            toast(tr('已定梁起点，再点一下终点', 'Beam start set — click the end point'));
+          } else {
+            const a = ui.beamA; ui.beamA = null; ui.beamCur = null;
+            if (seg2([a.x, a.y], [q.x, q.y]) < 100) { renderNotes(); return; }
+            const id = uid();
+            mutate(() => (state.beams = state.beams || []).push({
+              id, a: [Math.round(a.x / 10) * 10, Math.round(a.y / 10) * 10],
+              b: [Math.round(q.x / 10) * 10, Math.round(q.y / 10) * 10], w: 200, h: 300, y: 2400
+            }));
+            select({ kind: 'beam', id });
+            toast(tr('已加梁 · 宽 / 高 / 底标高在右侧改', 'Beam added · edit width / height / elevation in the panel'));
+          }
+          renderNotes(); return;
+        }
+        if (ui.drawTool === 'level') {                                    // 标高：点哪里放哪里
+          const q = snapPoint(p, e.shiftKey), id = uid();
+          mutate(() => (state.levels = state.levels || []).push({ id, x: Math.round(q.x / 10) * 10, y: Math.round(q.y / 10) * 10, z: 0 }));
+          select({ kind: 'level', id });
+          toast(tr('已加标高符号 · 标高值 / 文字在右侧改，拖动可移动', 'Level marker added · edit value / text in the panel, drag to move'));
+          return;
+        }
+        if (ui.drawTool === 'north') {                                    // 指北针：点位置放置 / 移动（全局唯一）
+          const q = snapPoint(p, e.shiftKey);
+          const x = Math.round(q.x / 10) * 10, y = Math.round(q.y / 10) * 10;
+          if (state.north) mutate(() => { state.north.x = x; state.north.y = y; });
+          else mutate(() => state.north = { x, y, angle: 0, r: 380 });
+          setSubTool('select'); select({ kind: 'north' });
+          toast(tr('已放置指北针 · 拖动可移动，朝向角度在右侧改', 'North arrow placed · drag to move, set the angle in the panel'));
+          renderNotes(); return;
+        }
+        if (ui.drawTool === 'lift') {                                     // 电梯：点位置放一部（可连续放置）
+          const q = snapPoint(p, e.shiftKey), id = uid();
+          mutate(() => (state.lifts = state.lifts || []).push({
+            id, x: Math.round(q.x / 10) * 10, y: Math.round(q.y / 10) * 10, w: 2000, d: 2000, h: 2400, dw: 900, stop: 0, dir: 0
+          }));
+          select({ kind: 'lift', id });
+          toast(tr('已放电梯（2000×2000）· 宽 / 深 / 门宽 / 开门方向在右侧改', 'Lift placed (2000×2000) · edit size / door in the panel'));
+          renderNotes(); return;
+        }
+        if (ui.drawTool === 'slab') {                                     // 楼板 / 挑板：两次点击定对角点
+          const q = snapPoint(p, e.shiftKey);
+          if (!ui.slabA) {
+            ui.slabA = q; ui.slabCur = q; renderNotes();
+            toast(tr('已定楼板一角，再点对角点', 'Slab corner set — click the opposite corner'));
+          } else {
+            const a = ui.slabA; ui.slabA = null; ui.slabCur = null;
+            if (Math.abs(q.x - a.x) < 100 || Math.abs(q.y - a.y) < 100) { renderNotes(); return; }
+            const id = uid();
+            mutate(() => (state.slabs = state.slabs || []).push({
+              id, x: Math.round((a.x + q.x) / 2 / 10) * 10, y: Math.round((a.y + q.y) / 2 / 10) * 10,
+              w: Math.round(Math.abs(q.x - a.x) / 10) * 10, d: Math.round(Math.abs(q.y - a.y) / 10) * 10,
+              thick: 120, z: 2400
+            }));
+            select({ kind: 'slab', id });
+            toast(tr('已加楼板 · 板厚 / 底标高在右侧改（底标高 0 = 落地板）', 'Slab added · edit thickness / bottom elevation in the panel'));
+          }
+          renderNotes(); return;
+        }
+        if (ui.drawTool === 'parapet') {                                  // 女儿墙：两次点击定起终点
+          const q = snapPoint(p, e.shiftKey);
+          if (!ui.parapetA) {
+            ui.parapetA = q; ui.parapetCur = q; renderNotes();
+            toast(tr('已定女儿墙起点，再点一下终点', 'Parapet start set — click the end point'));
+          } else {
+            const a = ui.parapetA; ui.parapetA = null; ui.parapetCur = null;
+            if (seg2([a.x, a.y], [q.x, q.y]) < 100) { renderNotes(); return; }
+            const id = uid();
+            mutate(() => (state.parapets = state.parapets || []).push({
+              id, a: [Math.round(a.x / 10) * 10, Math.round(a.y / 10) * 10],
+              b: [Math.round(q.x / 10) * 10, Math.round(q.y / 10) * 10], t: 120, h: 900, z: 2800
+            }));
+            select({ kind: 'parapet', id });
+            toast(tr('已加女儿墙 · 厚 / 高 / 底标高在右侧改', 'Parapet added · edit thickness / height / elevation in the panel'));
+          }
+          renderNotes(); return;
+        }
+        if (ui.drawTool === 'canopy') {                                   // 雨棚：两次点击定起终点
+          const q = snapPoint(p, e.shiftKey);
+          if (!ui.canopyA) {
+            ui.canopyA = q; ui.canopyCur = q; renderNotes();
+            toast(tr('已定雨棚起点，再点一下终点', 'Canopy start set — click the end point'));
+          } else {
+            const a = ui.canopyA; ui.canopyA = null; ui.canopyCur = null;
+            if (seg2([a.x, a.y], [q.x, q.y]) < 100) { renderNotes(); return; }
+            const id = uid();
+            mutate(() => (state.canopies = state.canopies || []).push({
+              id, a: [Math.round(a.x / 10) * 10, Math.round(a.y / 10) * 10],
+              b: [Math.round(q.x / 10) * 10, Math.round(q.y / 10) * 10], depth: 800, thick: 100, z: 2400, side: 1
+            }));
+            select({ kind: 'canopy', id });
+            toast(tr('已加雨棚 · 挑出 / 板厚 / 底标高在右侧改，可翻转方向', 'Canopy added · edit projection / thickness / elevation in the panel'));
+          }
+          renderNotes(); return;
+        }
+        if (ui.drawTool === 'text') {                                     // 文字标注：点哪里放哪里，内容/字号在右侧改
+          const q = snapPoint(p, e.shiftKey), id = uid();
+          mutate(() => { state.notes = state.notes || []; state.notes.push({ id, x: Math.round(q.x / 10) * 10, y: Math.round(q.y / 10) * 10, text: tr('文字标注', 'Note'), size: 300 }); });
+          setSubTool('select');
+          select({ kind: 'note', id });
+          toast(tr('已放文字标注 · 在右侧改内容 / 字号，拖动可移动', 'Note added · edit text / size in the panel, drag to move'));
+          return;
+        }
+        if (ui.drawTool === 'paint') {                                    // 材质刷：把样板房间的地面材料刷到点中的房间
+          const rid = t.closest('[data-room]')?.dataset.room;
+          if (!rid || !state.rooms[rid]) return toast(tr('请点击房间地面刷材质', 'Click a room floor to paint'));
+          const mat = MATS[ui.paintMat] ? ui.paintMat : 'tile800';
+          if (state.rooms[rid].mat === mat) return toast(tr(`这间已经是「${nm(MATS[mat].name)}」`, 'Already uses this material'));
+          mutate(() => state.rooms[rid].mat = mat);
+          toast(tr(`已刷「${nm(MATS[mat].name)}」到 ${nm(state.rooms[rid].name)}`, `Applied "${MATS[mat].name}" to ${state.rooms[rid].name}`));
+          return;
+        }
+        if (['door', 'win', 'louver', 'cwin', 'bay', 'roller', 'elev', 'fwin', 'slid', 'sd', 'fold', 'yak', 'dble', 'zimu', 'hwin', 'dwin'].includes(ui.drawTool)) {
           const og = t.closest('[data-open]');
           if (og) { const id = og.dataset.open; if (!(ui.sel?.kind === 'open' && ui.sel?.id === id)) select({ kind: 'open', id }); renderPanel(); return; }  // 点已有门窗 → 选中编辑
           const hit = wallAt(p);
-          const km = { door: 'door', win: 'window', roller: 'roller', elev: 'elev', fwin: 'fwin', slid: 'slid', yak: 'yak', dble: 'dble', zimu: 'zimu', hwin: 'hwin', dwin: 'dwin' };
+          const km = { door: 'door', win: 'window', louver: 'louver', cwin: 'cwin', bay: 'bay', roller: 'roller', elev: 'elev', fwin: 'fwin', slid: 'slid', sd: 'sd', fold: 'fold', yak: 'yak', dble: 'dble', zimu: 'zimu', hwin: 'hwin', dwin: 'dwin' };
           if (hit) placeOpening(hit, km[ui.drawTool]);
           else toast(tr('请点击墙上的位置', 'Click a position on a wall'));
           return;
@@ -4712,6 +5911,47 @@
         drag = { kind: 'bopenDoorEnd', id: ui.sel.id, end: +h.dataset.end, h0: [...d.h], axis: [...d.c], len0: d.len, d0: [...(bov(ui.sel.id).d || [0, 0])], sx: e.clientX, sy: e.clientY, before: snap(), moved: false };
       } else if (edit && multiHit(t)) {                             // 多选状态下按住其中任一对象 → 整体拖动
         drag = { kind: 'multiMove', sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, before: snap(), moved: false, items: startMultiDrag() };
+      } else if (edit && t.closest('[data-note]')) {
+        const id = t.closest('[data-note]').dataset.note, n0 = (state.notes || []).find(x => x.id === id);
+        if (!(ui.sel?.kind === 'note' && ui.sel.id === id)) select({ kind: 'note', id });
+        if (n0) drag = { kind: 'noteMove', id, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, x0: n0.x, y0: n0.y, before: snap(), moved: false };
+      } else if (edit && t.closest('[data-dim]')) {
+        const id = t.closest('[data-dim]').dataset.dim, d0 = (state.dims || []).find(x => x.id === id);
+        if (!(ui.sel?.kind === 'dim' && ui.sel.id === id)) select({ kind: 'dim', id });
+        if (d0) drag = { kind: 'dimMove', id, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, a0: [...d0.a], b0: [...d0.b], before: snap(), moved: false };
+      } else if (edit && t.closest('[data-rail]')) {
+        const id = t.closest('[data-rail]').dataset.rail, r0 = (state.rails || []).find(x => x.id === id);
+        if (!(ui.sel?.kind === 'rail' && ui.sel.id === id)) select({ kind: 'rail', id });
+        if (r0) drag = { kind: 'railMove', id, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, a0: [...r0.a], b0: [...r0.b], before: snap(), moved: false };
+      } else if (edit && t.closest('[data-beam]')) {
+        const id = t.closest('[data-beam]').dataset.beam, b0 = (state.beams || []).find(x => x.id === id);
+        if (!(ui.sel?.kind === 'beam' && ui.sel.id === id)) select({ kind: 'beam', id });
+        if (b0) drag = { kind: 'beamMove', id, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, a0: [...b0.a], b0: [...b0.b], before: snap(), moved: false };
+      } else if (edit && t.closest('[data-level]')) {
+        const id = t.closest('[data-level]').dataset.level, l0 = (state.levels || []).find(x => x.id === id);
+        if (!(ui.sel?.kind === 'level' && ui.sel.id === id)) select({ kind: 'level', id });
+        if (l0) drag = { kind: 'levelMove', id, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, x0: l0.x, y0: l0.y, before: snap(), moved: false };
+      } else if (edit && t.closest('[data-lift]')) {
+        const id = t.closest('[data-lift]').dataset.lift, l0 = (state.lifts || []).find(x => x.id === id);
+        if (!(ui.sel?.kind === 'lift' && ui.sel.id === id)) select({ kind: 'lift', id });
+        if (l0) drag = { kind: 'liftMove', id, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, x0: l0.x, y0: l0.y, before: snap(), moved: false };
+      } else if (edit && t.closest('[data-north]')) {
+        if (state.north) {
+          if (ui.sel?.kind !== 'north') select({ kind: 'north' });
+          drag = { kind: 'northMove', sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, x0: state.north.x, y0: state.north.y, before: snap(), moved: false };
+        }
+      } else if (edit && t.closest('[data-slab]')) {
+        const id = t.closest('[data-slab]').dataset.slab, s0 = (state.slabs || []).find(x => x.id === id);
+        if (!(ui.sel?.kind === 'slab' && ui.sel.id === id)) select({ kind: 'slab', id });
+        if (s0) drag = { kind: 'slabMove', id, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, x0: s0.x, y0: s0.y, before: snap(), moved: false };
+      } else if (edit && t.closest('[data-parapet]')) {
+        const id = t.closest('[data-parapet]').dataset.parapet, p0 = (state.parapets || []).find(x => x.id === id);
+        if (!(ui.sel?.kind === 'parapet' && ui.sel.id === id)) select({ kind: 'parapet', id });
+        if (p0) drag = { kind: 'parapetMove', id, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, a0: [...p0.a], b0: [...p0.b], before: snap(), moved: false };
+      } else if (edit && t.closest('[data-canopy]')) {
+        const id = t.closest('[data-canopy]').dataset.canopy, c0 = (state.canopies || []).find(x => x.id === id);
+        if (!(ui.sel?.kind === 'canopy' && ui.sel.id === id)) select({ kind: 'canopy', id });
+        if (c0) drag = { kind: 'canopyMove', id, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, a0: [...c0.a], b0: [...c0.b], before: snap(), moved: false };
       } else if (edit && t.closest('[data-bopen]')) {
         const id = t.closest('[data-bopen]').dataset.bopen;
         if (!(ui.sel?.kind === 'bopen' && ui.sel?.id === id)) select({ kind: 'bopen', id });
@@ -4781,6 +6021,16 @@
         const room = e.target.closest && e.target.closest('[data-room]');
         $('#hover').innerHTML = room ? `<b>${esc(state.rooms[room.dataset.room].name)}</b> ${fmt(area(allRooms().find(r => r.id === room.dataset.room).poly))} m²` : '';
         if (ui.tool === 'measure' && ui.mA) { ui.mCur = snapPoint(p, e.shiftKey); renderMeasure(); }
+        if (ui.tool === 'draw' && ui.dimA) { ui.dimCur = snapPoint(p, e.shiftKey); renderNotes(); }
+        if (ui.tool === 'draw' && (ui.railA || ui.beamA || ui.parapetA || ui.canopyA || ui.slabA)) {   // 打点中：跟手预览
+          const q = snapPoint(p, e.shiftKey);
+          if (ui.railA) ui.railCur = q;
+          if (ui.beamA) ui.beamCur = q;
+          if (ui.parapetA) ui.parapetCur = q;
+          if (ui.canopyA) ui.canopyCur = q;
+          if (ui.slabA) ui.slabCur = q;
+          renderNotes();
+        }
         if (ui.tool === 'draw' && wStart) { wCur = snapDraw(p, e.shiftKey); renderDraw(); }
         return;
       }
@@ -4811,6 +6061,71 @@
         let pdx = dxs, pdy = dys;
         if (rr) { const c = Math.cos(-rr), s = Math.sin(-rr); pdx = dxs * c - dys * s; pdy = dxs * s + dys * c; }   // 拖动方向跟着画布转
         view.x0 = drag.x0 - pdx; view.y0 = drag.y0 - pdy; applyView(); return;
+      }
+      if (drag.kind === 'noteMove') {
+        if (!drag.moved && !far) return;
+        drag.moved = true;
+        const n = (state.notes || []).find(x => x.id === drag.id); if (!n) return;
+        n.x = Math.round((drag.x0 + p.x - drag.px) / 10) * 10;
+        n.y = Math.round((drag.y0 + p.y - drag.py) / 10) * 10;
+        renderNotes(); renderSel(); return;
+      }
+      if (drag.kind === 'dimMove') {                          // 尺寸标注：整体平移（两个测点一起走）
+        if (!drag.moved && !far) return;
+        drag.moved = true;
+        const d = (state.dims || []).find(x => x.id === drag.id); if (!d) return;
+        const dx = Math.round((p.x - drag.px) / 10) * 10, dy = Math.round((p.y - drag.py) / 10) * 10;
+        d.a = [drag.a0[0] + dx, drag.a0[1] + dy];
+        d.b = [drag.b0[0] + dx, drag.b0[1] + dy];
+        renderNotes(); return;
+      }
+      if (drag.kind === 'railMove' || drag.kind === 'beamMove') {   // 栏杆 / 梁：两端一起平移
+        if (!drag.moved && !far) return;
+        drag.moved = true;
+        const o = ((drag.kind === 'railMove' ? state.rails : state.beams) || []).find(x => x.id === drag.id); if (!o) return;
+        const dx = Math.round((p.x - drag.px) / 10) * 10, dy = Math.round((p.y - drag.py) / 10) * 10;
+        o.a = [drag.a0[0] + dx, drag.a0[1] + dy];
+        o.b = [drag.b0[0] + dx, drag.b0[1] + dy];
+        renderNotes(); return;
+      }
+      if (drag.kind === 'levelMove') {                        // 标高符号：整体移动
+        if (!drag.moved && !far) return;
+        drag.moved = true;
+        const l = (state.levels || []).find(x => x.id === drag.id); if (!l) return;
+        l.x = Math.round((drag.x0 + p.x - drag.px) / 10) * 10;
+        l.y = Math.round((drag.y0 + p.y - drag.py) / 10) * 10;
+        renderNotes(); renderSel(); return;
+      }
+      if (drag.kind === 'liftMove') {                          // 电梯：整体平移
+        if (!drag.moved && !far) return;
+        drag.moved = true;
+        const l = (state.lifts || []).find(x => x.id === drag.id); if (!l) return;
+        l.x = drag.x0 + Math.round((p.x - drag.px) / 10) * 10;
+        l.y = drag.y0 + Math.round((p.y - drag.py) / 10) * 10;
+        renderPillars(); renderSel(); return;
+      }
+      if (drag.kind === 'northMove') {                         // 指北针：整体平移
+        if (!drag.moved && !far) return;
+        drag.moved = true;
+        state.north.x = drag.x0 + Math.round((p.x - drag.px) / 10) * 10;
+        state.north.y = drag.y0 + Math.round((p.y - drag.py) / 10) * 10;
+        renderNotes(); renderSel(); return;
+      }
+      if (drag.kind === 'slabMove' || drag.kind === 'parapetMove' || drag.kind === 'canopyMove') {
+        if (!drag.moved && !far) return;
+        drag.moved = true;
+        const dx = Math.round((p.x - drag.px) / 10) * 10, dy = Math.round((p.y - drag.py) / 10) * 10;
+        if (drag.kind === 'slabMove') {
+          const s = (state.slabs || []).find(x => x.id === drag.id); if (!s) return;
+          s.x = drag.x0 + dx; s.y = drag.y0 + dy;
+        } else if (drag.kind === 'parapetMove') {
+          const q = (state.parapets || []).find(x => x.id === drag.id); if (!q) return;
+          q.a = [drag.a0[0] + dx, drag.a0[1] + dy]; q.b = [drag.b0[0] + dx, drag.b0[1] + dy];
+        } else {
+          const q = (state.canopies || []).find(x => x.id === drag.id); if (!q) return;
+          q.a = [drag.a0[0] + dx, drag.a0[1] + dy]; q.b = [drag.b0[0] + dx, drag.b0[1] + dy];
+        }
+        renderNotes(); renderSel(); return;
       }
       if (drag.kind === 'marquee') {                          // 框选：实时画选框
         if (!drag.moved && !far) return;
@@ -5082,23 +6397,33 @@
 
     /* ======================= 导入导出 ======================= */
     function download(name, blob) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
+    function svgToPngBlob(W) {
+      return new Promise((resolve, reject) => {
+        const clone = svg.cloneNode(true), H = Math.round(W * BOUNDS.h / BOUNDS.w);
+        clone.setAttribute('viewBox', `${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.w} ${BOUNDS.h}`);
+        clone.setAttribute('width', W); clone.setAttribute('height', H);
+        clone.querySelector('#gSel').innerHTML = '';
+        clone.querySelector('#gGrid').innerHTML = `<rect x="-20000" y="-20000" width="55000" height="55000" fill="${ui.layers.grid ? 'url(#grid)' : '#f7f4ee'}"/>`;
+        const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        Object.entries({ x: -20000, y: -20000, width: 55000, height: 55000, fill: '#f7f4ee' }).forEach(([k, v]) => bg.setAttribute(k, v));
+        clone.insertBefore(bg, clone.querySelector('#gGrid'));
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+            cv.getContext('2d').drawImage(img, 0, 0, W, H);
+            cv.toBlob(b => b ? resolve(b) : reject(new Error('PNG encoding failed')), 'image/png');
+          } catch (e) { reject(e); }
+        };
+        img.onerror = () => reject(new Error('SVG rasterization failed'));
+        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(clone));
+      });
+    }
     function exportPNG() {
       if (is3D()) return window.View3D.shot();
-      const clone = svg.cloneNode(true), W = 3200, H = Math.round(W * BOUNDS.h / BOUNDS.w);
-      clone.setAttribute('viewBox', `${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.w} ${BOUNDS.h}`);
-      clone.setAttribute('width', W); clone.setAttribute('height', H);
-      clone.querySelector('#gSel').innerHTML = '';
-      clone.querySelector('#gGrid').innerHTML = `<rect x="-20000" y="-20000" width="55000" height="55000" fill="${ui.layers.grid ? 'url(#grid)' : '#f7f4ee'}"/>`;
-      const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      Object.entries({ x: -20000, y: -20000, width: 55000, height: 55000, fill: '#f7f4ee' }).forEach(([k, v]) => bg.setAttribute(k, v));
-      clone.insertBefore(bg, clone.querySelector('#gGrid'));
-      const img = new Image();
-      img.onload = () => {
-        const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
-        cv.getContext('2d').drawImage(img, 0, 0, W, H);
-        cv.toBlob(b => download(tr('户型装修方案', 'floor-plan-design') + '.png', b));
-      };
-      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(clone));
+      svgToPngBlob(3200)
+        .then(b => download(tr('户型装修方案', 'floor-plan-design') + '.png', b))
+        .catch(() => toast(tr('导出图片失败', 'Failed to export image')));
     }
 
     /* ======================= 杂项 ======================= */
@@ -5124,6 +6449,7 @@
       viewMode = m;
       if (m === '3d') {
         if (ui.tool !== 'select') setTool('select'); ui.mA = null; document.body.classList.add('m3d'); await window.View3D.enter();
+        setRightTab('prop');   // 3D 下右侧只保留属性（对象列表仅 2D 可用）
         const hasDoors = state.openings.some(o => o.kind === 'door' && openingWallGeom(o.wall)) || DOORS.some((d, i) => !bopenRemoved('d' + i) && !bopenOnDeadWall('d' + i));
         if (hasDoors && !setView.doorTipShown) { setView.doorTipShown = true; toast(tr('小提示：点击门即可开门 / 关门', 'Tip: click a door to open / close')); }
       }
@@ -5135,13 +6461,60 @@
     document.querySelectorAll('#viewSeg .btn').forEach(b => b.onclick = () => setView(b.dataset.view));
 
     document.querySelectorAll('#tools .btn').forEach(b => b.onclick = () => setTool(b.dataset.tool));
+    // 左侧「家具库 / 建筑工具」选项夹
+    function syncArchHint() { const h = $('#archHint'); if (h) h.hidden = ui.tool === 'draw'; }
+    function setLibTab(k) {
+      const f = $('#libPaneFurn'), a = $('#libPaneArch');
+      if (!f || !a) return;
+      f.hidden = k !== 'furn'; a.hidden = k !== 'arch';
+      document.querySelectorAll('#libTabs [data-libt]').forEach(b => b.classList.toggle('on', b.dataset.libt === k));
+      syncArchHint();
+    }
+    $('#libTabs')?.addEventListener('click', e => {
+      const b = e.target.closest('[data-libt]'); if (!b) return;
+      setLibTab(b.dataset.libt);   // 只切换选项夹，不自动进入设计模式
+    });
+    // 右侧「对象列表 / 属性」选项夹
+    function setRightTab(k) {
+      const o = $('#paneObj'), p = $('#paneProp');
+      if (!o || !p) return;
+      o.hidden = k !== 'obj'; p.hidden = k !== 'prop';
+      document.querySelectorAll('#rightTabs [data-rt]').forEach(b => b.classList.toggle('on', b.dataset.rt === k));
+    }
+    $('#rightTabs')?.addEventListener('click', e => {
+      const b = e.target.closest('[data-rt]'); if (!b) return;
+      setRightTab(b.dataset.rt);
+    });
     function setSubTool(dt) {
+      if (dt === 'paint') {                   // 材质刷：以当前选中的房间为样板材料（没选房间则沿用上次）
+        const rm = ui.sel?.kind === 'room' ? state.rooms[ui.sel.id]?.mat : null;
+        if (rm && MATS[rm]) ui.paintMat = rm;
+        if (!MATS[ui.paintMat]) ui.paintMat = 'tile800';
+      }
       ui.drawTool = dt;
+      if (dt !== 'dim') { ui.dimA = null; ui.dimCur = null; }   // 离开尺寸标注：放弃打到一半的点
+      if (dt !== 'rail') { ui.railA = null; ui.railCur = null; }
+      if (dt !== 'beam') { ui.beamA = null; ui.beamCur = null; }
+      if (dt !== 'slab') { ui.slabA = null; ui.slabCur = null; }
+      if (dt !== 'parapet') { ui.parapetA = null; ui.parapetCur = null; }
+      if (dt !== 'canopy') { ui.canopyA = null; ui.canopyCur = null; }
       svg.dataset.subtool = dt;
       if (dt !== 'select') select(null);      // 切到创建类子工具时取消选中
       else renderSel();                       // 切回选择：按当前选中对象重画手柄（房间顶点 / 家具手柄立即出现）
       document.querySelectorAll('#designTools .btn').forEach(x => x.classList.toggle('on', x.dataset.dt === dt));
+      if (ui.tool === 'draw' && innerWidth <= 900) document.querySelector('aside.lib')?.classList.remove('open');   // 手机上选完工具收起抽屉
       syncModeHint();
+      if (dt === 'paint') toast(tr(`材质刷：当前「${nm(MATS[ui.paintMat].name)}」· 先用「选择」点房间可换样板`, `Paint: "${MATS[ui.paintMat].name}" · select a room to change it`));
+      if (dt === 'dim') toast(tr('尺寸标注：点起点，再点终点（可拖动整体移动）', 'Dimension: click the start point, then the end point (drag to move)'));
+      if (dt === 'rail') toast(tr('栏杆：点起点，再点终点；高度 / 直杆或玻璃在右侧改', 'Railing: click start, then end. Edit height / infill in the panel'));
+      if (dt === 'beam') toast(tr('梁：点起点，再点终点；宽 / 高 / 底标高在右侧改', 'Beam: click start, then end. Edit width / height / level in the panel'));
+      if (dt === 'level') toast(tr('标高：点击放置标高符号，可改标高值与文字', 'Level: click to place a level marker; edit value / text in the panel'));
+      if (dt === 'slab') toast(tr('楼板：点第一个角，再点对角点；板厚 / 底标高在右侧改', 'Slab: click one corner, then the opposite. Edit thickness / elevation in the panel'));
+      if (dt === 'parapet') toast(tr('女儿墙：点起点，再点终点；厚 / 高 / 底标高在右侧改', 'Parapet: click start, then end. Edit thickness / height / elevation in the panel'));
+      if (dt === 'canopy') toast(tr('雨棚：点起点，再点终点；挑出 / 板厚 / 底标高在右侧改', 'Canopy: click start, then end. Edit projection / thickness / elevation in the panel'));
+      if (dt === 'north') toast(tr('指北针：点击放置 / 移动，朝向角度在右侧改', 'North arrow: click to place / move; set the angle in the panel'));
+      if (dt === 'lift') toast(tr('电梯：点位置放置；3D 中点门扇可开合，宽 / 深 / 停靠高度 / 门宽 / 开门方向在右侧改', 'Elevator: click to place; click its door in 3D to open/close'));
+      renderNotes();
     }
     document.querySelectorAll('#designTools .btn').forEach(b => b.onclick = () => setSubTool(b.dataset.dt));
     document.querySelectorAll('#layers .btn').forEach(b => {
@@ -5176,7 +6549,7 @@
         const id = 'w' + i; if (bopenRemoved(id) || bopenOnDeadWall(id)) return;
         const r = bopenRect(id); opens.push({ kind: 'bopen', id, name: i >= 6 ? tr('飘窗', 'Bay window') : tr('窗户', 'Window'), sub: Math.round(r[2] - r[0]) + '×' + Math.round(r[3] - r[1]) });
       });
-      state.openings.forEach(o => opens.push({ kind: 'open', id: o.id, name: o.kind === 'door' ? tr('房门', 'Door') : o.kind === 'roller' ? tr('卷帘门', 'Roller shutter') : o.kind === 'elev' ? tr('电梯门', 'Elevator door') : o.kind === 'fwin' ? tr('落地窗', 'Floor-to-ceiling window') : o.kind === 'slid' ? tr('落地推拉门', 'Sliding glass door') : o.kind === 'yak' ? tr('垭口', 'Cased opening') : o.kind === 'dble' ? tr('双开门', 'Double door') : o.kind === 'zimu' ? tr('子母门', 'Unequal double door') : o.kind === 'hwin' ? tr('高窗', 'High window') : o.kind === 'dwin' ? tr('门连窗', 'Door + window') : tr('窗户', 'Window'), sub: o.w + ' mm' }));
+      state.openings.forEach(o => opens.push({ kind: 'open', id: o.id, name: o.kind === 'door' ? tr('房门', 'Door') : o.kind === 'roller' ? tr('卷帘门', 'Roller shutter') : o.kind === 'elev' ? tr('电梯门', 'Elevator door') : o.kind === 'fwin' ? tr('落地窗', 'Floor-to-ceiling window') : o.kind === 'slid' ? tr('落地推拉门', 'Sliding glass door') : o.kind === 'yak' ? tr('垭口', 'Cased opening') : o.kind === 'dble' ? tr('双开门', 'Double door') : o.kind === 'zimu' ? tr('子母门', 'Unequal double door') : o.kind === 'hwin' ? tr('高窗', 'High window') : o.kind === 'louver' ? tr('百叶窗', 'Louver window') : o.kind === 'cwin' ? tr('圆窗', 'Round window') : o.kind === 'bay' ? tr('飘窗', 'Bay window') : o.kind === 'dwin' ? tr('门连窗', 'Door + window') : tr('窗户', 'Window'), sub: o.w + ' mm' }));
       const furn = state.furniture.map(f => ({ kind: 'furn', id: f.id, name: nm(f.name), sub: f.w + '×' + f.d }));
       return { rooms, walls, opens, furn };
     }
@@ -5322,7 +6695,7 @@
       let mask = $('#cloudMask');
       if (!mask) {
         mask = document.createElement('div'); mask.id = 'cloudMask';
-        mask.innerHTML = `<div id="cloudBox"><button id="cloudX" title="关闭">×</button><b id="cloudTitle"></b><div id="cloudSub" class="welcome-sub"></div><div id="cloudNameRow"><input id="cloudName" maxlength="80" autocomplete="off"></div><div id="cloudList"></div><div id="cloudFoot"><button class="btn" id="cloudNew"></button><button class="btn" id="cloudImport"></button><button class="btn" id="cloudOk"></button></div></div>`;
+        mask.innerHTML = `<div id="cloudBox"><button id="cloudX" title="关闭">×</button><b id="cloudTitle"></b><div id="cloudSub" class="welcome-sub"></div><div id="cloudNameRow"><label id="cloudNameLabel" for="cloudName"></label><input id="cloudName" maxlength="80" autocomplete="off"></div><div id="cloudList"></div><div id="cloudFoot"><button class="btn" id="cloudImport"></button><button class="btn" id="cloudOk"></button></div></div>`;
         document.body.appendChild(mask);
       }
       // 点弹窗外部不关闭，只能通过按钮退出
@@ -5330,10 +6703,10 @@
       const save = mode === 'save';
       mask.querySelector('#cloudBox').classList.toggle('welcome', !save);
       mask.querySelector('#cloudList').classList.toggle('grid', !save);
-      mask.querySelector('#cloudSub').style.display = save ? 'none' : '';
+      mask.querySelector('#cloudList').classList.toggle('rows', save);
+      mask.querySelector('#cloudSub').style.display = '';
       mask.querySelector('#cloudNameRow').style.display = save ? 'flex' : 'none';
       mask.querySelector('#cloudOk').style.display = save ? '' : 'none';
-      mask.querySelector('#cloudNew').style.display = save ? 'none' : '';
       mask.querySelector('#cloudImport').style.display = save ? 'none' : '';
       return mask;
     }
@@ -5345,40 +6718,75 @@
       catch (e) { cloudFail(); return; }
       const mask = cloudMask('save');
       mask.querySelector('#cloudTitle').textContent = tr('保存方案', 'Save plan');
+      mask.querySelector('#cloudSub').textContent = tr('为当前设计取个名称保存；点击已有方案可覆盖保存', 'Name this design and save it — or click an existing plan to overwrite it');
+      mask.querySelector('#cloudNameLabel').textContent = tr('方案名称', 'Plan name');
       const nameEl = mask.querySelector('#cloudName');
+      nameEl.placeholder = tr('例如：客厅改造方案', 'e.g. Living room remodel');
+      nameEl.setAttribute('aria-label', tr('方案名称', 'Plan name'));
       nameEl.value = planName && planName !== AUTO_NAME ? planName : tr('我的方案', 'My plan');
       const listEl = mask.querySelector('#cloudList');
       const others = plans.filter(p => p.name !== AUTO_NAME);
-      listEl.innerHTML = '';
-      if (!others.length) listEl.innerHTML = `<div class="muted">${tr('还没有保存过方案，输入名称即可保存为新方案', 'No plans yet — type a name to save a new one')}</div>`;
-      for (const p of others) {
+      listEl.innerHTML = `<div class="cloud-sec-title"></div><div class="cloud-rows"></div>`;
+      listEl.querySelector('.cloud-sec-title').textContent = tr('已有方案（点击可覆盖）', 'Existing plans (click to overwrite)');
+      const rowsEl = listEl.querySelector('.cloud-rows');
+      if (!others.length) rowsEl.innerHTML = `<div class="muted">${tr('还没有保存过方案，输入名称即可保存为新方案', 'No plans yet — type a name to save a new one')}</div>`;
+      else for (const p of others) {
         const row = document.createElement('div'); row.className = 'cloud-row';
-        row.innerHTML = `<span class="nm"></span><span class="tm"></span>`;
+        row.innerHTML = `<span class="th"><span></span></span><span class="info"><span class="nm"></span><span class="tm"></span></span>`;
+        const th = row.querySelector('.th');
+        th.querySelector('span').textContent = tr('无预览', '—');
+        if (p.thumbnail) {
+          const img = new Image();
+          img.alt = '';
+          img.onload = () => th.replaceChildren(img);
+          img.src = p.thumbnail;
+        }
         row.querySelector('.nm').textContent = p.name;
         row.querySelector('.tm').textContent = new Date(p.mtime * 1000).toLocaleString();
         if (p.name === planName) row.classList.add('sel');
         row.onclick = () => {
-          listEl.querySelectorAll('.cloud-row.sel').forEach(x => x.classList.remove('sel'));
+          rowsEl.querySelectorAll('.cloud-row.sel').forEach(x => x.classList.remove('sel'));
           row.classList.add('sel');
           nameEl.value = p.name;
+          syncOk();
         };
-        listEl.appendChild(row);
+        rowsEl.appendChild(row);
       }
       const okB = mask.querySelector('#cloudOk');
-      okB.textContent = tr('保存', 'Save');
+      okB.classList.add('primary');
+      const syncOk = () => {
+        const name = nameEl.value.trim();
+        const hit = name !== planName && others.some(p => p.name === name);
+        okB.textContent = hit ? tr('覆盖保存', 'Overwrite') : tr('保存', 'Save');
+      };
+      nameEl.oninput = syncOk;
+      syncOk();
       okB.onclick = async () => {
+        if (okB.disabled) return;
         const name = nameEl.value.trim();
         if (!name) { toast(tr('请输入方案名称', 'Please enter a plan name')); return; }
         if (name === AUTO_NAME) { toast(tr('该名称保留给自动保存，请换一个', 'Reserved for autosave — pick another')); return; }
         if (plans.some(p => p.name === name) && name !== planName &&
             !await uiConfirm(tr('已存在同名方案「' + name + '」，覆盖它？', 'A plan named "' + name + '" already exists. Overwrite?'), tr('覆盖', 'Overwrite'))) return;
+        okB.disabled = true;
+        const body = JSON.stringify({ ...state, layers: ui.layers });
+        let thumb = null;
+        try { thumb = await svgToPngBlob(480); } catch (e) { }
         try {
-          const r = await fetch(planURL(name), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...state, layers: ui.layers }) });
+          const r = await fetch(planURL(name), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body });
           if (!r.ok) throw 0;
-        } catch (e) { cloudFail(); return; }
-        syncPlanName(name);
-        mask.classList.remove('open');
-        toast(tr('已保存：' + name, 'Saved: ' + name));
+          let thumbSaved = !!thumb;
+          if (thumb) {
+            try {
+              const res = await fetch(planURL(name) + '/thumbnail', { method: 'PUT', headers: { 'Content-Type': 'image/png' }, body: thumb });
+              if (!res.ok) throw 0;
+            } catch (e) { thumbSaved = false; }
+          }
+          syncPlanName(name);
+          mask.classList.remove('open');
+          toast(thumbSaved ? tr('已保存：' + name, 'Saved: ' + name) : tr('已保存：' + name + '（缩略图保存失败）', 'Saved: ' + name + ' (thumbnail failed)'));
+        } catch (e) { cloudFail(); }
+        finally { okB.disabled = false; }
       };
       nameEl.onkeydown = e => { if (e.key === 'Enter') okB.onclick(); };
       mask.classList.add('open');
@@ -5406,13 +6814,27 @@
       mask.querySelector('#cloudTitle').textContent = tr('户型装修设计', 'Floor Plan Designer');
       mask.querySelector('#cloudSub').textContent = tr('欢迎回来！选择一个方案继续创作，或从空白开始', 'Welcome back — pick a plan to continue, or start from scratch');
       const listEl = mask.querySelector('#cloudList');
-      const empty = () => { listEl.innerHTML = `<div class="muted">${tr('还没有保存的方案，点击下方「新建空方案」开始设计吧', 'No saved plans yet — hit "New empty plan" below to start designing')}</div>`; };
-      listEl.innerHTML = '';
+      listEl.innerHTML = '<div class="cloud-actions"></div><div class="cloud-plans-title"></div><input id="cloudSearch" type="search" autocomplete="off"><div class="cloud-plans"></div>';
+      const actionsEl = listEl.querySelector('.cloud-actions'), plansEl = listEl.querySelector('.cloud-plans'), searchEl = listEl.querySelector('#cloudSearch');
+      listEl.querySelector('.cloud-plans-title').textContent = tr('已保存的方案', 'Saved plans');
+      searchEl.placeholder = tr('搜索方案名称', 'Search plan names');
+      searchEl.setAttribute('aria-label', tr('搜索方案名称', 'Search plan names'));
+      searchEl.disabled = !plans.length;
+      const empty = () => { plansEl.innerHTML = `<div class="muted">${tr('还没有保存的方案，点击上方「新建空方案」开始设计吧', 'No saved plans yet — use "New empty plan" above to start designing')}</div>`; };
       if (!plans.length) { empty(); }
       for (const p of plans) {
         const draft = p.name === AUTO_NAME;
         const card = document.createElement('div'); card.className = 'plan-card';
-        card.innerHTML = `<div class="pc-del"></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
+        card.dataset.name = p.name.toLocaleLowerCase();
+        card.innerHTML = `<div class="pc-del"></div><div class="pc-thumb"><span></span></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
+        const thumbBox = card.querySelector('.pc-thumb');
+        thumbBox.querySelector('span').textContent = tr('暂无预览', 'No preview');
+        if (p.thumbnail) {
+          const img = new Image();
+          img.alt = tr('方案预览：' + p.name, 'Plan preview: ' + p.name);
+          img.onload = () => thumbBox.replaceChildren(img);
+          img.src = p.thumbnail;
+        }
         card.querySelector('.pc-nm').textContent = draft ? tr('自动保存（草稿）', 'Autosave (draft)') : p.name;
         if (p.name === planName) {
           card.classList.add('cur');
@@ -5428,7 +6850,7 @@
           try { const r = await fetch(planURL(p.name), { method: 'DELETE' }); if (!r.ok) throw 0; }
           catch (e) { toast(tr('删除失败', 'Failed to delete')); return; }
           card.remove(); toast(tr('已删除', 'Deleted'));
-          if (!listEl.querySelector('.plan-card')) empty();
+          if (!plansEl.querySelector('.plan-card')) { empty(); searchEl.value = ''; searchEl.disabled = true; }
         };
         card.onclick = async () => {
           try {
@@ -5436,11 +6858,29 @@
             cloudLoad(await r.json(), p.name); mask.classList.remove('open');
           } catch (e) { toast(tr('读取失败', 'Failed to load')); }
         };
-        listEl.appendChild(card);
+        plansEl.appendChild(card);
       }
+      searchEl.oninput = () => {
+        const q = searchEl.value.trim().toLocaleLowerCase();
+        let visible = 0;
+        plansEl.querySelectorAll('.plan-card').forEach(card => {
+          const show = card.dataset.name.includes(q);
+          card.hidden = !show;
+          if (show) visible++;
+        });
+        const noMatch = plansEl.querySelector('.search-empty');
+        if (plans.length && q && !visible) {
+          if (!noMatch) {
+            const note = document.createElement('div'); note.className = 'muted search-empty';
+            note.textContent = tr('没有匹配的方案', 'No matching plans');
+            plansEl.appendChild(note);
+          }
+        } else if (noMatch) noMatch.remove();
+      };
       /* 内置示例方案：点击载入画板（不入服务器，可「保存方案」留存） */
       const demo = document.createElement('div'); demo.className = 'plan-card demo';
-      demo.innerHTML = `<div class="pc-nm"></div><div class="pc-tm"></div>`;
+      demo.innerHTML = `<div class="pc-thumb"><img src="/libs/demo-plan.png"></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
+      demo.querySelector('.pc-thumb img').alt = tr('示范户型 2D 预览', 'Demo floor plan 2D preview');
       demo.querySelector('.pc-nm').textContent = tr('示例：示范户型', 'Demo: sample floor plan');
       demo.querySelector('.pc-tm').textContent = tr('两居室参考案例，载入后可随意改造', 'A sample two-bedroom — load it and remodel freely');
       demo.onclick = () => {
@@ -5448,11 +6888,15 @@
         mask.classList.remove('open');
         toast(tr('已载入示例方案，用「保存方案」可留存到服务器', 'Demo plan loaded — use "Save plan" to keep it on the server'));
       };
-      listEl.appendChild(demo);
-      const newB = mask.querySelector('#cloudNew'), impB = mask.querySelector('#cloudImport');
-      newB.textContent = tr('新建空方案', 'New empty plan');
+      actionsEl.appendChild(demo);
+      const newCard = document.createElement('div'); newCard.className = 'plan-card action';
+      newCard.innerHTML = `<div class="pc-thumb"><span>＋</span></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
+      newCard.querySelector('.pc-nm').textContent = tr('新建空方案', 'New empty plan');
+      newCard.querySelector('.pc-tm').textContent = tr('从空白画板开始设计', 'Start from a blank canvas');
+      newCard.onclick = () => { mask.classList.remove('open'); $('#newPlan').click(); };
+      actionsEl.prepend(newCard);
+      const impB = mask.querySelector('#cloudImport');
       impB.textContent = tr('导入方案', 'Import plan');
-      newB.onclick = () => { mask.classList.remove('open'); $('#newPlan').click(); };
       impB.onclick = () => { mask.classList.remove('open'); $('#importJson').click(); };
       mask.classList.add('open');
     }
@@ -6357,6 +7801,153 @@
       door.cur = door.a1; pivot.rotation.y = door.cur; leaf.userData.door = knob.userData.door = door;
       doors.push(door); archUp.add(pivot);
     }
+    function buildRamp3D(s) {                                  // 坡道：斜面踏板 + 两侧挡条（漫游高度由 stairH 按斜面插值）
+      const L = s.len / 1000, W = s.w / 1000, H = Math.max(.05, (s.rise ?? 600) / 1000);
+      const g = new THREE.Group();
+      g.position.set(wx(s.x), 0, wz(s.y));
+      g.rotation.y = -s.dir * Math.PI / 180 + (s.flipX ? Math.PI : 0);   // 前后翻转 = 整段调头，上行方向反过来
+      const ang = Math.atan2(H, L), sl = Math.hypot(L, H), thk = .12;
+      const deckMat = mat('#cfc3ac', { roughness: .9 }), curbMat = mat('#8d8069', { roughness: .85 });
+      const nx = -Math.sin(ang), ny = Math.cos(ang);           // 坡面法线（局部 x-y 平面）
+      const deck = new THREE.Mesh(new THREE.BoxGeometry(sl, thk, W), deckMat);
+      deck.position.set(nx * thk / 2, H / 2 - ny * thk / 2, 0); deck.rotation.z = ang;
+      deck.castShadow = deck.receiveShadow = true; g.add(deck);
+      [-1, 1].forEach(sd => {                                  // 两侧挡条：贴着坡面走
+        const c = new THREE.Mesh(new THREE.BoxGeometry(sl, .16, .07), curbMat);
+        c.position.set(nx * .08, H / 2 + ny * .08, sd * (W / 2 - .035));
+        c.rotation.z = ang; c.castShadow = true; g.add(c);
+      });
+      archUp.add(g);
+    }
+    function buildSteps3D(s) {                                  // 台阶：逐级实心踏步块（漫游可逐级上下）
+      const N = Math.max(1, Math.round(s.steps || 3)), W = s.w / 1000, L = s.len / 1000, H = Math.max(.03, (s.rise ?? 450) / 1000);
+      const g = new THREE.Group();
+      g.position.set(wx(s.x), 0, wz(s.y));
+      g.rotation.y = -s.dir * Math.PI / 180 + (s.flipX ? Math.PI : 0);   // 前后翻转 = 整段调头
+      const stMat = mat('#cfc4af', { roughness: .92 }), noseMat = mat('#b8ab92', { roughness: .92 });
+      const d = L / N;
+      for (let i = 0; i < N; i++) {
+        const h = (i + 1) * H / N;
+        const blk = new THREE.Mesh(new THREE.BoxGeometry(d, h, W), stMat);
+        blk.position.set(-L / 2 + (i + .5) * d, h / 2, 0);
+        blk.castShadow = blk.receiveShadow = true; g.add(blk);
+        const nose = new THREE.Mesh(new THREE.BoxGeometry(.03, .035, W), noseMat);   // 踏步前缘的压边条
+        nose.position.set(-L / 2 + (i + 1) * d - .015, h - .018, 0);
+        nose.castShadow = true; g.add(nose);
+      }
+      archUp.add(g);
+    }
+    function buildRail3D(r) {                                   // 栏杆：立柱 + 扶手（直杆 / 玻璃栏板）
+      const A = [wx(r.a[0]), wz(r.a[1])], B = [wx(r.b[0]), wz(r.b[1])];
+      const L = Math.hypot(B[0] - A[0], B[1] - A[1]);
+      if (L < .08) return;
+      const H = Math.max(.3, Math.min(1.8, (r.h ?? 1000) / 1000));
+      const g = new THREE.Group();
+      g.position.set((A[0] + B[0]) / 2, 0, (A[1] + B[1]) / 2);
+      g.rotation.y = Math.atan2(-(B[1] - A[1]), B[0] - A[0]);
+      const mMat = mat('#8b8172', { metalness: .45, roughness: .45 }), pMat = mat('#79705f', { metalness: .4, roughness: .5 });
+      const n = Math.max(1, Math.round(L / 1.05));
+      for (let i = 0; i <= n; i++) {
+        const post = new THREE.Mesh(new THREE.BoxGeometry(.05, H, .05), pMat);
+        post.position.set(-L / 2 + i * L / n, H / 2, 0);
+        post.castShadow = true; g.add(post);
+      }
+      const top = new THREE.Mesh(new THREE.BoxGeometry(L, .06, .09), mMat);
+      top.position.set(0, H - .03, 0); top.castShadow = true; g.add(top);
+      if (r.style === 'glass') {
+        const pane = new THREE.Mesh(new THREE.BoxGeometry(L - .08, Math.max(.2, H - .16), .014), glassMat);
+        pane.position.set(0, (H - .16) / 2 + .04, 0); pane.receiveShadow = true; g.add(pane);
+      } else {
+        const mid = new THREE.Mesh(new THREE.BoxGeometry(L, .04, .04), mMat);
+        mid.position.set(0, H * .52, 0); mid.castShadow = true; g.add(mid);
+      }
+      archUp.add(g);
+    }
+    function buildBeam3D(b) {                                   // 梁：沿两点的矩形截面体，底标高可调
+      const A = [wx(b.a[0]), wz(b.a[1])], B = [wx(b.b[0]), wz(b.b[1])];
+      const L = Math.hypot(B[0] - A[0], B[1] - A[1]);
+      if (L < .08) return;
+      const W = Math.max(.06, (b.w ?? 200) / 1000), H = Math.max(.08, (b.h ?? 300) / 1000), Y = Math.max(0, (b.y ?? 2400) / 1000);
+      const m = new THREE.Mesh(new THREE.BoxGeometry(L, H, W), wallMat);
+      m.position.set((A[0] + B[0]) / 2, Y + H / 2, (A[1] + B[1]) / 2);
+      m.rotation.y = Math.atan2(-(B[1] - A[1]), B[0] - A[0]);
+      m.castShadow = m.receiveShadow = true;
+      archUp.add(m);
+    }
+    function buildSlab3D(s) {                                   // 楼板 / 挑板：矩形厚板
+      const W = Math.max(.1, (s.w || 0) / 1000), D = Math.max(.1, (s.d || 0) / 1000);
+      const T = Math.max(.04, (s.thick ?? 120) / 1000), Y = (s.z ?? 0) / 1000;
+      const m = new THREE.Mesh(new THREE.BoxGeometry(W, T, D), mat('#d8d2c6', { roughness: .85 }));
+      m.position.set(wx(s.x), Y + T / 2, wz(s.y));
+      m.castShadow = m.receiveShadow = true;
+      archUp.add(m);
+    }
+    function buildParapet3D(p) {                                // 女儿墙：墙身 + 压顶
+      const A = [wx(p.a[0]), wz(p.a[1])], B = [wx(p.b[0]), wz(p.b[1])];
+      const L = Math.hypot(B[0] - A[0], B[1] - A[1]); if (L < .08) return;
+      const T = Math.max(.06, (p.t ?? 120) / 1000), H = Math.max(.2, (p.h ?? 900) / 1000), Y = Math.max(0, (p.z ?? 2800) / 1000);
+      const rot = Math.atan2(-(B[1] - A[1]), B[0] - A[0]);
+      const cx = (A[0] + B[0]) / 2, cz = (A[1] + B[1]) / 2;
+      const body = new THREE.Mesh(new THREE.BoxGeometry(L, H, T), mat('#ddd6c8', { roughness: .9 }));
+      body.position.set(cx, Y + H / 2, cz); body.rotation.y = rot;
+      body.castShadow = body.receiveShadow = true; archUp.add(body);
+      const cap = new THREE.Mesh(new THREE.BoxGeometry(L, .05, T + .06), mat('#c9c0ae', { roughness: .8 }));
+      cap.position.set(cx, Y + H + .025, cz); cap.rotation.y = rot; cap.castShadow = true; archUp.add(cap);
+    }
+    function buildCanopy3D(c) {                                 // 雨棚：沿基线向一侧挑出的板
+      const A = [wx(c.a[0]), wz(c.a[1])], B = [wx(c.b[0]), wz(c.b[1])];
+      const L = Math.hypot(B[0] - A[0], B[1] - A[1]); if (L < .08) return;
+      const dep = Math.max(.1, (c.depth ?? 800) / 1000), T = Math.max(.04, (c.thick ?? 100) / 1000), Y = Math.max(0, (c.z ?? 2400) / 1000);
+      const side = c.side === -1 ? -1 : 1;
+      const ux = (B[0] - A[0]) / L, uz = (B[1] - A[1]) / L;
+      const m = new THREE.Mesh(new THREE.BoxGeometry(L, T, dep), mat('#b9c0b8', { roughness: .8 }));
+      m.position.set((A[0] + B[0]) / 2 - uz * side * dep / 2, Y + T / 2, (A[1] + B[1]) / 2 + ux * side * dep / 2);
+      m.rotation.y = Math.atan2(-uz, ux);
+      m.castShadow = m.receiveShadow = true; archUp.add(m);
+    }
+    function buildLift3D(l) {                                   // 电梯：井道四壁 + 门洞过梁 + 金属双扇门
+      const W = Math.max(.8, (l.w ?? 2000) / 1000), D = Math.max(.8, (l.d ?? 2000) / 1000);
+      const H = Math.max(1.8, Math.min(4, (l.h ?? 2400) / 1000)), DW = Math.max(.5, Math.min(W - .3, (l.dw ?? 900) / 1000));
+      const B = Math.max(0, (l.stop ?? 0) / 1000);              // 停靠高度：井道从这个标高向上建
+      const g = new THREE.Group();
+      g.position.set(wx(l.x), 0, wz(l.y));
+      g.rotation.y = -(l.dir || 0) * Math.PI / 180;              // 平面顺时针旋转 → 绕 Y 轴负向
+      const t = .1, shMat = mat('#b9bcbd', { roughness: .7 }), doorMat = mat('#9aa2a8', { metalness: .7, roughness: .3 }), flMat = mat('#4d5257', { roughness: .85 });
+      const add = (w, h, d, x, y, z, m) => {
+        const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
+        b.position.set(x, y + B, z); b.castShadow = b.receiveShadow = true; g.add(b);
+      };
+      add(W, .02, D, 0, .01, 0, flMat);                          // 停靠层底板
+      add(t, H, D, -W / 2 + t / 2, H / 2, 0, shMat);             // 左壁（-X）
+      add(W, H, t, 0, H / 2, -D / 2 + t / 2, shMat);             // 后壁（-Z）
+      add(W, H, t, 0, H / 2, D / 2 - t / 2, shMat);              // 前壁（+Z）
+      const seg = (D - DW) / 2;                                   // 门洞两侧墙垛（门在 +X 面）
+      if (seg > .01) {
+        add(t, H, seg, W / 2 - t / 2, H / 2, -(DW / 2 + seg / 2), shMat);
+        add(t, H, seg, W / 2 - t / 2, H / 2, DW / 2 + seg / 2, shMat);
+      }
+      const dH = Math.min(2.1, H - .1), lH = H - dH;              // 门洞过梁
+      if (lH > .01) add(t, lH, DW, W / 2 - t / 2, dH + lH / 2, 0, shMat);
+      const leaf = (DW - .04) / 2;                                // 金属双扇门：3D 点击开合，两扇同步向两侧滑入墙内
+      const edoor = { slide: true, open: false, cur: 0, pivots: [] };
+      [-1, 1].forEach(sd => {
+        const pg = new THREE.Group();
+        pg.position.set(W / 2 - t - .02, 0, sd * (DW / 4 + .01));
+        const panel = new THREE.Mesh(new THREE.BoxGeometry(.04, dH - .02, leaf), doorMat);
+        panel.position.y = B + dH / 2; panel.castShadow = panel.receiveShadow = true;
+        panel.userData.door = pg.userData.door = edoor; pg.add(panel);
+        edoor.pivots.push({ g: pg, px: pg.position.x, pz: pg.position.z, ax: 0, az: sd, dist: DW / 2 });
+        g.add(pg);
+      });
+      const call = new THREE.Mesh(new THREE.BoxGeometry(.02, .13, .09), doorMat);   // 门侧呼叫面板（门开走后仍可点它关门）
+      call.position.set(W / 2 - t - .03, B + Math.min(1.15, dH * .6), DW / 2 + .2);
+      call.castShadow = true; call.userData.door = edoor; g.add(call);
+      doors.push(edoor);
+      archUp.add(g);
+      const a = (l.dir || 0) * Math.PI / 180, c = Math.abs(Math.cos(a)), s = Math.abs(Math.sin(a));
+      const hx = (c * W + s * D) / 2, hz = (s * W + c * D) / 2;
+      colliders.push([wx(l.x) - hx, wz(l.y) - hz, wx(l.x) + hx, wz(l.y) + hz]);   // 井道整体占位
+    }
     function buildOpening3D(A, B, o, top, T) {
       const WL = Math.hypot(B[0] - A[0], B[1] - A[1]);               // 墙可能被改短：把门窗钳回墙内再建
       const c0 = Math.max(0, Math.min(o.c, WL)), c1 = Math.max(0, Math.min(WL, o.c + o.w));
@@ -6417,6 +8008,100 @@
           });
           pushWallCollider(PC, PD, T);                        // 窗下不能穿行
         }
+        return;
+      }
+      if (o.kind === 'louver') {                             // 百叶窗：窗洞 + 倾斜叶片（固定，不可开启）
+        const sill = Math.max(0, Math.min((o.sill ?? 900) / 1000, top - .3));
+        const wh = Math.max(.3, Math.min((o.wh ?? 1200) / 1000, top - sill));
+        const head = sill + wh, L = M(o.w), rot = wallAngle(P0, P1), [mx, mz] = wallMid(P0, P1);
+        const dx = (wx(P1[0]) - wx(P0[0])) / L, dz = (wz(P1[1]) - wz(P0[1])) / L;
+        wallSeg3D(P0, P1, T, 0, sill);                       // 窗下墙
+        if (top > head) wallSeg3D(P0, P1, T, head, top);     // 窗上过梁
+        [-L / 2 + .025, L / 2 - .025].forEach(off => {       // 左右竖梃
+          const m = new THREE.Mesh(new THREE.BoxGeometry(.05, wh, .07), frameMat);
+          m.position.set(mx + dx * off, sill + wh / 2, mz + dz * off); m.rotation.y = rot; m.castShadow = true; archUp.add(m);
+        });
+        [sill + .025, head - .025].forEach(y => {            // 上下横梃
+          const m = new THREE.Mesh(new THREE.BoxGeometry(L, .05, .07), frameMat);
+          m.position.set(mx, y, mz); m.rotation.y = rot; m.castShadow = true; archUp.add(m);
+        });
+        const slatMat = mat('#b9c2c7', { roughness: .5, metalness: .25 });
+        const nS = Math.max(3, Math.round(wh / .12));
+        for (let k = 0; k < nS; k++) {                       // 叶片：绕墙轴倾斜约 37°
+          const sl = new THREE.Mesh(new THREE.BoxGeometry(L - .07, .02, .11), slatMat);
+          sl.position.set(mx, sill + (k + .5) * wh / nS, mz);
+          sl.rotation.set(0, rot, 0); sl.rotateX(-.65); sl.castShadow = true; archUp.add(sl);
+        }
+        pushWallCollider(P0, P1, T);
+        return;
+      }
+      if (o.kind === 'cwin') {                               // 圆窗：方板挖圆洞补墙 + 圆形窗框、玻璃与十字分格
+        const sill = Math.max(0, Math.min((o.sill ?? 900) / 1000, top - .35));
+        const d = Math.max(.3, Math.min(M(o.w), top - sill));        // 圆直径 = 窗宽
+        const head = sill + d, L = M(o.w), rot = wallAngle(P0, P1), [mx, mz] = wallMid(P0, P1), TT = M(T);
+        wallSeg3D(P0, P1, T, 0, sill);                       // 窗下墙
+        if (top > head + .001) wallSeg3D(P0, P1, T, head, top);      // 窗上过梁
+        const shp = new THREE.Shape();                       // 方形补板，中间挖圆洞
+        shp.moveTo(-L / 2, 0); shp.lineTo(L / 2, 0); shp.lineTo(L / 2, d); shp.lineTo(-L / 2, d); shp.closePath();
+        const hole = new THREE.Path(); hole.absarc(0, d / 2, d / 2 - .001, 0, Math.PI * 2, true); shp.holes.push(hole);
+        const geo = new THREE.ExtrudeGeometry(shp, { depth: TT, bevelEnabled: false });
+        geo.translate(0, 0, -TT / 2);
+        const panel = new THREE.Mesh(geo, wallMat);
+        panel.position.set(mx, sill, mz); panel.rotation.y = rot; panel.castShadow = panel.receiveShadow = true; archUp.add(panel);
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(d / 2 - .02, .035, 10, 40), frameMat);
+        ring.position.set(mx, sill + d / 2, mz); ring.rotation.y = rot; ring.castShadow = true; archUp.add(ring);
+        const pane = new THREE.Mesh(new THREE.CircleGeometry(d / 2 - .02, 40), glassMat);
+        pane.position.set(mx, sill + d / 2, mz); pane.rotation.y = rot; archUp.add(pane);     // 玻璃（双面材质）
+        [[.035, d - .04], [d - .04, .035]].forEach(([w, h]) => {     // 十字分格
+          const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, .05), frameMat);
+          m.position.set(mx, sill + d / 2, mz); m.rotation.y = rot; m.castShadow = true; archUp.add(m);
+        });
+        pushWallCollider(P0, P1, T);
+        return;
+      }
+      if (o.kind === 'bay') {                                // 飘窗：外凸的窗台体 + 正面 / 两侧玻璃 + 竖梃
+        const sill = Math.max(0, Math.min((o.sill ?? 500) / 1000, top - .5));
+        const wh = Math.max(.4, Math.min((o.wh ?? 1200) / 1000, top - sill));
+        const head = sill + wh, L = M(o.w), dep = Math.max(.15, Math.min((o.bayDepth ?? 600) / 1000, 1.5));
+        const rot = wallAngle(P0, P1), [mx, mz] = wallMid(P0, P1), TT = M(T);
+        const dx = (wx(P1[0]) - wx(P0[0])) / L, dz = (wz(P1[1]) - wz(P0[1])) / L;
+        const side = o.bayFlip ? -1 : 1, nx = -dz * side, nz = dx * side;   // 外凸方向（墙面法向）
+        wallSeg3D(P0, P1, T, 0, sill);                       // 窗下墙
+        if (top > head) wallSeg3D(P0, P1, T, head, top);     // 窗上过梁
+        const cx = mx + nx * dep / 2, cz = mz + nz * dep / 2;
+        [sill - .06, head + .06].forEach(y => {              // 上下窗台板（略宽于洞口）
+          const slab = new THREE.Mesh(new THREE.BoxGeometry(L + .12, .12, dep + .06), frameMat);
+          slab.position.set(cx, y, cz); slab.rotation.y = rot;
+          slab.castShadow = slab.receiveShadow = true; archUp.add(slab);
+        });
+        const seat = new THREE.Mesh(new THREE.BoxGeometry(L, .04, dep), mat('#e9e2d4', { roughness: .9 }));   // 窗台坐板
+        seat.position.set(cx, sill + .02, cz); seat.rotation.y = rot; seat.receiveShadow = true; archUp.add(seat);
+        const front = new THREE.Mesh(new THREE.BoxGeometry(L + .06, wh, .02), glassMat);   // 正面玻璃
+        front.position.set(mx + nx * dep, sill + wh / 2, mz + nz * dep); front.rotation.y = rot; archUp.add(front);
+        [-1, 1].forEach(sd => {                              // 两侧玻璃（沿进深方向）
+          const gp = new THREE.Mesh(new THREE.BoxGeometry(dep, wh, .02), glassMat);
+          gp.position.set(mx + dx * sd * L / 2 + nx * dep / 2, sill + wh / 2, mz + dz * sd * L / 2 + nz * dep / 2);
+          gp.rotation.y = rot + Math.PI / 2; archUp.add(gp);
+        });
+        [[-L / 2, 0], [L / 2, 0]].forEach(([so]) => {        // 靠墙两角的竖梃
+          const p = new THREE.Mesh(new THREE.BoxGeometry(.06, wh, .06), frameMat);
+          p.position.set(mx + dx * so, sill + wh / 2, mz + dz * so); p.rotation.y = rot; p.castShadow = true; archUp.add(p);
+        });
+        [[-L / 2, dep], [L / 2, dep]].forEach(([so, dd]) => {   // 外侧两角的竖梃
+          const p = new THREE.Mesh(new THREE.BoxGeometry(.06, wh, .06), frameMat);
+          p.position.set(mx + dx * so + nx * dd, sill + wh / 2, mz + dz * so + nz * dd);
+          p.rotation.y = rot; p.castShadow = true; archUp.add(p);
+        });
+        [-L / 6, L / 6].forEach(so => {                      // 正面中竖梃（三等分）
+          const p = new THREE.Mesh(new THREE.BoxGeometry(.045, wh, .05), frameMat);
+          p.position.set(mx + dx * so + nx * dep, sill + wh / 2, mz + dz * so + nz * dep);
+          p.rotation.y = rot; p.castShadow = true; archUp.add(p);
+        });
+        [sill + .025, head - .025].forEach(y => {            // 正面上下横梃
+          const b = new THREE.Mesh(new THREE.BoxGeometry(L, .05, .06), frameMat);
+          b.position.set(mx + nx * dep, y, mz + nz * dep); b.rotation.y = rot; b.castShadow = true; archUp.add(b);
+        });
+        pushWallCollider(P0, P1, T);                         // 窗洞处不可穿行
         return;
       }
       if (o.kind === 'roller') {                             // 卷帘门：顶部卷帘箱 + 帘片，点击卷起 / 放下（开启后可穿行）
@@ -6519,6 +8204,79 @@
         });
         [dT - .03, dB + .03].forEach(y => {                  // 门套横梁 / 地槛
           const tr = new THREE.Mesh(new THREE.BoxGeometry(L + .1, .06, TT * 1.02), frameMat);
+          tr.position.set(mx, y, mz); tr.rotation.y = rot; archUp.add(tr);
+        });
+        return;
+      }
+      if (o.kind === 'sd') {                                 // 单扇推拉门：一扇玻璃门走在墙体外侧轨道，点门扇滑开
+        const hh = dT - dB;
+        if (dB > .001) wallSeg3D(P0, P1, T, 0, dB);
+        if (top > dT) wallSeg3D(P0, P1, T, dT, top);
+        const L = M(o.w), rot = wallAngle(P0, P1), [mx, mz] = wallMid(P0, P1), TT = M(T);
+        const dx = (wx(P1[0]) - wx(P0[0])) / L, dz = (wz(P1[1]) - wz(P0[1])) / L;
+        const off = TT / 2 + .035;                           // 门扇贴墙外侧走，滑开时不穿墙
+        const sg = glassMat.clone(), pg = new THREE.Group();
+        pg.position.set(mx + dz * off, 0, mz - dx * off); pg.rotation.y = rot;
+        const pw = L - .06;
+        const pane = new THREE.Mesh(new THREE.BoxGeometry(pw, hh, .02), sg);
+        pane.position.y = dB + hh / 2; pg.add(pane);
+        const pdoor = { slide: true, open: false, cur: 0, pivots: [{ g: pg, px: pg.position.x, pz: pg.position.z, ax: -dx, az: -dz, dist: L * .92 }] };
+        pane.userData.door = pg.userData.door = pdoor;
+        const trim = (w, h, ox, oy) => {                     // 扇框：左右竖梃 + 上下横梃
+          const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, .05), frameMat);
+          m.position.set(ox, oy, 0); m.castShadow = true; m.userData.door = pdoor; pg.add(m);
+        };
+        trim(.06, hh, -(pw / 2 - .03), dB + hh / 2); trim(.06, hh, pw / 2 - .03, dB + hh / 2);
+        trim(pw - .06, .06, 0, dB + hh - .03); trim(pw - .06, .06, 0, dB + .03);
+        doors.push(pdoor); archUp.add(pg);
+        const track = new THREE.Mesh(new THREE.BoxGeometry(L + .12, .05, .07), frameMat);
+        track.position.set(mx + dz * off, dT - .025, mz - dx * off); track.rotation.y = rot; archUp.add(track);
+        [dT - .03, dB + .03].forEach(y => {
+          const tr = new THREE.Mesh(new THREE.BoxGeometry(L, .05, TT * .55), frameMat);
+          tr.position.set(mx, y, mz); tr.rotation.y = rot; archUp.add(tr);
+        });
+        return;
+      }
+      if (o.kind === 'fold') {                               // 折叠门：4 扇平开为关门状态，点门扇两两折起在洞口两侧（V 形）
+        const hh = dT - dB;
+        if (dB > .001) wallSeg3D(P0, P1, T, 0, dB);
+        if (top > dT) wallSeg3D(P0, P1, T, dT, top);
+        const L = M(o.w), rot = wallAngle(P0, P1), [mx, mz] = wallMid(P0, P1), TT = M(T);
+        const dx = (wx(P1[0]) - wx(P0[0])) / L, dz = (wz(P1[1]) - wz(P0[1])) / L;
+        const N = 4, pw = L / N, th = Math.PI / 3, sg = glassMat.clone();
+        const dir = o.flip ? -1 : 1;                         // 折向房间一侧，避免穿墙
+        const wp = (s, z) => [mx + dx * s + dz * z * dir, mz + dz * s - dx * z * dir];
+        const makeLeaf = (d, parent) => {                    // 每扇以铰链为原点，向局部 +x 方向伸出
+          const pivot = new THREE.Group();
+          const pane = new THREE.Mesh(new THREE.BoxGeometry(pw - .03, hh, .016), sg);
+          pane.position.set(pw / 2, dB + hh / 2, 0); pane.userData.door = d; pivot.add(pane);
+          [.015, pw - .015].forEach(ox => {                  // 左右竖梃
+            const m = new THREE.Mesh(new THREE.BoxGeometry(.05, hh, .05), frameMat);
+            m.position.set(ox, dB + hh / 2, 0); m.castShadow = true; m.userData.door = d; pivot.add(m);
+          });
+          [dB + .025, dB + hh - .025].forEach(oy => {        // 上下横梃
+            const m = new THREE.Mesh(new THREE.BoxGeometry(pw - .03, .05, .05), frameMat);
+            m.position.set(pw / 2, oy, 0); m.castShadow = true; m.userData.door = d; pivot.add(m);
+          });
+          parent.add(pivot); return pivot;
+        };
+        // 左、右两半各自成对：关门时并排铺满半个洞口，点击各自折成 V 形，互不影响
+        for (const side of [-1, 1]) {
+          const s0 = side * L / 2, [bx, bz] = wp(s0, TT / 2);
+          const base = new THREE.Group();
+          base.position.set(bx, 0, bz); base.rotation.y = rot + (side > 0 ? Math.PI : 0);
+          archUp.add(base);
+          const sgn = side < 0 ? 1 : -1;                    // 右半的局部 x 轴反向，角度取反才是同样的折向
+          const d = { fold: true, open: false, cur: 0, parts: [], mx, mz, ax: dx, az: dz, s0: Math.min(s0, s0 - side * L / 2), s1: Math.max(s0, s0 - side * L / 2) };
+          const A = makeLeaf(d, base), B = makeLeaf(d, A);
+          B.position.x = pw;
+          d.parts.push({ g: A, a: dir * sgn * th }, { g: B, a: -dir * sgn * 2 * th });
+          doors.push(d);
+        }
+        const track = new THREE.Mesh(new THREE.BoxGeometry(L, .05, .07), frameMat);
+        track.position.set(mx, dT - .025, mz); track.rotation.y = rot; archUp.add(track);
+        [dT - .03, dB + .03].forEach(y => {
+          const tr = new THREE.Mesh(new THREE.BoxGeometry(L, .05, TT * .55), frameMat);
           tr.position.set(mx, y, mz); tr.rotation.y = rot; archUp.add(tr);
         });
         return;
@@ -6658,6 +8416,8 @@
         colliders.push([wx(c.x) - r, wz(c.y) - r, wx(c.x) + r, wz(c.y) + r]);
       });
       (state.stairs || []).forEach(s => {                    // 楼梯：悬空踏板 + 踢面 + 斜梁；双跑 / 三跑带折返平台
+        if (s.type === 'ramp') return buildRamp3D(s);        // 坡道单独生成
+        if (s.type === 'steps') return buildSteps3D(s);      // 台阶单独生成
         const lay = stairLayout(s), W = lay.w / 1000;
         const g = new THREE.Group();
         g.position.set(wx(s.x), 0, wz(s.y)); g.rotation.y = -s.dir * Math.PI / 180;
@@ -6742,6 +8502,12 @@
         }
         archUp.add(g);
       });
+      (state.rails || []).forEach(buildRail3D);               // 栏杆
+      (state.beams || []).forEach(buildBeam3D);               // 梁
+      (state.slabs || []).forEach(buildSlab3D);               // 楼板 / 挑板
+      (state.parapets || []).forEach(buildParapet3D);         // 女儿墙
+      (state.canopies || []).forEach(buildCanopy3D);          // 雨棚
+      (state.lifts || []).forEach(buildLift3D);               // 电梯
       // 门洞、飘窗洞口上方过梁（飘窗属于原始户型：对应房间被清空 / 空方案时不建）
       const bayLintels = [
         state.rooms.bay1 && [[10270, 800, 10510, 2600], 2.4, null],
@@ -6832,7 +8598,7 @@
     // 只重建变化的部分
     function sync(force) {
       if (!inited || (!active && !force)) return;
-      const a = JSON.stringify([state.rooms, state.walls, state.openings, state.deletedWalls, state.demolished, state.entryDoor, state.wallH, state.bover, state.stairs, state.pillars, opt.cut]), f = JSON.stringify(state.furniture), l = JSON.stringify([state.rooms, opt.cut]);
+      const a = JSON.stringify([state.rooms, state.walls, state.openings, state.deletedWalls, state.demolished, state.entryDoor, state.wallH, state.bover, state.stairs, state.pillars, state.rails, state.beams, state.slabs, state.parapets, state.canopies, state.lifts, opt.cut]), f = JSON.stringify(state.furniture), l = JSON.stringify([state.rooms, opt.cut]);
       if (force || a !== sigArch) { sigArch = a; buildArch(); }
       if (force || f !== sigFurn) { sigFurn = f; buildFurn(); }
       if (force || l !== sigLabels) { sigLabels = l; buildLabels(); }
@@ -6998,9 +8764,9 @@
     function syncHint3d() { $('#hint3d').textContent = opt.mode === 'orbit' ? HINT_ORBIT() : touchWalk ? HINT_TOUCHWALK() : HINT_WALK(); }
     let touchWalk = false;
     const joy = { x: 0, y: 0, id: null }, eul = new THREE.Euler(0, 0, 0, 'YXZ');
-    function lookBy(dx, dy) {
+    function lookBy(dx, dy) {                               // 移动端漫游：拖动方向 = 转向方向（与手指同向）
       eul.setFromQuaternion(camera.quaternion);
-      eul.y += dx * .005; eul.x = THREE.MathUtils.clamp(eul.x + dy * .005, -1.35, 1.35);
+      eul.y -= dx * .005; eul.x = THREE.MathUtils.clamp(eul.x - dy * .005, -1.35, 1.35);
       camera.quaternion.setFromEuler(eul);
     }
     function startTouchWalk() {
@@ -7062,6 +8828,15 @@
     function blocked(x, z, r = .22) {
       for (const [x0, z0, x1, z1] of colliders) if (x > x0 - r && x < x1 + r && z > z0 - r && z < z1 + r) return true;
       for (const d of doors) {
+        if (d.fold) {                                       // 折叠门：没折起的那半扇挡路
+          if (!d.open) {
+            const p0x = d.mx + d.ax * d.s0, p0z = d.mz + d.az * d.s0;
+            const vx = d.ax * (d.s1 - d.s0), vz = d.az * (d.s1 - d.s0);
+            const t = Math.max(0, Math.min(1, ((x - p0x) * vx + (z - p0z) * vz) / (vx * vx + vz * vz)));
+            if (Math.hypot(x - (p0x + vx * t), z - (p0z + vz * t)) < r * .8) return true;
+          }
+          continue;
+        }
         if (d.slat){                                        // 卷帘门：放下时挡路（洞口中线段判定），卷起后可穿行
           if (!d.open){
             const t = clamp01(((x - d.mx) * d.ax + (z - d.mz) * d.az) / (d.ax ** 2 + d.az ** 2));
@@ -7252,7 +9027,7 @@
       else if (fly) { const t = clamp01((now - fly.t0) / fly.dur); camTween(fly.A, fly.B, ease(t)); if (t >= 1) fly = null; }
       else if (opt.mode === 'orbit') orbit.update();
       else stepWalk(dt);
-      doors.forEach(d => { const tg = d.open ? (d.a1 ?? 1) : (d.a0 ?? 0); d.cur += (tg - d.cur) * Math.min(1, dt * 6); if (d.slide) d.pivots.forEach(p => p.g.position.set(p.px + p.ax * p.dist * d.cur, 0, p.pz + p.az * p.dist * d.cur)); else if (d.slat) d.grp.scale.y = Math.max(.02, d.cur); else d.pivot.rotation.y = d.cur; });   // slide = 电梯门双扇同步平移 / slat = 卷帘门向上卷收
+      doors.forEach(d => { const tg = d.open ? (d.a1 ?? 1) : (d.a0 ?? 0); d.cur += (tg - d.cur) * Math.min(1, dt * 6); if (d.slide) d.pivots.forEach(p => p.g.position.set(p.px + p.ax * p.dist * d.cur, 0, p.pz + p.az * p.dist * d.cur)); else if (d.slat) d.grp.scale.y = Math.max(.02, d.cur); else if (d.fold) d.parts.forEach(p => p.g.rotation.y = p.a * d.cur); else d.pivot.rotation.y = d.cur; });   // slide = 电梯门双扇同步平移 / slat = 卷帘门向上卷收 / fold = 折叠门折起
       updateDoorWalkTip();
       stepFx(dt);
       updateSel();
