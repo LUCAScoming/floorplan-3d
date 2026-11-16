@@ -62,7 +62,7 @@
         6820
       ],
       "b": [
-        -50,
+        -60,
         6820
       ]
     },
@@ -162,15 +162,6 @@
       "grille": true
     },
     {
-      "id": "fmwhuigxc93",
-      "wall": "CWfmwhqg7q7187",
-      "c": 2894.46875,
-      "w": 1200,
-      "kind": "hwin",
-      "flip": true,
-      "sill": 1400
-    },
-    {
       "id": "fmwhuwbzv93",
       "wall": "CWfmwhqizs2191",
       "c": 499.061279296875,
@@ -202,45 +193,18 @@
     {
       "id": "fmwhuwujj98",
       "wall": "CWfmwhqg9wc188",
-      "c": 577.76904296875,
-      "w": 3800,
+      "c": 1810.31396484375,
+      "w": 2720,
       "kind": "roller",
       "flip": false,
       "dh": 3500
     },
     {
-      "id": "fmwhw7ghu93",
-      "wall": "CWfmwhqg7q7187",
-      "c": 8726.12744140625,
-      "w": 1200,
-      "kind": "window",
-      "flip": false,
-      "grille": true
-    },
-    {
-      "id": "fmwhw7jdp94",
-      "wall": "CWfmwhqg7q7187",
-      "c": 4423.2841796875,
-      "w": 1200,
-      "kind": "window",
-      "flip": true,
-      "grille": true
-    },
-    {
-      "id": "fmwi5rhn593",
-      "wall": "CWfmwhqg7q7187",
-      "c": 11619.89404296875,
-      "w": 1200,
-      "kind": "window",
-      "flip": true,
-      "grille": true
-    },
-    {
       "id": "fmwj9kqu194",
       "kind": "lbay",
       "wall": "CWfmwhqg4po186",
-      "c": 3610,
-      "w": 1200,
+      "c": 3700,
+      "w": 1110,
       "flip": true,
       "sill": 500,
       "wh": 1200,
@@ -248,30 +212,21 @@
       "legs": [
         {
           "wall": "CWfmwhqg4po186",
-          "c": 4210,
-          "w": 1200,
+          "c": 4255,
+          "w": 1110,
           "flip": true,
-          "lc": 1
+          "lc": 1,
+          "panes": 3
         },
         {
           "wall": "CWfmwhqg7q7187",
-          "c": 600,
-          "w": 1200,
+          "c": 1200,
+          "w": 2400,
           "flip": true,
           "lc": -1
         }
-      ]
-    },
-    {
-      "id": "fmwjc9qb193",
-      "wall": "CWfmwhqg7q7187",
-      "c": 6535.3974609375,
-      "w": 1690,
-      "kind": "dwin",
-      "flip": true,
-      "grille": true,
-      "hflip": true,
-      "mat": "glass"
+      ],
+      "panes": 3
     },
     {
       "id": "fmwjcswgy93",
@@ -281,6 +236,50 @@
       "kind": "door",
       "flip": false,
       "hflip": false
+    },
+    {
+      "id": "fmwjgbe9593",
+      "wall": "CWfmwhqg7q7187",
+      "c": 11081.19873046875,
+      "w": 920,
+      "kind": "niche",
+      "flip": true,
+      "sill": 900,
+      "wh": 700,
+      "nd": 250
+    },
+    {
+      "id": "fmwjgeneg93",
+      "wall": "CWfmwhqg7q7187",
+      "c": 9302.562744140625,
+      "w": 1200,
+      "kind": "arch",
+      "flip": true,
+      "sh": 2100,
+      "rise": 600,
+      "mat": "steel"
+    },
+    {
+      "id": "fmwjj1rxm93",
+      "wall": "CWfmwhqg7q7187",
+      "c": 7698.81689453125,
+      "w": 1200,
+      "kind": "yak",
+      "flip": false,
+      "mat": "steel"
+    },
+    {
+      "id": "fmwjj3bct94",
+      "wall": "CWfmwhqg7q7187",
+      "c": 6013.76611328125,
+      "w": 1500,
+      "kind": "bay",
+      "flip": true,
+      "sill": 500,
+      "wh": 1200,
+      "bayDepth": 600,
+      "bayFlip": true,
+      "panes": 2
     }
   ],
   "deletedWalls": [
@@ -577,6 +576,13 @@
   "balconies": [],
   "planters": [],
   "flues": [],
+  "axes": [],
+  "arcWalls": [],
+  "roofs": [],
+  "pools": [],
+  "decks": [],
+  "pergolas": [],
+  "gates": [],
   "layers": {
     "dims": true,
     "labels": true,
