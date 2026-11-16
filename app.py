@@ -88,9 +88,22 @@ class Handler(BaseHTTPRequestHandler):
                     st = f.stat()
                 except OSError:
                     continue
-                items.append({"name": f.stem, "size": st.st_size, "mtime": st.st_mtime})
+                item = {"name": f.stem, "size": st.st_size, "mtime": st.st_mtime}
+                try:
+                    thumb = f.with_suffix(".png")
+                    if thumb.is_file():
+                        item["thumbnail"] = "/api/plans/" + quote(f.stem, safe="") + "/thumbnail?v=" + str(thumb.stat().st_mtime_ns)
+                except OSError:
+                    pass
+                items.append(item)
             items.sort(key=lambda x: -x["mtime"])
             self._reply(200, items)
+        elif path.startswith("/api/plans/") and path.endswith("/thumbnail"):
+            try:
+                p = self._plan_name(True).with_suffix(".png")
+            except ValueError as e:
+                self._reply(400, {"detail": str(e)}); return
+            self._serve_file(p)
         elif path.startswith("/api/plans/"):
             try:
                 p = self._plan_name()
@@ -104,28 +117,48 @@ class Handler(BaseHTTPRequestHandler):
             self._reply(404, {"detail": "接口不存在"})
 
     def do_PUT(self):
-        if not urlsplit(self.path).path.startswith("/api/plans/"):
+        path = urlsplit(self.path).path
+        if not path.startswith("/api/plans/"):
             self._reply(404, {"detail": "接口不存在"}); return
+        thumbnail = path.endswith("/thumbnail")
+        try:
+            p = self._plan_name(thumbnail)
+        except ValueError as e:
+            self._reply(400, {"detail": str(e)}); return
         try:
             n = int(self.headers.get("Content-Length") or 0)
         except ValueError:
             n = 0
-        if n <= 0 or n > 64 * 1024 * 1024:
+        if n <= 0 or n > (2 * 1024 * 1024 if thumbnail else 64 * 1024 * 1024):
             self._reply(400, {"detail": "请求体大小异常"}); return
+        if thumbnail:
+            if self.headers.get("Content-Type", "").split(";", 1)[0].strip().lower() != "image/png":
+                self._reply(400, {"detail": "缩略图必须是 PNG"}); return
+            data = self.rfile.read(n)
+            if not data.startswith(b"\x89PNG\r\n\x1a\n"):
+                self._reply(400, {"detail": "缩略图不是合法 PNG"}); return
+            if not p.is_file():
+                self._reply(404, {"detail": "方案不存在"}); return
+            DATA_DIR.mkdir(parents=True, exist_ok=True)
+            thumb = p.with_suffix(".png")
+            tmp = thumb.with_suffix(".png.tmp")
+            tmp.write_bytes(data)
+            tmp.replace(thumb)
+            self._reply(200, {"ok": True}); return
         try:
             data = json.loads(self.rfile.read(n).decode("utf-8"))
         except Exception:
             self._reply(400, {"detail": "请求体不是合法 JSON"}); return
         if not isinstance(data, dict) or not isinstance(data.get("furniture"), list):
             self._reply(400, {"detail": "方案数据不完整"}); return
-        try:
-            p = self._plan_name()
-        except ValueError as e:
-            self._reply(400, {"detail": str(e)}); return
         DATA_DIR.mkdir(parents=True, exist_ok=True)
         tmp = p.with_suffix(".json.tmp")    # 先写临时文件再原子替换，避免写一半损坏
         tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         tmp.replace(p)
+        try:
+            p.with_suffix(".png").unlink()   # 覆盖方案后清除旧图，等待本次保存上传新缩略图
+        except FileNotFoundError:
+            pass
         self._reply(200, {"ok": True})
 
     def do_DELETE(self):
@@ -137,6 +170,10 @@ class Handler(BaseHTTPRequestHandler):
             self._reply(400, {"detail": str(e)}); return
         if p.exists():
             p.unlink()
+        try:
+            p.with_suffix(".png").unlink()
+        except FileNotFoundError:
+            pass
         self._reply(200, {"ok": True})
 
 
