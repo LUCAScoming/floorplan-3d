@@ -3,7 +3,7 @@
 # 启动：python app.py [--port 8765] [--data-dir plans]
 #       飞牛 fnOS 原生应用由 cmd/main 传入 --port 与 --data-dir（应用数据目录）
 """Floor-plan app: stdlib-only server hosting the web UI and plan storage API."""
-import argparse, json, sys, threading, time, webbrowser
+import argparse, json, socket, sys, threading, time, webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import quote, unquote, urlsplit
@@ -177,6 +177,18 @@ class Handler(BaseHTTPRequestHandler):
         self._reply(200, {"ok": True})
 
 
+class DualStackServer(ThreadingHTTPServer):
+    """:: 监听并关闭 IPV6_V6ONLY，同一端口同时接受 IPv4 与 IPv6（双栈）。"""
+    address_family = socket.AF_INET6
+
+    def server_bind(self):
+        try:
+            self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
+        except OSError:
+            pass
+        super().server_bind()
+
+
 def main():
     ap = argparse.ArgumentParser(description="户型装修方案服务器")
     ap.add_argument("--port", type=int, default=8765)
@@ -188,9 +200,15 @@ def main():
     if not args.no_browser:
         threading.Thread(target=lambda: (time.sleep(1.2), webbrowser.open(
             "http://localhost:%d/" % args.port)), daemon=True).start()
-    print("户型装修方案服务器: http://0.0.0.0:%d  (网页目录 %s, 方案目录 %s)"
-          % (args.port, WWW, DATA_DIR), flush=True)
-    ThreadingHTTPServer(("0.0.0.0", args.port), Handler).serve_forever()
+    try:
+        srv = DualStackServer(("::", args.port), Handler)
+        print("户型装修方案服务器: http://0.0.0.0:%d（IPv4/IPv6 双栈）  (网页目录 %s, 方案目录 %s)"
+              % (args.port, WWW, DATA_DIR), flush=True)
+    except OSError as e:
+        srv = ThreadingHTTPServer(("0.0.0.0", args.port), Handler)
+        print("户型装修方案服务器: http://0.0.0.0:%d（仅 IPv4，IPv6 不可用：%s）  (网页目录 %s, 方案目录 %s)"
+              % (args.port, e, WWW, DATA_DIR), flush=True)
+    srv.serve_forever()
 
 
 if __name__ == "__main__":

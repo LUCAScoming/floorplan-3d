@@ -81,7 +81,8 @@ def manifest_text(version: str, platform: str) -> str:
             f"checkport=true\n"
             f"ctl_stop=true\n"
             f"disable_authorization_path=false\n"
-            f"changelog={version} 首个版本：原生应用托管网页与服务器端方案存储。\n")
+            f"changelog={version} 新增指北针 / 电梯与楼板 / 女儿墙 / 雨棚等建筑构件，"
+            f"左右侧栏改为选项夹，服务器支持 IPv4/IPv6 双栈。\n")
 
 
 SHEBANG = "#!/bin/bash\n"
