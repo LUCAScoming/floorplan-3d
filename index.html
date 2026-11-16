@@ -903,6 +903,14 @@
       padding: 1px
     }
 
+    #cloudList.grid .cloud-plans-title {
+      flex: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .04em
+    }
+
     #cloudSearch {
       flex: none;
       width: 100%;
@@ -5503,8 +5511,9 @@
       mask.querySelector('#cloudTitle').textContent = tr('户型装修设计', 'Floor Plan Designer');
       mask.querySelector('#cloudSub').textContent = tr('欢迎回来！选择一个方案继续创作，或从空白开始', 'Welcome back — pick a plan to continue, or start from scratch');
       const listEl = mask.querySelector('#cloudList');
-      listEl.innerHTML = '<div class="cloud-actions"></div><input id="cloudSearch" type="search" autocomplete="off"><div class="cloud-plans"></div>';
+      listEl.innerHTML = '<div class="cloud-actions"></div><div class="cloud-plans-title"></div><input id="cloudSearch" type="search" autocomplete="off"><div class="cloud-plans"></div>';
       const actionsEl = listEl.querySelector('.cloud-actions'), plansEl = listEl.querySelector('.cloud-plans'), searchEl = listEl.querySelector('#cloudSearch');
+      listEl.querySelector('.cloud-plans-title').textContent = tr('已保存的方案', 'Saved plans');
       searchEl.placeholder = tr('搜索方案名称', 'Search plan names');
       searchEl.setAttribute('aria-label', tr('搜索方案名称', 'Search plan names'));
       searchEl.disabled = !plans.length;
