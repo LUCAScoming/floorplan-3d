@@ -781,15 +781,43 @@
     .cloud-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 4px 6px;
+      gap: 10px;
+      padding: 6px;
       border-radius: 8px;
       cursor: pointer
     }
 
-    .cloud-row .nm {
+    .cloud-row .th {
+      flex: none;
+      width: 56px;
+      aspect-ratio: 480 / 434;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f7f4ee;
+      color: var(--muted);
+      font-size: 10px
+    }
+
+    .cloud-row .th img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain
+    }
+
+    .cloud-row .info {
       flex: 1;
       min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px
+    }
+
+    .cloud-row .nm {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -802,11 +830,48 @@
       white-space: nowrap
     }
 
-    /* 保存方案弹窗：名称输入行 / 底部按钮 / 选中行高亮 */
+    /* 保存弹窗：已有方案标题固定，列表独立滚动 */
+    #cloudList.rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+      min-height: 0
+    }
+
+    .cloud-sec-title {
+      flex: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted)
+    }
+
+    .cloud-rows {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 1px
+    }
+
+    #cloudBox:not(.welcome) .welcome-sub {
+      margin-bottom: 0
+    }
+
+    /* 保存方案弹窗：名称输入行 / 已有方案列表 / 底部按钮 / 选中行高亮 */
     #cloudNameRow {
       display: flex;
-      gap: 8px;
-      margin-bottom: 10px
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 0
+    }
+
+    #cloudNameLabel {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted)
     }
 
     #cloudName {
@@ -5415,7 +5480,7 @@
       let mask = $('#cloudMask');
       if (!mask) {
         mask = document.createElement('div'); mask.id = 'cloudMask';
-        mask.innerHTML = `<div id="cloudBox"><button id="cloudX" title="关闭">×</button><b id="cloudTitle"></b><div id="cloudSub" class="welcome-sub"></div><div id="cloudNameRow"><input id="cloudName" maxlength="80" autocomplete="off"></div><div id="cloudList"></div><div id="cloudFoot"><button class="btn" id="cloudImport"></button><button class="btn" id="cloudOk"></button></div></div>`;
+        mask.innerHTML = `<div id="cloudBox"><button id="cloudX" title="关闭">×</button><b id="cloudTitle"></b><div id="cloudSub" class="welcome-sub"></div><div id="cloudNameRow"><label id="cloudNameLabel" for="cloudName"></label><input id="cloudName" maxlength="80" autocomplete="off"></div><div id="cloudList"></div><div id="cloudFoot"><button class="btn" id="cloudImport"></button><button class="btn" id="cloudOk"></button></div></div>`;
         document.body.appendChild(mask);
       }
       // 点弹窗外部不关闭，只能通过按钮退出
@@ -5423,7 +5488,8 @@
       const save = mode === 'save';
       mask.querySelector('#cloudBox').classList.toggle('welcome', !save);
       mask.querySelector('#cloudList').classList.toggle('grid', !save);
-      mask.querySelector('#cloudSub').style.display = save ? 'none' : '';
+      mask.querySelector('#cloudList').classList.toggle('rows', save);
+      mask.querySelector('#cloudSub').style.display = '';
       mask.querySelector('#cloudNameRow').style.display = save ? 'flex' : 'none';
       mask.querySelector('#cloudOk').style.display = save ? '' : 'none';
       mask.querySelector('#cloudImport').style.display = save ? 'none' : '';
@@ -5437,27 +5503,49 @@
       catch (e) { cloudFail(); return; }
       const mask = cloudMask('save');
       mask.querySelector('#cloudTitle').textContent = tr('保存方案', 'Save plan');
+      mask.querySelector('#cloudSub').textContent = tr('为当前设计取个名称保存；点击已有方案可覆盖保存', 'Name this design and save it — or click an existing plan to overwrite it');
+      mask.querySelector('#cloudNameLabel').textContent = tr('方案名称', 'Plan name');
       const nameEl = mask.querySelector('#cloudName');
+      nameEl.placeholder = tr('例如：客厅改造方案', 'e.g. Living room remodel');
+      nameEl.setAttribute('aria-label', tr('方案名称', 'Plan name'));
       nameEl.value = planName && planName !== AUTO_NAME ? planName : tr('我的方案', 'My plan');
       const listEl = mask.querySelector('#cloudList');
       const others = plans.filter(p => p.name !== AUTO_NAME);
-      listEl.innerHTML = '';
-      if (!others.length) listEl.innerHTML = `<div class="muted">${tr('还没有保存过方案，输入名称即可保存为新方案', 'No plans yet — type a name to save a new one')}</div>`;
-      for (const p of others) {
+      listEl.innerHTML = `<div class="cloud-sec-title"></div><div class="cloud-rows"></div>`;
+      listEl.querySelector('.cloud-sec-title').textContent = tr('已有方案（点击可覆盖）', 'Existing plans (click to overwrite)');
+      const rowsEl = listEl.querySelector('.cloud-rows');
+      if (!others.length) rowsEl.innerHTML = `<div class="muted">${tr('还没有保存过方案，输入名称即可保存为新方案', 'No plans yet — type a name to save a new one')}</div>`;
+      else for (const p of others) {
         const row = document.createElement('div'); row.className = 'cloud-row';
-        row.innerHTML = `<span class="nm"></span><span class="tm"></span>`;
+        row.innerHTML = `<span class="th"><span></span></span><span class="info"><span class="nm"></span><span class="tm"></span></span>`;
+        const th = row.querySelector('.th');
+        th.querySelector('span').textContent = tr('无预览', '—');
+        if (p.thumbnail) {
+          const img = new Image();
+          img.alt = '';
+          img.onload = () => th.replaceChildren(img);
+          img.src = p.thumbnail;
+        }
         row.querySelector('.nm').textContent = p.name;
         row.querySelector('.tm').textContent = new Date(p.mtime * 1000).toLocaleString();
         if (p.name === planName) row.classList.add('sel');
         row.onclick = () => {
-          listEl.querySelectorAll('.cloud-row.sel').forEach(x => x.classList.remove('sel'));
+          rowsEl.querySelectorAll('.cloud-row.sel').forEach(x => x.classList.remove('sel'));
           row.classList.add('sel');
           nameEl.value = p.name;
+          syncOk();
         };
-        listEl.appendChild(row);
+        rowsEl.appendChild(row);
       }
       const okB = mask.querySelector('#cloudOk');
-      okB.textContent = tr('保存', 'Save');
+      okB.classList.add('primary');
+      const syncOk = () => {
+        const name = nameEl.value.trim();
+        const hit = name !== planName && others.some(p => p.name === name);
+        okB.textContent = hit ? tr('覆盖保存', 'Overwrite') : tr('保存', 'Save');
+      };
+      nameEl.oninput = syncOk;
+      syncOk();
       okB.onclick = async () => {
         if (okB.disabled) return;
         const name = nameEl.value.trim();

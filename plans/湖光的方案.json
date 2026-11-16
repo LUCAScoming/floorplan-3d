@@ -490,7 +490,9 @@
         7,
         9,
         9
-      ]
+      ],
+      "railLand": false,
+      "railSide": "left"
     }
   ],
   "wallH": {
