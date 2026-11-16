@@ -506,6 +506,32 @@
     "CWfmwhqg7q7187": 4200,
     "CWfmwhqg9wc188": 4200
   },
+  "notes": [],
+  "dims": [],
+  "rails": [],
+  "beams": [],
+  "levels": [],
+  "slabs": [],
+  "parapets": [],
+  "canopies": [],
+  "north": {
+    "x": 14040,
+    "y": 10220,
+    "angle": 0,
+    "r": 380
+  },
+  "lifts": [
+    {
+      "id": "fmwiw6lnm93",
+      "x": 7930,
+      "y": 3250,
+      "w": 1050,
+      "d": 1350,
+      "h": 2400,
+      "dw": 750,
+      "dir": 0
+    }
+  ],
   "layers": {
     "dims": true,
     "labels": true,
