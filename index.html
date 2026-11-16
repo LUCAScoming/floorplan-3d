@@ -900,6 +900,28 @@
       background: var(--accent-soft)
     }
 
+    .plan-card .pc-thumb {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      aspect-ratio: 480 / 434;
+      margin-bottom: 10px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f7f4ee;
+      color: var(--muted);
+      font-size: 12px
+    }
+
+    .plan-card .pc-thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain
+    }
+
     .plan-card .pc-nm {
       font-weight: 600;
       overflow: hidden;
@@ -5082,23 +5104,33 @@
 
     /* ======================= 导入导出 ======================= */
     function download(name, blob) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
+    function svgToPngBlob(W) {
+      return new Promise((resolve, reject) => {
+        const clone = svg.cloneNode(true), H = Math.round(W * BOUNDS.h / BOUNDS.w);
+        clone.setAttribute('viewBox', `${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.w} ${BOUNDS.h}`);
+        clone.setAttribute('width', W); clone.setAttribute('height', H);
+        clone.querySelector('#gSel').innerHTML = '';
+        clone.querySelector('#gGrid').innerHTML = `<rect x="-20000" y="-20000" width="55000" height="55000" fill="${ui.layers.grid ? 'url(#grid)' : '#f7f4ee'}"/>`;
+        const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        Object.entries({ x: -20000, y: -20000, width: 55000, height: 55000, fill: '#f7f4ee' }).forEach(([k, v]) => bg.setAttribute(k, v));
+        clone.insertBefore(bg, clone.querySelector('#gGrid'));
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+            cv.getContext('2d').drawImage(img, 0, 0, W, H);
+            cv.toBlob(b => b ? resolve(b) : reject(new Error('PNG encoding failed')), 'image/png');
+          } catch (e) { reject(e); }
+        };
+        img.onerror = () => reject(new Error('SVG rasterization failed'));
+        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(clone));
+      });
+    }
     function exportPNG() {
       if (is3D()) return window.View3D.shot();
-      const clone = svg.cloneNode(true), W = 3200, H = Math.round(W * BOUNDS.h / BOUNDS.w);
-      clone.setAttribute('viewBox', `${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.w} ${BOUNDS.h}`);
-      clone.setAttribute('width', W); clone.setAttribute('height', H);
-      clone.querySelector('#gSel').innerHTML = '';
-      clone.querySelector('#gGrid').innerHTML = `<rect x="-20000" y="-20000" width="55000" height="55000" fill="${ui.layers.grid ? 'url(#grid)' : '#f7f4ee'}"/>`;
-      const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      Object.entries({ x: -20000, y: -20000, width: 55000, height: 55000, fill: '#f7f4ee' }).forEach(([k, v]) => bg.setAttribute(k, v));
-      clone.insertBefore(bg, clone.querySelector('#gGrid'));
-      const img = new Image();
-      img.onload = () => {
-        const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
-        cv.getContext('2d').drawImage(img, 0, 0, W, H);
-        cv.toBlob(b => download(tr('户型装修方案', 'floor-plan-design') + '.png', b));
-      };
-      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(clone));
+      svgToPngBlob(3200)
+        .then(b => download(tr('户型装修方案', 'floor-plan-design') + '.png', b))
+        .catch(() => toast(tr('导出图片失败', 'Failed to export image')));
     }
 
     /* ======================= 杂项 ======================= */
@@ -5367,18 +5399,31 @@
       const okB = mask.querySelector('#cloudOk');
       okB.textContent = tr('保存', 'Save');
       okB.onclick = async () => {
+        if (okB.disabled) return;
         const name = nameEl.value.trim();
         if (!name) { toast(tr('请输入方案名称', 'Please enter a plan name')); return; }
         if (name === AUTO_NAME) { toast(tr('该名称保留给自动保存，请换一个', 'Reserved for autosave — pick another')); return; }
         if (plans.some(p => p.name === name) && name !== planName &&
             !await uiConfirm(tr('已存在同名方案「' + name + '」，覆盖它？', 'A plan named "' + name + '" already exists. Overwrite?'), tr('覆盖', 'Overwrite'))) return;
+        okB.disabled = true;
+        const body = JSON.stringify({ ...state, layers: ui.layers });
+        let thumb = null;
+        try { thumb = await svgToPngBlob(480); } catch (e) { }
         try {
-          const r = await fetch(planURL(name), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...state, layers: ui.layers }) });
+          const r = await fetch(planURL(name), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body });
           if (!r.ok) throw 0;
-        } catch (e) { cloudFail(); return; }
-        syncPlanName(name);
-        mask.classList.remove('open');
-        toast(tr('已保存：' + name, 'Saved: ' + name));
+          let thumbSaved = !!thumb;
+          if (thumb) {
+            try {
+              const res = await fetch(planURL(name) + '/thumbnail', { method: 'PUT', headers: { 'Content-Type': 'image/png' }, body: thumb });
+              if (!res.ok) throw 0;
+            } catch (e) { thumbSaved = false; }
+          }
+          syncPlanName(name);
+          mask.classList.remove('open');
+          toast(thumbSaved ? tr('已保存：' + name, 'Saved: ' + name) : tr('已保存：' + name + '（缩略图保存失败）', 'Saved: ' + name + ' (thumbnail failed)'));
+        } catch (e) { cloudFail(); }
+        finally { okB.disabled = false; }
       };
       nameEl.onkeydown = e => { if (e.key === 'Enter') okB.onclick(); };
       mask.classList.add('open');
@@ -5412,7 +5457,15 @@
       for (const p of plans) {
         const draft = p.name === AUTO_NAME;
         const card = document.createElement('div'); card.className = 'plan-card';
-        card.innerHTML = `<div class="pc-del"></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
+        card.innerHTML = `<div class="pc-del"></div><div class="pc-thumb"><span></span></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
+        const thumbBox = card.querySelector('.pc-thumb');
+        thumbBox.querySelector('span').textContent = tr('暂无预览', 'No preview');
+        if (p.thumbnail) {
+          const img = new Image();
+          img.alt = tr('方案预览：' + p.name, 'Plan preview: ' + p.name);
+          img.onload = () => thumbBox.replaceChildren(img);
+          img.src = p.thumbnail;
+        }
         card.querySelector('.pc-nm').textContent = draft ? tr('自动保存（草稿）', 'Autosave (draft)') : p.name;
         if (p.name === planName) {
           card.classList.add('cur');
@@ -5440,7 +5493,8 @@
       }
       /* 内置示例方案：点击载入画板（不入服务器，可「保存方案」留存） */
       const demo = document.createElement('div'); demo.className = 'plan-card demo';
-      demo.innerHTML = `<div class="pc-nm"></div><div class="pc-tm"></div>`;
+      demo.innerHTML = `<div class="pc-thumb"><span></span></div><div class="pc-nm"></div><div class="pc-tm"></div>`;
+      demo.querySelector('.pc-thumb span').textContent = tr('暂无预览', 'No preview');
       demo.querySelector('.pc-nm').textContent = tr('示例：示范户型', 'Demo: sample floor plan');
       demo.querySelector('.pc-tm').textContent = tr('两居室参考案例，载入后可随意改造', 'A sample two-bedroom — load it and remodel freely');
       demo.onclick = () => {
