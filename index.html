@@ -12432,7 +12432,7 @@
             const base = new THREE.Mesh(new THREE.CylinderGeometry(r * 3.2, r * 4, .45, 16), mat('#c9c3b5', { roughness: .9 }));
             base.position.set(px, .225, pz); base.castShadow = base.receiveShadow = true; archUp.add(base);
             const pole = new THREE.Mesh(new THREE.CylinderGeometry(r, r * 1.3, h, 10), mat('#d8d5cc', { metalness: .4, roughness: .5 }));
-            pole.position.set(px, .45 + (h - .45) / 2, pz); pole.castShadow = true; pole.userData.flagId = e.id; archUp.add(pole);
+            pole.position.set(px, .45 + (h - .45) / 2, pz); pole.castShadow = true; pole.userData.flagId = e.id; pole.userData.flagPoleFor = e.id; archUp.add(pole);   // flagPoleFor 供漫游高亮整杆
             const ball = new THREE.Mesh(new THREE.SphereGeometry(r * 1.8, 10, 8), mat('#c8a45a', { metalness: .6, roughness: .35 }));
             ball.position.set(px, h + r * 1.6, pz); ball.userData.flagId = e.id; archUp.add(ball);
             const fw = Math.max(.5, h * .1), fh = fw * .62;   // 竖直旗面：宽 fw、高 fh，薄面朝 z，顶部贴旗面顶标高（可升降）
@@ -13289,17 +13289,17 @@
           doorHiRef.scale.set(p.width * 1.05, p.height * 1.05, p.depth + .06);
           h.mesh.add(doorHiRef);
         }
-        walkTip.textContent = touchWalk ? tr('点门开关', 'Tap to toggle') : tr('E 开关门', 'Press E to toggle');
+        walkTip.textContent = touchWalk ? (h.door.win ? tr('点窗开关', 'Tap to toggle') : tr('点门开关', 'Tap to toggle')) : (h.door.win ? tr('E 开关窗', 'Press E to toggle') : tr('E 开关门', 'Press E to toggle'));
         walkTip.classList.add('open');
-      } else if ((h?.flagSel || h?.flagHandle) && h.dist < 2.5 && doorHiRef) {   // 瞄准旗杆：高亮旗面 + 提示升降
+      } else if ((h?.flagSel || h?.flagHandle) && h.dist < 2.5 && doorHiRef) {   // 瞄准旗杆（杆身 / 顶球 / 旗面）：高亮整根杆身 + 提示升降
         const ex = (state.extras || []).find(x => x.id === (h.flagSel || h.flagHandle));
-        const mesh = ex && archUp.children.find(o => o.userData.flagMeshFor === ex.id);
-        if (mesh) {
-          if (doorHiRef.parent !== mesh) {
-            const p = mesh.geometry.parameters;
+        const pole = ex && archUp.children.find(o => o.userData.flagPoleFor === ex.id);
+        if (pole) {
+          if (doorHiRef.parent !== pole) {
+            const p = pole.geometry.parameters;
             doorHiRef.removeFromParent(); doorHiRef.visible = true;
-            doorHiRef.scale.set(p.width * 1.05, p.height * 1.05, p.depth + .06);
-            mesh.add(doorHiRef);
+            doorHiRef.scale.set(p.radiusTop * 3.5, p.height * 1.01, p.radiusTop * 3.5);
+            pole.add(doorHiRef);
           }
           walkTip.textContent = touchWalk ? tr('点旗杆升降旗', 'Tap to toggle the flag') : tr('E 升旗 / 降旗', 'Press E to raise / lower');
           walkTip.classList.add('open');
