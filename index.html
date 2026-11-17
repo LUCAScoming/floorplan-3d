@@ -10356,14 +10356,12 @@
         }
         if (anim || opt.mode !== 'orbit' || !tap) return;
         const h = pick(e);
-        console.log('UPDBG', e.clientX, e.clientY, JSON.stringify(h));
         if (h?.door) h.door.open = !h.door.open;
         else if (h?.flagSel || h?.flagHandle) {                      // 点旗杆：旗面升起 ⇄ 降下（先播动画，结束才写入方案）
           const ex = (state.extras || []).find(x => x.id === (h.flagSel || h.flagHandle));
           if (ex && !flagAnims.has(ex.id)) {
             const top = ex.h ?? 6000, up = (ex.flagY ?? Math.round(top * .9)) > top * .6;
             flagAnims.set(ex.id, { from: ex.flagY ?? Math.round(top * .9), to: up ? 800 : top - 500, top, t0: performance.now(), dur: 900 });
-            console.log('FSET', ex.id, 'from', ex.flagY, 'to', up ? 800 : top - 500);
           }
         }
         else if (h?.fid) window.select({ kind: 'furn', id: h.fid });
@@ -12435,7 +12433,7 @@
             const ball = new THREE.Mesh(new THREE.SphereGeometry(r * 1.8, 10, 8), mat('#c8a45a', { metalness: .6, roughness: .35 }));
             ball.position.set(px, h + r * 1.6, pz); ball.userData.flagId = e.id; archUp.add(ball);
             const fw = Math.max(.5, h * .1), fh = fw * .62;   // 竖直旗面：宽 fw、高 fh，薄面朝 z，顶部贴旗面顶标高（可升降）
-            const fy = Math.min(h - .5, Math.max(1, M(e.flagY ?? Math.round(h * 1000 * .9))));
+            const fy = Math.min(h - .5, Math.max(.5, M(e.flagY ?? Math.round(h * 1000 * .9))));
             const fb = box(fw, fh, .02, px + fw / 2 + r, fy - fh / 2, pz, mat('#a44e3d', { roughness: .8 }));
             fb.userData.flagId = e.id; fb.userData.flagMeshFor = e.id;   // flagMeshFor 供升降动画逐帧定位
             return;
@@ -13306,7 +13304,7 @@
       updateDoorWalkTip();
       flagAnims.forEach((a, id) => {                             // 旗面升降：逐帧插值旗面高度；播完只写状态并入撤销栈，不走 buildArch 重建（否则门窗动画会被重置）
         const k = clamp01((now - a.t0) / a.dur), v = (a.from + (a.to - a.from) * ease(k)) / 1000;
-        const fw = Math.max(.5, a.top * .1), fh = fw * .62;
+        const fw = Math.max(.5, a.top / 10000), fh = fw * .62;   // a.top 是毫米，换算成米
         const mesh = archUp.children.find(o => o.userData.flagMeshFor === id);
         if (mesh) mesh.position.y = v - fh / 2;
         if (k >= 1) {
