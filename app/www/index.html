@@ -2434,7 +2434,7 @@
           <button class="btn chip" data-dt="flue" title="烟道 / 风道：点击位置放置（默认 300×300、高 2800）；宽 / 进深 / 高 / 底标高可改"><i
           data-lucide="air-vent"></i>烟道</button>
           <button class="btn chip" data-dt="ac" title="设备平台 / 空调机位：两次点击对角点；默认 1200×700、板厚 100，3D 带百叶围板"><i data-lucide="air-vent"></i>设备平台</button>
-          <button class="btn chip" data-dt="park" title="停车位：两次点击对角点；2D 画车位线与编号，3D 为地面标线"><i data-lucide="car"></i>停车位</button>
+          <button class="btn chip" data-dt="park" title="停车位：两次点击对角点；2D 画车位线、编号与车头朝向箭头，3D 为地面标线，朝向可改"><i data-lucide="car"></i>停车位</button>
           <button class="btn chip" data-dt="pavilion" title="凉亭：两次点击对角点；2D 画柱位与顶轮廓，3D 生成立柱 + 顶盖"><i data-lucide="tent"></i>凉亭</button>
           <button class="btn chip" data-dt="apron" title="散水 / 明沟：第一次点起点，第二次点终点；默认 600 宽，2D 画双线散水，3D 为沿墙坡面"><i data-lucide="grip-horizontal"></i>散水</button>
           <button class="btn chip" data-dt="retain" title="挡土墙：第一次点起点，第二次点终点；默认 300 厚 × 1800 高，带压顶"><i data-lucide="brick-wall"></i>挡土墙</button>
@@ -4931,7 +4931,7 @@
       }
       const tip = e.type === 'slabhole' ? tr('2D 为虚线轮廓加对角叉，3D 在楼板上挖出洞口并带翻边。', 'Dashed outline with cross in 2D; a cored hole with upturn in 3D.')
         : e.type === 'ac' ? tr('设备平台 / 空调机位，3D 带百叶围板；可拖动整体移动，四角手柄改尺寸。', 'AC platform with louver panels in 3D. Drag to move, corner handles to resize.')
-          : e.type === 'park' ? tr('停车位 2D 画车位线与编号，3D 为地面标线，可拖动整体移动。', 'Parking stall: line work and number in 2D, ground marking in 3D.')
+          : e.type === 'park' ? tr('停车位 2D 画车位线、编号与车头朝向箭头，3D 为地面标线；朝向可在右侧改。', 'Parking stall: line work, number and head-direction arrow in 2D, ground marking in 3D.')
             : e.type === 'pavilion' ? tr('凉亭 3D 生成立柱与顶盖，可拖动整体移动、四角手柄改尺寸。', 'Pavilion with posts and roof in 3D.')
               : e.type === 'skylight' ? tr('天窗 3D 在屋面生成凸起玻璃顶，可拖动整体移动。', 'Skylight with raised glazing in 3D.')
                 : e.type === 'apron' ? tr('散水沿建筑外墙布置，2D 画双线，3D 为向外找坡的混凝土带；端点手柄可改长度。', 'Apron: double lines in 2D, sloped concrete band in 3D.')
@@ -9549,7 +9549,7 @@
       if (dt === 'section') toast(tr('剖切符号：先点剖切起点，再点终点；编号 / 两端位置在右侧改', 'Section mark: click the start then the end of the cut line'));
       if (dt === 'slabhole') toast(tr('楼板洞口：两次点击对角点；2D 虚线加对角叉，3D 挖洞带翻边，宽 / 深在右侧改', 'Slab hole: click two opposite corners; dashed outline with cross in 2D, cored hole in 3D'));
       if (dt === 'ac') toast(tr('设备平台：两次点击对角点；板厚 / 安装标高 / 宽深在右侧改，3D 带百叶围板', 'AC platform: click two opposite corners; edit slab / level / size in the panel (louver panels in 3D)'));
-      if (dt === 'park') toast(tr('停车位：两次点击对角点；车位编号 / 宽深在右侧改，3D 为地面标线', 'Parking stall: click two opposite corners; edit stall no. / size in the panel'));
+      if (dt === 'park') toast(tr('停车位：两次点击对角点；车位编号 / 宽深 / 车头朝向在右侧改，3D 为地面标线', 'Parking stall: click two opposite corners; edit stall no. / size / head direction in the panel'));
       if (dt === 'pavilion') toast(tr('凉亭：两次点击对角点；宽深 / 檐高 / 柱径在右侧改，3D 生成立柱与顶盖', 'Pavilion: click two opposite corners; edit size / eave height / column in the panel'));
       if (dt === 'skylight') toast(tr('天窗：两次点击对角点；屋面标高 / 凸起高度在右侧改，3D 生成凸起玻璃顶', 'Skylight: click two opposite corners; edit roof level / curb height in the panel'));
       if (dt === 'apron') toast(tr('散水：点起点，再点终点；宽度 / 高度在右侧改，端点手柄可改长度', 'Apron: click start then end; edit width / height in the panel'));
@@ -12255,16 +12255,29 @@
           box(w, .05, d, cx, y + h + .025, cz, mat('#9a9488', { metalness: .35, roughness: .55 }));
           return;
         }
-        if (T3 === 'solar') {                                 // 太阳能：斜置集热板 + 支架 + 顶部水箱
+        if (T3 === 'solar') {                                 // 太阳能：斜置集热板 + 支架 + 顶部水箱（水箱在高边）
           const y = Math.max(0, M(e.z || 2800)), sh = Math.max(.08, M(e.h || 300));
+          const a = Math.PI / 7;                              // 集热板倾角 ~25.7°
+          const Wp = Math.max(.4, w * .9), Dp = Math.max(.4, d * .8), t = .05;
+          const frontZ = cz - d / 2 + Dp / 2;                 // 前檐（低边）在地面的投影 z
+          const backRise = Dp * Math.sin(a);                  // 后檐比前檐抬高
+          const g = new THREE.Group();
+          g.position.set(cx, y + sh, frontZ);                 // 组原点 = 面板前檐中点
+          const panel = new THREE.Group();                    // 以「前檐底沿」为枢轴倾斜
+          const pn = new THREE.Mesh(new THREE.BoxGeometry(Wp, t, Dp), mat('#2f4a6b', { metalness: .4, roughness: .3 }));
+          pn.position.set(0, t / 2, Dp / 2); pn.castShadow = pn.receiveShadow = true; panel.add(pn);
+          for (let i = 0; i < 8; i++) {                       // 集热板面上的真空管 / 板芯分格
+            const tube = new THREE.Mesh(new THREE.BoxGeometry(Wp * .94, .018, .025), mat('#3a6b8f', { metalness: .55, roughness: .25 }));
+            tube.position.set(0, t / 2 + .011, .06 + i * (Dp * .88 / 8)); tube.castShadow = true; panel.add(tube);
+          }
+          panel.rotation.x = -a; g.add(panel);
+          const tank = new THREE.Mesh(new THREE.CylinderGeometry(.2, .2, Wp * .92, 18), mat('#c9ccd0', { metalness: .55, roughness: .32 }));
+          tank.rotation.z = Math.PI / 2;                        // 横置，沿 x 方向
+          tank.position.set(0, backRise + .22, Dp * Math.cos(a)); tank.castShadow = true; g.add(tank);
           const legM = mat('#8d9095', { metalness: .5, roughness: .5 });
-          [[x0 + .12, z0 + .12], [x0 + w - .12, z0 + .12], [x0 + .12, z0 + d - .12], [x0 + w - .12, z0 + d - .12]]
-            .forEach(([px, pz]) => box(.05, sh, .05, px, y + sh / 2, pz, legM));
-          const pn = new THREE.Mesh(new THREE.BoxGeometry(w * .92, .05, d * .86), mat('#2f4a6b', { metalness: .35, roughness: .32 }));
-          pn.position.set(cx, y + sh + d * .12, cz); pn.rotation.x = -Math.PI / 9;
-          pn.castShadow = pn.receiveShadow = true; archUp.add(pn);
-          const tank = new THREE.Mesh(new THREE.CylinderGeometry(.26, .26, w * .82, 18), mat('#c9ccd0', { metalness: .5, roughness: .35 }));
-          tank.rotation.z = Math.PI / 2; tank.position.set(cx, y + sh + .5, z0 + .18); tank.castShadow = true; archUp.add(tank);
+          [[-1, 0], [1, 0]].forEach(([sd]) => box(.05, sh, .05, cx + sd * (Wp / 2 - .08), y + sh / 2, frontZ - .02, legM));
+          [[-1], [1]].forEach(([sd]) => box(.05, sh + backRise, .05, cx + sd * (Wp / 2 - .08), y + (sh + backRise) / 2, frontZ + Dp * Math.cos(a) + .02, legM));
+          archUp.add(g);
           return;
         }
         if (T3 === 'equip') {                                 // 设备基础：混凝土基础 + 机组体量
