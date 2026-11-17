@@ -8946,7 +8946,8 @@
       }
       // 墙 / 门窗的直接拖动编辑
       if (drag.kind === 'wallMove' || drag.kind === 'wallEnd' || drag.kind === 'openMove' || drag.kind === 'bopenMove' || drag.kind === 'bwEnd' || drag.kind === 'openEnd' || drag.kind === 'bopenEnd' || drag.kind === 'bopenDoorEnd' || drag.kind === 'pillarMove' || drag.kind === 'stairMove' || drag.kind === 'stairLen' || drag.kind === 'stairW'
-        || drag.kind === 'railEnd' || drag.kind === 'beamEnd' || drag.kind === 'parapetEnd' || drag.kind === 'canopyEnd' || drag.kind === 'arcwallEnd' || drag.kind === 'gateEnd' || drag.kind === 'extraEnd' || drag.kind === 'lbayEnd') {
+        || drag.kind === 'railEnd' || drag.kind === 'beamEnd' || drag.kind === 'parapetEnd' || drag.kind === 'canopyEnd' || drag.kind === 'arcwallEnd' || drag.kind === 'gateEnd' || drag.kind === 'extraEnd' || drag.kind === 'lbayEnd'
+        || drag.kind === 'leaderMove' || drag.kind === 'ldEnd') {
         if (!drag.moved && !far) return;
         drag.moved = true;
         if (drag.kind === 'stairLen' || drag.kind === 'stairW') {     // 楼梯：拖手柄改占地长度 / 梯宽
