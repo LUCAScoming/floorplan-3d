@@ -548,9 +548,9 @@
       "id": "fmwkbjpr297",
       "x": 15950,
       "y": 7590,
-      "w": 1400,
+      "w": 2000,
       "dir": 0,
-      "rise": 2800,
+      "rise": 4200,
       "type": "spiral",
       "flipX": false
     }

@@ -9589,6 +9589,7 @@
         setRightTab('prop');   // 3D 下右侧只保留属性（对象列表仅 2D 可用）
         const hasDoors = state.openings.some(o => o.kind === 'door' && openingWallGeom(o.wall)) || DOORS.some((d, i) => !bopenRemoved('d' + i) && !bopenOnDeadWall('d' + i));
         if (hasDoors && !setView.doorTipShown) { setView.doorTipShown = true; toast(tr('小提示：点击门即可开门 / 关门', 'Tip: click a door to open / close')); }
+        if ((state.extras || []).some(x => x.type === 'flag') && !setView.flagTipShown) { setView.flagTipShown = true; toast(tr('小提示：点击旗杆可升旗 / 降旗', 'Tip: click a flagpole to raise / lower the flag')); }
       }
       else {
         const back = toolBefore3D; toolBefore3D = null;
@@ -10351,21 +10352,13 @@
         const tap = downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) <= TAP;
         if (look?.id === e.pointerId) {
           look = null;
-          if (tap) { const h = pick(e); if (h?.door && h.dist < 3.5) h.door.open = !h.door.open; else shoot(e); }   // 漫游时点门开关；点别处 = 射击
+          if (tap) { const h = pick(e); if (h?.door && h.dist < 3.5) h.door.open = !h.door.open; else if ((h?.flagSel || h?.flagHandle) && h.dist < 3.5) startFlagAnim((state.extras || []).find(x => x.id === (h.flagSel || h.flagHandle))); else shoot(e); }   // 漫游时点门开关 / 点旗杆升降旗；点别处 = 射击
           return;
         }
         if (anim || opt.mode !== 'orbit' || !tap) return;
         const h = pick(e);
         if (h?.door) h.door.open = !h.door.open;
-        else if (h?.flagSel || h?.flagHandle) {                      // 点旗杆：旗面升起 ⇄ 降下（起止位按旗面自身高度：升=顶贴杆顶，降=底贴底座顶）
-          const ex = (state.extras || []).find(x => x.id === (h.flagSel || h.flagHandle));
-          if (ex && !flagAnims.has(ex.id)) {
-            const top = ex.h ?? 6000, fw = Math.max(.5, top * .1), fh = fw * .62;
-            const down = Math.round(fh * 1000 + 450);                // 降下：旗面底部贴底座顶（底座高 450mm）
-            const up = (ex.flagY ?? Math.round(top * .9)) > (top + down) / 2;   // 当前在上方 → 点击降下，反之升起
-            flagAnims.set(ex.id, { from: ex.flagY ?? Math.round(top * .9), to: up ? down : top, top, t0: performance.now(), dur: 900 });
-          }
-        }
+        else if (h?.flagSel || h?.flagHandle) startFlagAnim((state.extras || []).find(x => x.id === (h.flagSel || h.flagHandle)));
         else if (h?.fid) window.select({ kind: 'furn', id: h.fid });
         else if (h?.room) window.select({ kind: 'room', id: h.room });
         else window.select(null);
@@ -10396,6 +10389,14 @@
           doorTip.textContent = h.door.win
             ? (h.door.open ? tr('点击关窗', 'Click to close') : tr('点击开窗', 'Click to open'))
             : (h.door.open ? tr('点击关门', 'Click to close') : tr('点击开门', 'Click to open'));
+          doorTip.classList.add('open');
+          doorTip.style.left = e.clientX + 'px'; doorTip.style.top = e.clientY + 'px';
+        } else if (h?.flagSel || h?.flagHandle) {                      // 旗杆：同款气泡提示升 / 降旗
+          cv.style.cursor = 'pointer';
+          const ex = (state.extras || []).find(x => x.id === (h.flagSel || h.flagHandle));
+          const top = ex ? (ex.h ?? 6000) : 6000;
+          const up = ex && (ex.flagY ?? Math.round(top * .9)) > top * .6;
+          doorTip.textContent = up ? tr('点击降旗', 'Click to lower the flag') : tr('点击升旗', 'Click to raise the flag');
           doorTip.classList.add('open');
           doorTip.style.left = e.clientX + 'px'; doorTip.style.top = e.clientY + 'px';
         } else clearDoorHover();
@@ -12432,12 +12433,10 @@
             base.position.set(px, .225, pz); base.castShadow = base.receiveShadow = true; archUp.add(base);
             const pole = new THREE.Mesh(new THREE.CylinderGeometry(r, r * 1.3, h, 10), mat('#d8d5cc', { metalness: .4, roughness: .5 }));
             pole.position.set(px, .45 + (h - .45) / 2, pz); pole.castShadow = true; pole.userData.flagId = e.id; archUp.add(pole);
-            const hitCol = new THREE.Mesh(new THREE.CylinderGeometry(Math.max(.15, r * 2), Math.max(.15, r * 2), h + .4, 6), new THREE.MeshBasicMaterial({ visible: false }));   // 隐形加粗命中柱：杆身太细（屏幕仅 2~4px）难以点中
-            hitCol.position.set(px, (h + .4) / 2, pz); hitCol.userData.flagId = e.id; archUp.add(hitCol);
             const ball = new THREE.Mesh(new THREE.SphereGeometry(r * 1.8, 10, 8), mat('#c8a45a', { metalness: .6, roughness: .35 }));
             ball.position.set(px, h + r * 1.6, pz); ball.userData.flagId = e.id; archUp.add(ball);
             const fw = Math.max(.5, h * .1), fh = fw * .62;   // 竖直旗面：宽 fw、高 fh，薄面朝 z，顶部贴旗面顶标高（可升降）
-            const fy = Math.min(h, Math.max(.5, M(e.flagY ?? Math.round(h * 1000 * .9))));
+            const fy = Math.min(h - .5, Math.max(.5, M(e.flagY ?? Math.round(h * 1000 * .9))));
             const fb = box(fw, fh, .02, px + fw / 2 + r, fy - fh / 2, pz, mat('#a44e3d', { roughness: .8 }));
             fb.userData.flagId = e.id; fb.userData.flagMeshFor = e.id;   // flagMeshFor 供升降动画逐帧定位
             return;
@@ -12985,7 +12984,7 @@
         if (o.userData.door) return { door: o.userData.door, dist: h.distance, mesh: o };
         if (o.userData.room) return { room: o.userData.room };
         if (o.userData.flagHandle) return { flagHandle: o.userData.flagHandle, dist: h.distance };   // 旗面升降手柄
-        if (o.userData.flagId) return { flagSel: o.userData.flagId };                               // 旗杆杆身：点击选中
+        if (o.userData.flagId) return { flagSel: o.userData.flagId, dist: h.distance };                               // 旗杆杆身：点击选中（漫游距离判断需要 dist）
         while (o && !o.userData.fid && o !== scene) o = o.parent;
         if (o?.userData.fid) return { fid: o.userData.fid };
         return null;                                     // 被墙体挡住
@@ -13238,7 +13237,7 @@
       if (!active || e.target.matches('input,select,textarea')) return;
       if (opt.mode === 'walk' && e.code === 'Space') e.preventDefault();   // 空格用于跳跃，阻止页面滚动
       keys[e.code] = true;
-      if (opt.mode === 'walk' && e.code === 'KeyE') { const h = pick(); if (h?.door && h.dist < 2.5) h.door.open = !h.door.open; }
+      if (opt.mode === 'walk' && e.code === 'KeyE') { const h = pick(); if (h?.door && h.dist < 2.5) h.door.open = !h.door.open; else if ((h?.flagSel || h?.flagHandle) && h.dist < 2.5) startFlagAnim((state.extras || []).find(x => x.id === (h.flagSel || h.flagHandle))); }
     });
     addEventListener('keyup', e => keys[e.code] = false);
 
@@ -13292,6 +13291,19 @@
         }
         walkTip.textContent = touchWalk ? tr('点门开关', 'Tap to toggle') : tr('E 开关门', 'Press E to toggle');
         walkTip.classList.add('open');
+      } else if ((h?.flagSel || h?.flagHandle) && h.dist < 2.5 && doorHiRef) {   // 瞄准旗杆：高亮旗面 + 提示升降
+        const ex = (state.extras || []).find(x => x.id === (h.flagSel || h.flagHandle));
+        const mesh = ex && archUp.children.find(o => o.userData.flagMeshFor === ex.id);
+        if (mesh) {
+          if (doorHiRef.parent !== mesh) {
+            const p = mesh.geometry.parameters;
+            doorHiRef.removeFromParent(); doorHiRef.visible = true;
+            doorHiRef.scale.set(p.width * 1.05, p.height * 1.05, p.depth + .06);
+            mesh.add(doorHiRef);
+          }
+          walkTip.textContent = touchWalk ? tr('点旗杆升降旗', 'Tap to toggle the flag') : tr('E 升旗 / 降旗', 'Press E to raise / lower');
+          walkTip.classList.add('open');
+        } else { if (doorHiRef) { doorHiRef.removeFromParent(); doorHiRef.visible = false; } walkTip.classList.remove('open'); }
       } else {
         if (doorHiRef) { doorHiRef.removeFromParent(); doorHiRef.visible = false; }
         walkTip.classList.remove('open');
@@ -13325,6 +13337,12 @@
     }
 
     const flagAnims = new Map();                                   // 旗面升降动画：id → {from,to,top,t0,dur}（仿门开关的逐帧过渡）
+
+    function startFlagAnim(ex) {                                   // 旗面升起 ⇄ 降下：先播动画，结束才写入方案（鸟瞰点击 / 漫游 E 键 / 漫游点击共用）
+      if (!ex || flagAnims.has(ex.id)) return;
+      const top = ex.h ?? 6000, up = (ex.flagY ?? Math.round(top * .9)) > top * .6;
+      flagAnims.set(ex.id, { from: ex.flagY ?? Math.round(top * .9), to: up ? 800 : top - 500, top, t0: performance.now(), dur: 900 });
+    }
 
     function shot() { const a = document.createElement('a'); a.download = tr('户型装修方案', 'floor-plan-design') + '-3D.png'; a.href = renderer.domElement.toDataURL('image/png'); a.click(); }
 
