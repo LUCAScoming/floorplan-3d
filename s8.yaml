@@ -1,0 +1,277 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - button "◧ 家具库" [ref=e5] [cursor=pointer]
+        - button "属性 ◨" [ref=e6] [cursor=pointer]
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: 户型装修设计
+          - generic "当前方案：未命名方案" [ref=e10]: 未命名方案
+        - generic [ref=e11]: 套内使用面积约 0.00 m² · 尺寸单位 mm · 原图比例 1:60
+      - generic "切换 2D / 3D (T)" [ref=e12]:
+        - button "2D 平面" [ref=e14] [cursor=pointer]
+        - button "3D 场景" [ref=e15] [cursor=pointer]
+      - generic [ref=e16]:
+        - button "预览" [ref=e17] [cursor=pointer]
+        - button "测量" [ref=e18] [cursor=pointer]
+        - button "设计" [ref=e19] [cursor=pointer]
+      - generic [ref=e20]:
+        - button "撤销" [ref=e21] [cursor=pointer]
+        - button "重做" [disabled] [ref=e22] [cursor=pointer]
+        - button "清空布置" [ref=e23] [cursor=pointer]
+      - generic [ref=e24]:
+        - button "尺寸" [ref=e25] [cursor=pointer]
+        - button "房间" [ref=e26] [cursor=pointer]
+        - button "家具" [ref=e27] [cursor=pointer]
+        - button "网格" [ref=e28] [cursor=pointer]
+        - button "坐标轴" [ref=e29] [cursor=pointer]
+        - button "承重墙" [ref=e30] [cursor=pointer]
+        - button "贴墙吸附" [ref=e31] [cursor=pointer]
+      - group "Language / 语言" [ref=e32]:
+        - button "简" [pressed] [ref=e33] [cursor=pointer]
+        - button "繁" [ref=e34] [cursor=pointer]
+        - button "EN" [ref=e35] [cursor=pointer]
+      - button "⛶ 全屏" [ref=e36] [cursor=pointer]
+      - button "保存" [ref=e37] [cursor=pointer]
+      - group [ref=e38]:
+        - generic "文件 ▾" [ref=e39] [cursor=pointer]
+    - complementary [ref=e40]:
+      - generic [ref=e41]:
+        - button "家具库" [ref=e42] [cursor=pointer]
+        - button "建筑工具" [ref=e43] [cursor=pointer]
+      - generic [ref=e603]:
+        - generic [ref=e604]:
+          - generic [ref=e605]: 基础
+          - button "选择" [ref=e606] [cursor=pointer]
+          - button "旋转" [ref=e609] [cursor=pointer]
+          - button "画墙" [ref=e613] [cursor=pointer]
+          - button "区域" [ref=e616] [cursor=pointer]
+          - button "材质刷" [ref=e619] [cursor=pointer]
+        - generic [ref=e624]:
+          - generic [ref=e625]: 门
+          - button "房门" [ref=e626] [cursor=pointer]
+          - button "双开门" [ref=e630] [cursor=pointer]
+          - button "子母门" [ref=e633] [cursor=pointer]
+          - button "垭口" [ref=e636] [cursor=pointer]
+          - button "预留洞" [ref=e639] [cursor=pointer]
+          - button "拱形门洞" [ref=e645] [cursor=pointer]
+          - button "单扇推拉门" [ref=e649] [cursor=pointer]
+          - button "折叠门" [ref=e653] [cursor=pointer]
+          - button "落地推拉门" [ref=e657] [cursor=pointer]
+          - button "自动门" [ref=e661] [cursor=pointer]
+          - button "旋转门" [ref=e665] [cursor=pointer]
+          - button "电梯门" [ref=e669] [cursor=pointer]
+          - button "卷帘门" [ref=e672] [cursor=pointer]
+          - button "入户" [ref=e675] [cursor=pointer]
+          - button "封洞" [ref=e679] [cursor=pointer]
+        - generic [ref=e683]:
+          - generic [ref=e684]: 窗
+          - button "窗户" [ref=e685] [cursor=pointer]
+          - button "高窗" [ref=e688] [cursor=pointer]
+          - button "推拉窗" [ref=e691] [cursor=pointer]
+          - button "落地窗" [ref=e695] [cursor=pointer]
+          - button "门连窗" [ref=e698] [cursor=pointer]
+          - button "飘窗" [ref=e701] [cursor=pointer]
+          - button "转角飘窗" [ref=e704] [cursor=pointer]
+          - button "转角窗" [ref=e708] [cursor=pointer]
+          - button "百叶窗" [ref=e712] [cursor=pointer]
+          - button "圆窗" [ref=e714] [cursor=pointer]
+          - button "带形窗" [ref=e717] [cursor=pointer]
+          - button "窗台板" [ref=e721] [cursor=pointer]
+        - generic [ref=e724]:
+          - generic [ref=e725]: 楼梯 · 坡道
+          - button "楼梯" [ref=e726] [cursor=pointer]
+          - button "双跑楼梯" [ref=e729] [cursor=pointer]
+          - button "三跑楼梯" [ref=e733] [cursor=pointer]
+          - button "正三跑" [ref=e738] [cursor=pointer]
+          - button "坡道" [ref=e743] [cursor=pointer]
+          - button "台阶" [ref=e747] [cursor=pointer]
+          - button "螺旋楼梯" [ref=e751] [cursor=pointer]
+        - generic [ref=e754]:
+          - generic [ref=e755]: 结构 · 构件
+          - button "柱子" [ref=e756] [cursor=pointer]
+          - button "梁" [ref=e759] [cursor=pointer]
+          - button "楼板" [ref=e762] [cursor=pointer]
+          - button "楼板洞口" [ref=e766] [cursor=pointer]
+          - button "吊顶" [ref=e772] [cursor=pointer]
+          - button "女儿墙" [ref=e775] [cursor=pointer]
+          - button "矮墙" [ref=e780] [cursor=pointer]
+          - button "屋顶" [ref=e783] [cursor=pointer]
+          - button "弧形墙" [ref=e787] [cursor=pointer]
+          - button "栏杆" [ref=e797] [cursor=pointer]
+          - button "玻璃隔断" [ref=e802] [cursor=pointer]
+          - button "排水沟" [ref=e805] [cursor=pointer]
+          - button "壁龛" [ref=e813] [cursor=pointer]
+          - button "雨棚" [ref=e818] [cursor=pointer]
+          - button "围墙" [ref=e821] [cursor=pointer]
+          - button "院门" [ref=e826] [cursor=pointer]
+          - button "廊架" [ref=e829] [cursor=pointer]
+          - button "露台" [ref=e832] [cursor=pointer]
+          - button "泳池" [ref=e835] [cursor=pointer]
+          - button "电梯" [ref=e840] [cursor=pointer]
+        - generic [ref=e844]:
+          - generic [ref=e845]: 室外 · 设备
+          - button "阳台" [ref=e846] [cursor=pointer]
+          - button "花坛" [ref=e852] [cursor=pointer]
+          - button "采光井" [ref=e856] [cursor=pointer]
+          - button "烟道" [ref=e863] [cursor=pointer]
+          - button "设备平台" [ref=e868] [cursor=pointer]
+          - button "停车位" [ref=e873] [cursor=pointer]
+          - button "凉亭" [ref=e878] [cursor=pointer]
+          - button "散水" [ref=e883] [cursor=pointer]
+          - button "挡土墙" [ref=e891] [cursor=pointer]
+          - button "天窗" [ref=e894] [cursor=pointer]
+          - button "天沟" [ref=e901] [cursor=pointer]
+          - button "雨水管" [ref=e909] [cursor=pointer]
+          - button "门头广告牌" [ref=e914] [cursor=pointer]
+          - button "旗杆" [ref=e917] [cursor=pointer]
+          - button "电动车棚" [ref=e920] [cursor=pointer]
+        - generic [ref=e924]:
+          - generic [ref=e925]: 结构细部
+          - button "构造柱" [ref=e926] [cursor=pointer]
+          - button "过梁" [ref=e929] [cursor=pointer]
+          - button "变形缝" [ref=e933] [cursor=pointer]
+          - button "管道井" [ref=e939] [cursor=pointer]
+          - button "挑檐" [ref=e944] [cursor=pointer]
+          - button "门槛石" [ref=e947] [cursor=pointer]
+          - button "泛水线" [ref=e950] [cursor=pointer]
+          - button "檐口线脚" [ref=e956] [cursor=pointer]
+        - generic [ref=e959]:
+          - generic [ref=e960]: 室外景观
+          - button "景观树" [ref=e961] [cursor=pointer]
+          - button "园路" [ref=e964] [cursor=pointer]
+          - button "草坪" [ref=e968] [cursor=pointer]
+          - button "雨水井" [ref=e974] [cursor=pointer]
+        - generic [ref=e978]:
+          - generic [ref=e979]: 屋顶设备
+          - button "老虎窗" [ref=e980] [cursor=pointer]
+          - button "烟囱" [ref=e985] [cursor=pointer]
+          - button "检修口" [ref=e988] [cursor=pointer]
+          - button "太阳能" [ref=e991] [cursor=pointer]
+          - button "设备基础" [ref=e998] [cursor=pointer]
+        - generic [ref=e1002]:
+          - generic [ref=e1003]: 标注
+          - button "尺寸标注" [ref=e1004] [cursor=pointer]
+          - button "标高" [ref=e1011] [cursor=pointer]
+          - button "文字标注" [ref=e1014] [cursor=pointer]
+          - button "指北针" [ref=e1017] [cursor=pointer]
+          - button "轴网" [ref=e1021] [cursor=pointer]
+          - button "引线标注" [ref=e1027] [cursor=pointer]
+          - button "剖切符号" [ref=e1030] [cursor=pointer]
+    - main [ref=e506]:
+      - img [ref=e507]:
+        - generic [ref=e1337]: 螺旋 16 级
+        - generic:
+          - generic:
+            - generic: X
+            - generic: "Y"
+        - generic [ref=e1450]:
+          - generic [ref=e1777]: 双坡屋顶 1200
+          - generic [ref=e1779]: 旗杆
+          - generic [ref=e1782]: 电动车棚
+          - generic [ref=e1788]: 门槛石
+      - generic "旋转平面视图" [ref=e510]:
+        - button "▲" [ref=e511] [cursor=pointer]
+        - button "▶" [ref=e512] [cursor=pointer]
+        - button "▼" [ref=e513] [cursor=pointer]
+        - button "◀" [ref=e514] [cursor=pointer]
+        - button "0°" [ref=e515] [cursor=pointer]
+      - generic: 2 m
+      - generic: 子工具「选择」= 点选墙 / 门 / 窗 / 家具编辑，在空白处 / 房间内拖出矩形可框选家具 / 楼梯 / 柱子 / 自画墙（Ctrl+D 复制、Delete 删除；按住 Alt 拖动可从任意位置起手），Delete 删除（内置墙 = 标记拆除，点拆除残留可恢复，黑色承重墙不可拆）· 画墙 = 点两点（画板下方「直角 / 自由」控制方向：直角只走水平 / 垂直，自由任意角度，Shift 临时锁轴；右键 / Esc 取消，靠近旧墙自动吸上融合；也可点起点后直接输入长度回车）· 栏杆 / 梁 / 女儿墙 / 雨棚 / 尺寸标注同样受「直角 / 自由」约束· 房门 / 垭口 / 双开门 / 子母门 / 卷帘门 / 电梯门 / 落地窗 / 落地推拉门 / 单扇推拉门 / 折叠门 / 窗户 / 高窗 / 门连窗 / 飘窗 = 点墙上的位置 · 文字标注 = 点位置放文字（右侧改内容/字号，可拖动）· 台阶 = 点位置放一组台阶（级数可改）· 栏杆 = 点起点再点终点（高度 / 直杆或玻璃可改）· 梁 = 点起点再点终点（宽 / 高 / 底标高可改）· 标高 = 点位置放标高符号 · 尺寸标注 = 点起点再点终点 · 材质刷 = 点房间刷地面材料（先用「选择」点一个样板房间换材料）· 入户 = 点一个门洞设为唯一入户门 · 柱子 / 楼梯（直跑 · 双跑 · 三跑 · 正三跑）= 点任意位置放置（可拖动）· 楼板 = 点两个对角点（板厚 / 底标高可改）· 女儿墙 = 点起点再点终点（厚 / 高 / 底标高可改）· 雨棚 = 点起点再点终点（挑出 / 板厚 / 底标高可改）· 指北针 = 点位置放置（全局唯一，角度可改）· 电梯 = 点位置放置（宽 / 深 / 停靠高度 / 门宽 / 开门方向可改）· 阳台 / 花坛 = 点两个对角点 · 烟道 = 点位置放置
+      - generic [ref=e516]:
+        - button "−" [ref=e517] [cursor=pointer]
+        - button "＋" [ref=e518] [cursor=pointer]
+        - button "适应" [ref=e519] [cursor=pointer]
+        - button "1:60" [ref=e520] [cursor=pointer]
+        - button "1:100" [ref=e521] [cursor=pointer]
+      - generic [ref=e1033]:
+        - button "直角" [ref=e1034] [cursor=pointer]
+        - button "自由" [ref=e1038] [cursor=pointer]
+    - complementary [ref=e522]:
+      - generic [ref=e523]:
+        - button "对象列表" [ref=e524] [cursor=pointer]
+        - button "属性" [ref=e525] [cursor=pointer]
+      - generic [ref=e527]:
+        - generic [ref=e1790]:
+          - heading "房间面积 点击查看 / 更换地面" [level=3] [ref=e1791]
+          - table
+          - generic [ref=e1792]:
+            - generic [ref=e1793]: 套内使用面积
+            - generic [ref=e1794]: 0.00 m²
+          - generic [ref=e1795]: "* 飘窗不计入使用面积；面积按墙体内净尺寸计算"
+        - generic [ref=e1796]:
+          - heading "地面材料估算 含 5% 损耗" [level=3] [ref=e1797]
+          - table
+          - generic [ref=e1798]:
+            - generic [ref=e1799]: 地面材料合计
+            - generic [ref=e1800]: ¥0
+        - generic [ref=e1801]:
+          - heading "方案统计" [level=3] [ref=e1802]
+          - generic [ref=e1803]:
+            - generic [ref=e1804]:
+              - generic [ref=e1805]: 家具数量
+              - text: "0"
+            - generic [ref=e1806]:
+              - generic [ref=e1807]: 拆除墙体
+              - text: 0.0 m
+            - generic [ref=e1808]:
+              - generic [ref=e1809]: 新增墙体
+              - text: 0.0 m
+          - generic [ref=e1810]:
+            - button "清除测量 (0)" [ref=e1811] [cursor=pointer]
+            - button "清空布置" [ref=e1812] [cursor=pointer]
+        - generic [ref=e1813]:
+          - heading "门窗表 按类型与尺寸统计" [level=3] [ref=e1814]
+          - table [ref=e1815]:
+            - rowgroup [ref=e1816]:
+              - row [ref=e1817]:
+                - columnheader "类型" [ref=e1818]
+                - columnheader "编号" [ref=e1819]
+                - columnheader "宽 × 高 (mm)" [ref=e1820]
+                - columnheader "数量" [ref=e1821]
+            - rowgroup [ref=e1822]:
+              - row [ref=e1823]:
+                - cell "暂无门窗" [ref=e1824]
+          - generic [ref=e1825]:
+            - generic [ref=e1826]: 门窗总数
+            - generic [ref=e1827]: "0"
+        - generic [ref=e1828]:
+          - heading "键盘快捷键" [level=3] [ref=e1829]
+          - generic [ref=e1830]:
+            - generic [ref=e1831]: 拖拽
+            - generic [ref=e1832]: 左侧家具拖入平面图
+            - generic [ref=e1833]: V
+            - generic [ref=e1834]: 选择 / 移动
+            - generic [ref=e1835]: M
+            - generic [ref=e1836]: 测量（Shift 水平/垂直）
+            - generic [ref=e1837]: 中键拖动
+            - generic [ref=e1838]: 平移平面图（滚轮缩放）
+            - generic [ref=e1839]: X
+            - generic [ref=e1840]: 拆改非承重墙（黑色为承重墙）
+            - generic [ref=e1841]: R
+            - generic [ref=e1842]: 旋转 90°（Shift 反向）
+            - generic [ref=e1843]: 方向键
+            - generic [ref=e1844]: 微调 10mm（Shift 100mm）
+            - generic [ref=e1845]: ⌘/Ctrl D
+            - generic [ref=e1846]: 复制
+            - generic [ref=e1847]: Delete
+            - generic [ref=e1848]: 删除
+            - generic [ref=e1849]: ⌘/Ctrl Z
+            - generic [ref=e1850]: 撤销
+            - generic [ref=e1851]: T
+            - generic [ref=e1852]: 切换 2D / 3D
+            - generic [ref=e1853]: F
+            - generic [ref=e1854]: 适应窗口
+            - generic [ref=e1855]: Esc
+            - generic [ref=e1856]: 取消选择
+    - contentinfo [ref=e595]:
+      - generic [ref=e596]: X 6710 mm
+      - generic [ref=e597]: Y 5704 mm
+      - generic [ref=e598]: 当前比例 1:90
+      - generic [ref=e599]: 拖动左侧家具到平面图 · 滚轮缩放 · 拖动空白处平移 · T 切换 3D
+      - generic [ref=e600]:
+        - text: 户型装修设计 v1.0.8 · © 2026 RONGLINC93 ·
+        - link "GitHub 仓库" [ref=e601] [cursor=pointer]:
+          - /url: https://github.com/RONGLINC93/floorplan-3d
+  - generic: 请点击墙上的位置

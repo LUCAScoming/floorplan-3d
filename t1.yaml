@@ -1,0 +1,340 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - button "◧ 家具库" [ref=e5] [cursor=pointer]
+      - button "属性 ◨" [ref=e6] [cursor=pointer]
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]: 户型装修设计
+        - generic "当前方案：未命名方案" [ref=e10]: 未命名方案
+      - generic [ref=e11]: 套内使用面积约 0.00 m² · 尺寸单位 mm · 原图比例 1:60
+    - generic "切换 2D / 3D (T)" [ref=e12]:
+      - button "2D 平面" [ref=e14] [cursor=pointer]
+      - button "3D 场景" [ref=e15] [cursor=pointer]
+    - generic [ref=e16]:
+      - button "预览" [ref=e17] [cursor=pointer]
+      - button "测量" [ref=e18] [cursor=pointer]
+      - button "设计" [ref=e19] [cursor=pointer]
+    - generic [ref=e20]:
+      - button "撤销" [disabled] [ref=e21] [cursor=pointer]
+      - button "重做" [disabled] [ref=e22] [cursor=pointer]
+      - button "清空布置" [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - button "尺寸" [ref=e25] [cursor=pointer]
+      - button "房间" [ref=e26] [cursor=pointer]
+      - button "家具" [ref=e27] [cursor=pointer]
+      - button "网格" [ref=e28] [cursor=pointer]
+      - button "坐标轴" [ref=e29] [cursor=pointer]
+      - button "承重墙" [ref=e30] [cursor=pointer]
+      - button "贴墙吸附" [ref=e31] [cursor=pointer]
+    - group "Language / 语言" [ref=e32]:
+      - button "简" [pressed] [ref=e33] [cursor=pointer]
+      - button "繁" [ref=e34] [cursor=pointer]
+      - button "EN" [ref=e35] [cursor=pointer]
+    - button "⛶ 全屏" [ref=e36] [cursor=pointer]
+    - button "保存" [ref=e37] [cursor=pointer]
+    - group [ref=e38]:
+      - generic "文件 ▾" [ref=e39] [cursor=pointer]
+  - complementary [ref=e40]:
+    - generic [ref=e41]:
+      - button "家具库" [ref=e42] [cursor=pointer]
+      - button "建筑工具" [ref=e43] [cursor=pointer]
+    - generic [ref=e45]:
+      - heading "卧室" [level=4] [ref=e46]
+      - generic [ref=e47]:
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e48]:
+          - generic [ref=e56]: 双人床 1.8m
+          - generic [ref=e57]: 1800×2000
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e58]:
+          - generic [ref=e66]: 双人床 1.5m
+          - generic [ref=e67]: 1500×2000
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e68]:
+          - generic [ref=e75]: 单人床
+          - generic [ref=e76]: 1200×2000
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e77]:
+          - generic [ref=e81]: 婴儿床
+          - generic [ref=e82]: 1250×700
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e83]:
+          - generic [ref=e88]: 床头柜
+          - generic [ref=e89]: 450×400
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e90]:
+          - generic [ref=e103]: 衣柜
+          - generic [ref=e104]: 2000×600
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e105]:
+          - generic [ref=e114]: 小衣柜
+          - generic [ref=e115]: 1200×550
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e116]:
+          - generic [ref=e121]: 梳妆台
+          - generic [ref=e122]: 1000×450
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e123]:
+          - generic [ref=e128]: 书桌
+          - generic [ref=e129]: 1200×600
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e130]:
+          - generic [ref=e134]: 椅子
+          - generic [ref=e135]: 450×480
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e136]:
+          - generic [ref=e139]: 书架
+          - generic [ref=e140]: 800×300
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e141]:
+          - generic [ref=e146]: 飘窗垫
+          - generic [ref=e147]: 520×1800
+      - heading "客厅" [level=4] [ref=e148]
+      - generic [ref=e149]:
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e150]:
+          - generic [ref=e159]: 三人沙发
+          - generic [ref=e160]: 2400×900
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e161]:
+          - generic [ref=e169]: 双人沙发
+          - generic [ref=e170]: 1700×880
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e171]:
+          - generic [ref=e181]: 转角沙发
+          - generic [ref=e182]: 2800×1700
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e183]:
+          - generic [ref=e190]: 单人沙发
+          - generic [ref=e191]: 850×850
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e192]:
+          - generic [ref=e196]: 懒人沙发
+          - generic [ref=e197]: 800×800
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e198]:
+          - generic [ref=e202]: 茶几
+          - generic [ref=e203]: 1300×650
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e204]:
+          - generic [ref=e208]: 边几
+          - generic [ref=e209]: 500×500
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e210]:
+          - generic [ref=e214]: 电视柜
+          - generic [ref=e215]: 2400×400
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e216]:
+          - generic [ref=e220]: 地毯
+          - generic [ref=e221]: 2400×1700
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e222]:
+          - generic [ref=e226]: 鞋柜
+          - generic [ref=e227]: 1000×350
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e228]:
+          - generic [ref=e232]: 玄关柜
+          - generic [ref=e233]: 1400×380
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e234]:
+          - generic [ref=e239]: 落地灯
+          - generic [ref=e240]: 450×450
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e241]:
+          - generic [ref=e253]: 绿植
+          - generic [ref=e254]: 500×500
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e255]:
+          - generic [ref=e267]: 大绿植
+          - generic [ref=e268]: 700×700
+      - heading "餐厨" [level=4] [ref=e269]
+      - generic [ref=e270]:
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e271]:
+          - generic [ref=e275]: 餐桌
+          - generic [ref=e276]: 1400×800
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e277]:
+          - generic [ref=e281]: 六人餐桌
+          - generic [ref=e282]: 1800×900
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e283]:
+          - generic [ref=e287]: 圆桌
+          - generic [ref=e288]: 1000×1000
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e289]:
+          - generic [ref=e293]: 餐椅
+          - generic [ref=e294]: 450×480
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e295]:
+          - generic [ref=e298]: 岛台
+          - generic [ref=e299]: 1800×900
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e300]:
+          - generic [ref=e304]: 吧椅
+          - generic [ref=e305]: 420×420
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e306]:
+          - generic [ref=e309]: 橱柜台面
+          - generic [ref=e310]: 1600×600
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e311]:
+          - generic [ref=e318]: 燃气灶
+          - generic [ref=e319]: 750×450
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e320]:
+          - generic [ref=e326]: 水槽
+          - generic [ref=e327]: 800×450
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e328]:
+          - generic [ref=e333]: 冰箱
+          - generic [ref=e334]: 700×700
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e335]:
+          - generic [ref=e339]: 餐边柜
+          - generic [ref=e340]: 1600×400
+      - heading "卫浴" [level=4] [ref=e341]
+      - generic [ref=e342]:
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e343]:
+          - generic [ref=e348]: 马桶
+          - generic [ref=e349]: 400×700
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e350]:
+          - generic [ref=e355]: 浴室柜
+          - generic [ref=e356]: 800×500
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e357]:
+          - generic [ref=e362]: 双盆浴室柜
+          - generic [ref=e363]: 1200×500
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e364]:
+          - generic [ref=e370]: 淋浴房
+          - generic [ref=e371]: 900×900
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e372]:
+          - generic [ref=e377]: 浴缸
+          - generic [ref=e378]: 1600×750
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e379]:
+          - generic [ref=e385]: 洗衣机
+          - generic [ref=e386]: 600×600
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e387]:
+          - generic [ref=e390]: 电热水器
+          - generic [ref=e391]: 800×450
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e392]:
+          - generic [ref=e396]: 储物柜
+          - generic [ref=e397]: 1000×400
+      - heading "家电" [level=4] [ref=e398]
+      - generic [ref=e399]:
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e400]:
+          - generic [ref=e404]: 65 寸电视
+          - generic [ref=e405]: 1450×80
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e406]:
+          - generic [ref=e410]: 55 寸电视
+          - generic [ref=e411]: 1230×80
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e412]:
+          - generic [ref=e417]: 对开门冰箱
+          - generic [ref=e418]: 910×700
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e419]:
+          - generic [ref=e422]: 柜机空调
+          - generic [ref=e423]: 500×380
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e424]:
+          - generic [ref=e427]: 挂机空调
+          - generic [ref=e428]: 900×250
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e429]:
+          - generic [ref=e433]: 洗碗机
+          - generic [ref=e434]: 600×600
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e435]:
+          - generic [ref=e440]: 蒸烤箱高柜
+          - generic [ref=e441]: 600×600
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e442]:
+          - generic [ref=e448]: 烘干机
+          - generic [ref=e449]: 600×600
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e450]:
+          - generic [ref=e454]: 空气净化器
+          - generic [ref=e455]: 400×300
+      - heading "书房 · 休闲" [level=4] [ref=e456]
+      - generic [ref=e457]:
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e458]:
+          - generic [ref=e463]: 长书桌
+          - generic [ref=e464]: 1600×700
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e465]:
+          - generic [ref=e475]: 办公椅
+          - generic [ref=e476]: 620×620
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e477]:
+          - generic [ref=e480]: 大书架
+          - generic [ref=e481]: 1600×350
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e482]:
+          - generic [ref=e487]: 立式钢琴
+          - generic [ref=e488]: 1500×600
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e489]:
+          - generic [ref=e494]: 跑步机
+          - generic [ref=e495]: 800×1800
+        - generic "点击添加，或拖到平面图中的指定位置" [ref=e496]:
+          - generic [ref=e503]: 阅读椅
+          - generic [ref=e504]: 750×800
+      - generic [ref=e505]: 家具按真实尺寸（mm）绘制。点击添加到画面中央，或直接拖到平面图 / 3D 地面上。添加后可在右侧修改宽深与颜色。
+  - main [ref=e506]:
+    - img [ref=e507]:
+      - generic:
+        - generic:
+          - generic: X
+          - generic: "Y"
+    - generic "旋转平面视图" [ref=e510]:
+      - button "▲" [ref=e511] [cursor=pointer]
+      - button "▶" [ref=e512] [cursor=pointer]
+      - button "▼" [ref=e513] [cursor=pointer]
+      - button "◀" [ref=e514] [cursor=pointer]
+      - button "0°" [ref=e515] [cursor=pointer]
+    - generic: 2 m
+    - generic [ref=e516]:
+      - button "−" [ref=e517] [cursor=pointer]
+      - button "＋" [ref=e518] [cursor=pointer]
+      - button "适应" [ref=e519] [cursor=pointer]
+      - button "1:60" [ref=e520] [cursor=pointer]
+      - button "1:100" [ref=e521] [cursor=pointer]
+  - complementary [ref=e522]:
+    - generic [ref=e523]:
+      - button "对象列表" [ref=e524] [cursor=pointer]
+      - button "属性" [ref=e525] [cursor=pointer]
+    - generic [ref=e527]:
+      - generic [ref=e528]:
+        - heading "房间面积 点击查看 / 更换地面" [level=3] [ref=e529]
+        - table
+        - generic [ref=e530]:
+          - generic [ref=e531]: 套内使用面积
+          - generic [ref=e532]: 0.00 m²
+        - generic [ref=e533]: "* 飘窗不计入使用面积；面积按墙体内净尺寸计算"
+      - generic [ref=e534]:
+        - heading "地面材料估算 含 5% 损耗" [level=3] [ref=e535]
+        - table
+        - generic [ref=e536]:
+          - generic [ref=e537]: 地面材料合计
+          - generic [ref=e538]: ¥0
+      - generic [ref=e539]:
+        - heading "方案统计" [level=3] [ref=e540]
+        - generic [ref=e541]:
+          - generic [ref=e542]:
+            - generic [ref=e543]: 家具数量
+            - text: "0"
+          - generic [ref=e544]:
+            - generic [ref=e545]: 拆除墙体
+            - text: 0.0 m
+          - generic [ref=e546]:
+            - generic [ref=e547]: 新增墙体
+            - text: 0.0 m
+        - generic [ref=e548]:
+          - button "清除测量 (0)" [ref=e549] [cursor=pointer]
+          - button "清空布置" [ref=e550] [cursor=pointer]
+      - generic [ref=e551]:
+        - heading "门窗表 按类型与尺寸统计" [level=3] [ref=e552]
+        - table [ref=e553]:
+          - rowgroup [ref=e554]:
+            - row [ref=e555]:
+              - columnheader "类型" [ref=e556]
+              - columnheader "编号" [ref=e557]
+              - columnheader "宽 × 高 (mm)" [ref=e558]
+              - columnheader "数量" [ref=e559]
+          - rowgroup [ref=e560]:
+            - row [ref=e561]:
+              - cell "暂无门窗" [ref=e562]
+        - generic [ref=e563]:
+          - generic [ref=e564]: 门窗总数
+          - generic [ref=e565]: "0"
+      - generic [ref=e566]:
+        - heading "键盘快捷键" [level=3] [ref=e567]
+        - generic [ref=e568]:
+          - generic [ref=e569]: 拖拽
+          - generic [ref=e570]: 左侧家具拖入平面图
+          - generic [ref=e571]: V
+          - generic [ref=e572]: 选择 / 移动
+          - generic [ref=e573]: M
+          - generic [ref=e574]: 测量（Shift 水平/垂直）
+          - generic [ref=e575]: 中键拖动
+          - generic [ref=e576]: 平移平面图（滚轮缩放）
+          - generic [ref=e577]: X
+          - generic [ref=e578]: 拆改非承重墙（黑色为承重墙）
+          - generic [ref=e579]: R
+          - generic [ref=e580]: 旋转 90°（Shift 反向）
+          - generic [ref=e581]: 方向键
+          - generic [ref=e582]: 微调 10mm（Shift 100mm）
+          - generic [ref=e583]: ⌘/Ctrl D
+          - generic [ref=e584]: 复制
+          - generic [ref=e585]: Delete
+          - generic [ref=e586]: 删除
+          - generic [ref=e587]: ⌘/Ctrl Z
+          - generic [ref=e588]: 撤销
+          - generic [ref=e589]: T
+          - generic [ref=e590]: 切换 2D / 3D
+          - generic [ref=e591]: F
+          - generic [ref=e592]: 适应窗口
+          - generic [ref=e593]: Esc
+          - generic [ref=e594]: 取消选择
+  - contentinfo [ref=e595]:
+    - generic [ref=e596]: X —
+    - generic [ref=e597]: Y —
+    - generic [ref=e598]: 当前比例 1:90
+    - generic [ref=e599]: 拖动左侧家具到平面图 · 滚轮缩放 · 拖动空白处平移 · T 切换 3D
+    - generic [ref=e600]:
+      - text: 户型装修设计 v1.0.8 · © 2026 RONGLINC93 ·
+      - link "GitHub 仓库" [ref=e601] [cursor=pointer]:
+        - /url: https://github.com/RONGLINC93/floorplan-3d
