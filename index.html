@@ -4080,7 +4080,7 @@
           s += `<line x1="${x0 - ext}" y1="${y}" x2="${x1 + ext}" y2="${y}" stroke="transparent" stroke-width="${COARSE ? 90 : 40}" vector-effect="non-scaling-stroke"/>`;
           if (g.label !== false) {
             s += `<circle cx="${x0 - ext - R * .7}" cy="${y}" r="${R}" fill="#fbf9f4" stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke"/>
-            <text x="${x0 - ext - R * .7}" y="${y + FS * .36}" font-size="${FS}" text-anchor="middle" fill="${col}" pointer-events="none">${ltr(i)}</text>`;
+            <text x="${x0 - ext - R * .7}" y="${y + FS * .36}" font-size="${FS}" text-anchor="middle" fill="${col}" pointer-events="none">${ltr(ny - i)}</text>`;   // 字母自下而上 A、B…
           }
         });
         s += `</g>`;
@@ -4507,7 +4507,7 @@
         const g = (state.axes || []).find(x => x.id === ui.sel.id);
         if (g) {
           const A = 'stroke="#b5653a" vector-effect="non-scaling-stroke"', hs = COARSE ? 1.7 : 1, hit = (COARSE ? 26 : 13) * k;
-          const w = Math.max(200, g.w || 0), d = Math.max(200, g.d || 0), x0 = g.x, y0 = g.y, x1 = g.x + w, y1 = g.y + d;
+          const w = Math.max(500, g.w || 0), d = Math.max(500, g.d || 0), x0 = g.x - w / 2, y0 = g.y - d / 2, x1 = x0 + w, y1 = y0 + d;
           s += `<rect x="${x0}" y="${y0}" width="${w}" height="${d}" fill="none" ${A} stroke-width="1.5" stroke-dasharray="5 3" pointer-events="none"/>`;
           [['nw', x0, y0], ['ne', x1, y0], ['sw', x0, y1], ['se', x1, y1]].forEach(([corner, hx, hy]) => {
             s += `<rect data-handle="axCorner" data-id="${g.id}" data-corner="${corner}" x="${hx - hit}" y="${hy - hit}" width="${hit * 2}" height="${hit * 2}" fill="transparent"/>
@@ -8482,17 +8482,21 @@
         if (!drag.moved && !far) return;
         drag.moved = true;
         const g = (state.axes || []).find(x => x.id === drag.id); if (!g) return;
-        const MIN = 1000;
-        let { x0, y0, w0, d0 } = drag;
-        const c = drag.corner;
-        const q = axisLock({ x: c.includes('w') ? x0 : x0 + w0, y: c.includes('n') ? y0 : y0 + d0 }, p, e.shiftKey);
-        const dx = Math.round((q.x - drag.px) / 10) * 10, dy = Math.round((q.y - drag.py) / 10) * 10;
-        let nx = x0, ny = y0, nw = w0, nd = d0;
-        if (c.includes('w')) { nw = Math.max(MIN, w0 - dx); nx = x0 + (w0 - nw) / 2; }
-        if (c.includes('e')) { nw = Math.max(MIN, w0 + dx); nx = x0 + (nw - w0) / 2; }
-        if (c.includes('n')) { nd = Math.max(MIN, d0 - dy); ny = y0 + (d0 - nd) / 2; }
-        if (c.includes('s')) { nd = Math.max(MIN, d0 + dy); ny = y0 + (nd - d0) / 2; }
-        g.x = Math.round(nx); g.y = Math.round(ny); g.w = Math.round(nw); g.d = Math.round(nd);
+        const MIN = 1000, c = drag.corner;
+        const { x0: cx, y0: cy, w0, d0 } = drag;                 // 轴网存的是中心 + 宽深
+        const q = axisLock({                                        // 直角模式（或 Shift）：角手柄只走水平 / 垂直
+          x: cx + (c.includes('e') ? w0 / 2 : -w0 / 2),
+          y: cy + (c.includes('s') ? d0 / 2 : -d0 / 2)
+        }, p, e.shiftKey);
+        let x0 = cx - w0 / 2, y0 = cy - d0 / 2, x1 = cx + w0 / 2, y1 = cy + d0 / 2;
+        if (c.includes('w')) x0 = q.x;
+        if (c.includes('e')) x1 = q.x;
+        if (c.includes('n')) y0 = q.y;
+        if (c.includes('s')) y1 = q.y;
+        if (x1 - x0 < MIN) { if (c.includes('w')) x0 = x1 - MIN; else x1 = x0 + MIN; }
+        if (y1 - y0 < MIN) { if (c.includes('n')) y0 = y1 - MIN; else y1 = y0 + MIN; }
+        g.w = Math.round((x1 - x0) / 10) * 10; g.d = Math.round((y1 - y0) / 10) * 10;
+        g.x = Math.round((x0 + x1) / 2 / 10) * 10; g.y = Math.round((y0 + y1) / 2 / 10) * 10;
         renderNotes(); renderSel(); return;
       }
       // 屋顶 / 廊架 / 露台 / 泳池：四角手柄拖动改尺寸（对角固定）

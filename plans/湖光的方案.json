@@ -576,7 +576,19 @@
   "balconies": [],
   "planters": [],
   "flues": [],
-  "axes": [],
+  "axes": [
+    {
+      "id": "fmwjy44tu93",
+      "x": 6110,
+      "y": 12650,
+      "w": 3970,
+      "d": 3270,
+      "sx": 3000,
+      "sy": 3000,
+      "ext": 900,
+      "label": true
+    }
+  ],
   "arcWalls": [],
   "roofs": [],
   "pools": [],
