@@ -8,7 +8,6 @@ desktop.ini
 .vscode/
 *.swp
 *~
-.trae/
 
 # 依赖与构建产物（如以后引入）
 node_modules/
