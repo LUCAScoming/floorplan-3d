@@ -1,276 +1,12 @@
 {
   "furniture": [],
-  "rooms": {
-    "__t2": {
-      "name": "tmp2",
-      "mat": "tile800"
-    },
-    "Xfmwhw1vn293": {
-      "name": "电梯井",
-      "mat": "tile800"
-    },
-    "Xfmwhw2q5o94": {
-      "name": "楼梯间",
-      "mat": "tile800"
-    },
-    "Xfmwhw4py093": {
-      "name": "大厅",
-      "mat": "tile800"
-    },
-    "Xfmwhw5jrc94": {
-      "name": "厕所",
-      "mat": "antislip"
-    },
-    "Xfmwhw9gqy95": {
-      "name": "过道",
-      "mat": "tile600"
-    },
-    "Xfmwhwa57596": {
-      "name": "厨房",
-      "mat": "terrazzo"
-    }
-  },
+  "rooms": {},
   "demolished": [],
   "measures": [],
-  "walls": [
-    {
-      "id": "fmwhqg1hn185",
-      "a": [
-        -60,
-        2110
-      ],
-      "b": [
-        13090,
-        2110
-      ]
-    },
-    {
-      "id": "fmwhqg4po186",
-      "a": [
-        13250,
-        2010
-      ],
-      "b": [
-        13250,
-        6880
-      ]
-    },
-    {
-      "id": "fmwhqg7q7187",
-      "a": [
-        13120,
-        6820
-      ],
-      "b": [
-        -50,
-        6820
-      ]
-    },
-    {
-      "id": "fmwhqg9wc188",
-      "a": [
-        -250,
-        6880
-      ],
-      "b": [
-        -250,
-        2010
-      ]
-    },
-    {
-      "id": "fmwhqizs2191",
-      "a": [
-        8714,
-        2260
-      ],
-      "b": [
-        8714,
-        4320
-      ]
-    },
-    {
-      "id": "fmwhqj7n7192",
-      "a": [
-        7110,
-        4320
-      ],
-      "b": [
-        13100,
-        4320
-      ]
-    },
-    {
-      "id": "fmwhqkgdw95",
-      "a": [
-        13050,
-        5577
-      ],
-      "b": [
-        10570,
-        5577
-      ]
-    },
-    {
-      "id": "fmwhqknzq97",
-      "a": [
-        10600,
-        5780
-      ],
-      "b": [
-        10600,
-        6640
-      ]
-    },
-    {
-      "id": "fmwhqtknh93",
-      "a": [
-        7110,
-        4230
-      ],
-      "b": [
-        7106,
-        2260
-      ]
-    }
-  ],
-  "openings": [
-    {
-      "id": "fmwhug5fj93",
-      "wall": "CWfmwhqg1hn185",
-      "c": 3176.578857421875,
-      "w": 1200,
-      "kind": "window",
-      "flip": true,
-      "grille": true
-    },
-    {
-      "id": "fmwhuh0jy93",
-      "wall": "CWfmwhqg1hn185",
-      "c": 5717.18798828125,
-      "w": 900,
-      "kind": "door",
-      "flip": false
-    },
-    {
-      "id": "fmwhui0o493",
-      "wall": "CWfmwhqg1hn185",
-      "c": 273.24237060546886,
-      "w": 1200,
-      "kind": "window",
-      "flip": false,
-      "grille": true
-    },
-    {
-      "id": "fmwhuigxc93",
-      "wall": "CWfmwhqg7q7187",
-      "c": 2894.46875,
-      "w": 1200,
-      "kind": "hwin",
-      "flip": true,
-      "sill": 1400
-    },
-    {
-      "id": "fmwhuwbzv93",
-      "wall": "CWfmwhqizs2191",
-      "c": 499.061279296875,
-      "w": 900,
-      "kind": "elev",
-      "flip": false,
-      "dh": 2400,
-      "sill": 1200,
-      "btn": "l"
-    },
-    {
-      "id": "fmwhuwh9z94",
-      "wall": "CWfmwhqj7n7192",
-      "c": 4985.55078125,
-      "w": 900,
-      "kind": "door",
-      "flip": false,
-      "hflip": true
-    },
-    {
-      "id": "fmwhuwjk895",
-      "wall": "CWfmwhqg4po186",
-      "c": 253.628662109375,
-      "w": 900,
-      "kind": "door",
-      "flip": false
-    },
-    {
-      "id": "fmwhuwl6x96",
-      "wall": "CWfmwhqkgdw95",
-      "c": 1270,
-      "w": 900,
-      "kind": "door",
-      "flip": true,
-      "hflip": true
-    },
-    {
-      "id": "fmwhuwujj98",
-      "wall": "CWfmwhqg9wc188",
-      "c": 577.76904296875,
-      "w": 3800,
-      "kind": "roller",
-      "flip": false,
-      "dh": 3500
-    },
-    {
-      "id": "fmwhw7ghu93",
-      "wall": "CWfmwhqg7q7187",
-      "c": 8726.12744140625,
-      "w": 1200,
-      "kind": "window",
-      "flip": false,
-      "grille": true
-    },
-    {
-      "id": "fmwhw7jdp94",
-      "wall": "CWfmwhqg7q7187",
-      "c": 4423.2841796875,
-      "w": 1200,
-      "kind": "window",
-      "flip": true,
-      "grille": true
-    },
-    {
-      "id": "fmwi5rhn593",
-      "wall": "CWfmwhqg7q7187",
-      "c": 11619.89404296875,
-      "w": 1200,
-      "kind": "window",
-      "flip": true,
-      "grille": true
-    },
-    {
-      "id": "fmwj9kqu194",
-      "kind": "lbay",
-      "wall": "CWfmwhqg4po186",
-      "c": 3610,
-      "w": 1200,
-      "flip": true,
-      "sill": 500,
-      "wh": 1200,
-      "bayDepth": 600,
-      "legs": [
-        {
-          "wall": "CWfmwhqg4po186",
-          "c": 4210,
-          "w": 1200,
-          "flip": true,
-          "lc": 1
-        },
-        {
-          "wall": "CWfmwhqg7q7187",
-          "c": 600,
-          "w": 1200,
-          "flip": true,
-          "lc": -1
-        }
-      ]
-    }
-  ],
+  "walls": [],
+  "openings": [],
   "deletedWalls": [
+    "w0",
     "w1",
     "w2",
     "w3",
@@ -317,8 +53,7 @@
     "w44",
     "w45",
     "w46",
-    "w47",
-    "w0"
+    "w47"
   ],
   "removedB": [
     "d0",
@@ -343,196 +78,7 @@
     "s1"
   ],
   "bover": {},
-  "roomsExtra": [
-    {
-      "id": "__t",
-      "poly": [
-        [
-          1460,
-          8770
-        ],
-        [
-          3260,
-          8770
-        ],
-        [
-          3260,
-          10570
-        ],
-        [
-          1460,
-          10570
-        ]
-      ],
-      "mat": "tile800"
-    },
-    {
-      "id": "Xfmwhw1vn293",
-      "poly": [
-        [
-          7220,
-          2260
-        ],
-        [
-          8600,
-          2260
-        ],
-        [
-          8600,
-          4230
-        ],
-        [
-          7220,
-          4230
-        ]
-      ],
-      "mat": "tile800"
-    },
-    {
-      "id": "Xfmwhw2q5o94",
-      "poly": [
-        [
-          8850,
-          2260
-        ],
-        [
-          13090,
-          2260
-        ],
-        [
-          13100,
-          4230
-        ],
-        [
-          8860,
-          4230
-        ]
-      ],
-      "mat": "tile800"
-    },
-    {
-      "id": "Xfmwhw4py093",
-      "poly": [
-        [
-          -160,
-          2260
-        ],
-        [
-          7010,
-          2260
-        ],
-        [
-          6970,
-          6720
-        ],
-        [
-          -160,
-          6720
-        ]
-      ],
-      "mat": "tile800"
-    },
-    {
-      "id": "Xfmwhw5jrc94",
-      "poly": [
-        [
-          10710,
-          5680
-        ],
-        [
-          13120,
-          5680
-        ],
-        [
-          13120,
-          6720
-        ],
-        [
-          10730,
-          6720
-        ]
-      ],
-      "mat": "tile800"
-    },
-    {
-      "id": "Xfmwhw9gqy95",
-      "poly": [
-        [
-          10450,
-          4440
-        ],
-        [
-          13120,
-          4440
-        ],
-        [
-          13120,
-          5460
-        ],
-        [
-          10480,
-          5450
-        ]
-      ],
-      "mat": "tile800"
-    },
-    {
-      "id": "Xfmwhwa57596",
-      "poly": [
-        [
-          6990,
-          4460
-        ],
-        [
-          10440,
-          4470
-        ],
-        [
-          10500,
-          6720
-        ],
-        [
-          6980,
-          6720
-        ]
-      ],
-      "mat": "tile800"
-    }
-  ],
-  "entryDoor": "Ofmwhuwjk895",
-  "pillars": [],
-  "stairs": [
-    {
-      "id": "fmwhu2zzr93",
-      "x": 10980,
-      "y": 3210,
-      "w": 900,
-      "len": 4250,
-      "dir": 0,
-      "rise": 4200,
-      "runs": 3,
-      "stack": true,
-      "flipX": true,
-      "steps": [
-        7,
-        9,
-        9
-      ],
-      "railLand": false,
-      "railSide": "left"
-    }
-  ],
-  "wallH": {
-    "CWfmwhqg1hn185": 4200,
-    "CWfmwhqg4po186": 4200,
-    "CWfmwhqj7n7192": 4200,
-    "CWfmwhqizs2191": 4200,
-    "CWfmwhqtknh93": 4200,
-    "CWfmwhqkgdw95": 4200,
-    "CWfmwhqknzq97": 4200,
-    "CWfmwhqg7q7187": 4200,
-    "CWfmwhqg9wc188": 4200
-  },
+  "roomsExtra": [],
   "notes": [],
   "dims": [],
   "rails": [],
@@ -541,33 +87,36 @@
   "slabs": [],
   "parapets": [],
   "canopies": [],
-  "north": {
-    "x": 14040,
-    "y": 10220,
-    "angle": 0,
-    "r": 380
-  },
-  "lifts": [
-    {
-      "id": "fmwiw6lnm93",
-      "x": 7900,
-      "y": 3230,
-      "w": 1230,
-      "d": 1310,
-      "h": 2400,
-      "dw": 900,
-      "dir": 0,
-      "stop": 1200
-    }
-  ],
+  "north": null,
+  "lifts": [],
   "balconies": [],
   "planters": [],
   "flues": [],
+  "axes": [],
+  "arcWalls": [],
+  "roofs": [],
+  "pools": [],
+  "decks": [],
+  "pergolas": [],
+  "gates": [],
+  "extras": [
+    {
+      "type": "park",
+      "w": 6340,
+      "d": 4760,
+      "no": 1,
+      "dir": 90,
+      "id": "fmwk317wt47",
+      "x": 8530,
+      "y": 3700
+    }
+  ],
+  "leaders": [],
   "layers": {
     "dims": true,
     "labels": true,
     "furn": true,
-    "grid": true,
+    "grid": false,
     "axis": true,
     "bearing": false,
     "wallSnap": true

@@ -140,7 +140,8 @@
       "c": 3176.578857421875,
       "w": 1200,
       "kind": "window",
-      "flip": true
+      "flip": true,
+      "grille": true
     },
     {
       "id": "fmwhuh0jy93",
@@ -151,30 +152,23 @@
       "flip": false
     },
     {
-      "id": "fmwhuhdjx94",
-      "wall": "CWfmwhqg7q7187",
-      "c": 11579.357727050781,
-      "w": 1200,
-      "kind": "hwin",
-      "flip": false,
-      "sill": 1400
-    },
-    {
       "id": "fmwhui0o493",
       "wall": "CWfmwhqg1hn185",
       "c": 273.24237060546886,
       "w": 1200,
       "kind": "window",
-      "flip": false
+      "flip": false,
+      "grille": true
     },
     {
       "id": "fmwhuigxc93",
       "wall": "CWfmwhqg7q7187",
       "c": 424.2587890625,
-      "w": 1200,
+      "w": 1000,
       "kind": "hwin",
       "flip": true,
-      "sill": 1400
+      "sill": 2000,
+      "wh": 800
     },
     {
       "id": "fmwhuwbzv93",
@@ -228,7 +222,8 @@
       "c": 8726.12744140625,
       "w": 1200,
       "kind": "window",
-      "flip": false
+      "flip": false,
+      "grille": true
     },
     {
       "id": "fmwhw7jdp94",
@@ -236,7 +231,17 @@
       "c": 4073.8720703125,
       "w": 1200,
       "kind": "window",
-      "flip": true
+      "flip": true,
+      "grille": true
+    },
+    {
+      "id": "fmwk1jrk9139",
+      "wall": "CWfmwhqg7q7187",
+      "c": 11646.66015625,
+      "w": 1200,
+      "kind": "window",
+      "flip": true,
+      "grille": true
     }
   ],
   "deletedWalls": [
@@ -486,7 +491,8 @@
         7,
         9,
         9
-      ]
+      ],
+      "railLand": false
     }
   ],
   "wallH": {
@@ -500,11 +506,47 @@
     "CWfmwhqg7q7187": 4200,
     "CWfmwhqg9wc188": 4200
   },
+  "notes": [],
+  "dims": [],
+  "rails": [],
+  "beams": [],
+  "levels": [],
+  "slabs": [],
+  "parapets": [],
+  "canopies": [],
+  "north": null,
+  "lifts": [
+    {
+      "id": "fmwk1oq40139",
+      "x": 7890,
+      "y": 3220,
+      "w": 1150,
+      "d": 1610,
+      "h": 2400,
+      "dw": 850,
+      "dh": 2100,
+      "dpos": 0,
+      "stop": 1200,
+      "dir": 0
+    }
+  ],
+  "balconies": [],
+  "planters": [],
+  "flues": [],
+  "axes": [],
+  "arcWalls": [],
+  "roofs": [],
+  "pools": [],
+  "decks": [],
+  "pergolas": [],
+  "gates": [],
+  "extras": [],
   "layers": {
     "dims": true,
     "labels": true,
     "furn": true,
     "grid": true,
+    "axis": true,
     "bearing": false,
     "wallSnap": true
   }
