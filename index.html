@@ -339,6 +339,40 @@
       box-shadow: 0 2px 10px rgba(40, 30, 20, .14)
     }
 
+    /* 预览 / 测量 / 设计：浮动画板左上角（2D 与 3D 通用） */
+    #tools {
+      position: absolute;
+      left: 14px;
+      top: 10px;
+      z-index: 5
+    }
+
+    /* 撤销 / 重做 / 清空布置：仅设计态显示 */
+    #editGrp.hide {
+      display: none !important
+    }
+
+    /* 预览态：家具库置灰，仅作展示 */
+    #lib.preview-off {
+      opacity: .42
+    }
+
+    #stage.loading #tools {
+      visibility: hidden
+    }
+
+    /* 日照滑杆：浮动画板右上角（仅 3D） */
+    #sunPad {
+      position: absolute;
+      right: 14px;
+      top: 10px;
+      z-index: 5
+    }
+
+    #stage.loading #sunPad {
+      visibility: hidden
+    }
+
     #rotPad .rotarrow {
       position: absolute;
       width: 26px;
@@ -508,7 +542,8 @@
       font-size: 12px;
       opacity: 0;
       transition: opacity .2s;
-      pointer-events: none
+      pointer-events: none;
+      z-index: 20                  /* 提示信息始终压在左上角 / 顶部中间 / 右上角浮件之上 */
     }
 
     .modehint.show {
@@ -560,11 +595,11 @@
       }
     }
 
-    /* 画板下方中间：直角 / 自由 绘制方向模式 */
+    /* 画板上方中间：直角 / 自由 绘制方向模式 */
     #dirPad {
       position: absolute;
       left: 50%;
-      bottom: 14px;
+      top: 10px;
       transform: translateX(-50%);
       z-index: 5;
       display: flex;
@@ -575,7 +610,7 @@
       border-radius: 9px;
       background: rgba(255, 253, 249, .94);
       box-shadow: 0 2px 10px rgba(40, 30, 20, .12);
-      transition: bottom .2s, opacity .2s;
+      transition: opacity .2s;
       animation: none
     }
 
@@ -606,15 +641,6 @@
       display: none !important
     }
 
-    #wallLenBox.open~#dirPad {
-      bottom: 62px
-    }
-
-    #fab.show~#dirPad {
-      opacity: 0;
-      visibility: hidden
-    }
-
     @media (hover:hover) {
       #dirPad .btn:hover {
         background: #f2ece2
@@ -623,17 +649,13 @@
 
     @media (pointer:coarse) {
       #dirPad {
-        bottom: 14px;
+        top: 10px;
         padding: 4px
       }
 
       #dirPad .btn {
         min-height: 34px;
         padding: 6px 12px
-      }
-
-      #wallLenBox.open~#dirPad {
-        bottom: 66px
       }
     }
 
@@ -1366,9 +1388,9 @@
       display: none !important
     }
 
-    /* 3D 模式：左侧固定显示房间列表（建筑工具只在 2D 设计模式有用） */
-    body.m3d #libPaneFurn {
-      display: block !important
+    /* 3D 预览：右侧只留属性面板，整条隐藏「对象列表 / 属性」选项夹 */
+    body.m3d.m3dprev #rightTabs {
+      display: none !important
     }
 
     .only2d,
@@ -2216,7 +2238,7 @@
   <div class="app">
     <header>
       <div class="grp" id="paneBtns">
-        <button class="btn chip" id="tgLib" data-en="◧ Library">◧ 家具库</button>
+        <button class="btn chip" id="tgLib" data-en="◧ Library">◧ 库</button>
         <button class="btn chip" id="tgPanel" data-en="Properties ◨">属性 ◨</button>
       </div>
       <div class="brand">
@@ -2229,13 +2251,6 @@
         <button class="btn" data-view="2d" data-en="2D Plan">2D 平面</button>
         <button class="btn" data-view="3d" data-en="3D Scene">3D 场景</button>
       </div>
-      <div class="grp only2d" id="tools">
-        <button class="btn on" data-tool="select" title="预览：浏览方案，不可编辑 (V)" data-en-title="Preview: browse only (V)"
-          data-en="Preview">预览</button>
-        <button class="btn" data-tool="measure" title="测量 (M)" data-en-title="Measure (M)" data-en="Measure">测量</button>
-        <button class="btn" data-tool="draw" title="设计：选择 / 画墙 / 房门 / 窗户 (W)"
-          data-en-title="Design: select / draw walls, doors / windows (W)" data-en="Design">设计</button>
-      </div>
       <div class="grp only3d" id="modes3d">
         <button class="btn on" data-mode="orbit" data-en="Orbit">鸟瞰</button>
         <button class="btn" data-mode="walk" data-en="Walk">漫游</button>
@@ -2244,7 +2259,7 @@
         <button class="btn" id="vIso" data-en="Iso">斜视</button>
         <button class="btn" id="vTop" data-en="Top">俯视</button>
       </div>
-      <div class="grp">
+      <div class="grp" id="editGrp">
         <button class="btn" id="undo" title="撤销 (Ctrl+Z)" data-en-title="Undo (Ctrl+Z)" data-en="Undo">撤销</button>
         <button class="btn" id="redo" title="重做 (Ctrl+Shift+Z)" data-en-title="Redo (Ctrl+Shift+Z)"
           data-en="Redo">重做</button>
@@ -2269,10 +2284,7 @@
       <div class="grp only3d" id="toggles3d">
         <button class="btn chip on" data-t="furn" data-en="Furniture">家具</button>
         <button class="btn chip on" data-t="labels" data-en="Labels">房间名</button>
-        <button class="btn chip" data-t="night" data-en="Night">夜景</button>
       </div>
-      <div class="grp only3d"><label class="range"><span data-en="Sun">日照</span> <input type="range" id="sun" min="7"
-            max="18" step=".25" value="10" style="width:84px"><span id="sunT">10:00</span></label></div>
       <div class="spacer"></div>
       <div class="grp" id="langSel" role="group" aria-label="Language / 语言">
         <button class="btn chip" data-lang="zh" title="简体中文">简</button>
@@ -2302,18 +2314,19 @@
     </header>
 
     <aside class="lib">
-      <div class="libtabs only2d" id="libTabs">
+      <div class="libtabs" id="libTabs">
+        <button class="btn chip" data-libt="arch" data-en="Buildings">建筑库</button>
         <button class="btn chip on" data-libt="furn" data-en="Furniture">家具库</button>
-        <button class="btn chip" data-libt="arch" data-en="Building">建筑工具</button>
       </div>
       <div id="libPaneFurn">
         <div id="lib3d" class="only3d">
           <h4 data-en="Rooms · click to fly there">房间 · 点击飞到该房间</h4>
           <div id="roomList"></div>
         </div>
+        <div class="archhint" id="libHint" hidden data-en="Preview mode: furniture cannot be added or edited. Switch to Design to edit.">当前为预览模式，家具不可添加或编辑；切到「设计」后即可操作。</div>
         <div id="lib"></div>
       </div>
-      <div id="libPaneArch" class="only2d" hidden>
+      <div id="libPaneArch" hidden>
       <div class="archhint" id="archHint" data-en="Preview mode: tools are unavailable. Tap "Design" at the top to start editing.">当前为预览模式，工具暂不可用；点顶部「设计」后即可使用。</div>
       <div id="designTools">
         <div class="dtg"><div class="dth" data-en="Basics">基础</div>
@@ -2508,6 +2521,16 @@
       <div id="noteEditor" style="display:none;position:absolute;z-index:20;background:#fffdf9;border:1.5px solid #b5653a;border-radius:4px;box-shadow:0 4px 14px rgba(0,0,0,.15);padding:4px 6px;">
         <input id="noteEditorInput" type="text" maxlength="60" style="border:none;outline:none;background:transparent;font-size:13px;min-width:120px;max-width:300px;padding:2px 0;color:inherit;">
       </div>
+      <div class="grp" id="tools">
+        <button class="btn on" data-tool="select" title="预览：浏览方案，不可编辑 (V)" data-en-title="Preview: browse only (V)"
+          data-en="Preview">预览</button>
+        <button class="btn only2d" data-tool="measure" title="测量 (M)" data-en-title="Measure (M)" data-en="Measure">测量</button>
+        <button class="btn" data-tool="draw" title="设计：选择 / 画墙 / 房门 / 窗户 (W)"
+          data-en-title="Design: select / draw walls, doors / windows (W)" data-en="Design">设计</button>
+      </div>
+      <div class="grp only3d" id="sunPad"><label class="range"><span data-en="Sun">日照</span> <input type="range"
+            id="sun" min="7" max="18" step=".25" value="10" style="width:84px"><span id="sunT">10:00</span></label><button
+          class="btn chip" data-t="night" data-en="Night">夜景</button></div>
       <div class="only2d" id="rotPad" title="旋转平面视图">
         <button class="rotarrow up" data-rot="0" title="平面朝上（0°）">▲</button>
         <button class="rotarrow right" data-rot="90" title="顺时针转 90°">▶</button>
@@ -2555,11 +2578,11 @@
     </main>
 
     <aside class="right">
-      <div class="libtabs only2d" id="rightTabs">
+      <div class="libtabs" id="rightTabs">
         <button class="btn chip" data-rt="obj" data-en="Objects">对象列表</button>
         <button class="btn chip on" data-rt="prop" data-en="Properties">属性</button>
       </div>
-      <div class="rightpane only2d" id="paneObj" hidden>
+      <div class="rightpane" id="paneObj" hidden>
         <div id="objPanel" class="open"></div>
       </div>
       <div class="rightpane" id="paneProp">
@@ -4624,6 +4647,15 @@
       if (!silent) toast(tr(`已选择 ${rotTargets().length} 项 · 点一下基点`, `${rotTargets().length} selected — pick a base point`));
     }
 
+    function rotateSel(deg) {                                    // 快捷 90° 整转（R 键 / 属性面板按钮 / 双击家具）：绕选区中心
+      if (is3D() ? m3dPreview : !(ui.tool === 'draw' && ui.drawTool === 'select')) return;   // 仅设计（含 3D 可编辑态）可用，预览只读
+      const list = rotTargets();
+      if (!list.length) return;
+      let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      list.forEach(t => { const b = objBBox(t); if (!b) return; x0 = Math.min(x0, b[0]); y0 = Math.min(y0, b[1]); x1 = Math.max(x1, b[2]); y1 = Math.max(y1, b[3]); });
+      mutate(() => rotApply(list, { x: (x0 + x1) / 2, y: (y0 + y1) / 2 }, deg));
+    }
+
     function renderSel() {
       const k = 1 / view.s; let s = '';
       if (ui.mq) {                                                   // 框选中的虚线矩形
@@ -6099,7 +6131,7 @@
       const els = { lib: $('aside.lib'), panel: $('aside.right') }, n = narrow();
       const vis = k => n ? els[k].classList.contains('open') : !panes[k === 'lib' ? 'hideLib' : 'hidePanel'];
       $('#tgLib').classList.toggle('on', vis('lib')); $('#tgPanel').classList.toggle('on', vis('panel'));
-      $('#tgLib').title = vis('lib') ? tr('收起家具库 ( [ )', 'Hide library ( [ )') : tr('展开家具库 ( [ )', 'Show library ( [ )');
+      $('#tgLib').title = vis('lib') ? tr('收起库 ( [ )', 'Hide library ( [ )') : tr('展开库 ( [ )', 'Show library ( [ )');
       $('#tgPanel').title = vis('panel') ? tr('收起属性面板 ( ] )', 'Hide properties ( ] )') : tr('展开属性面板 ( ] )', 'Show properties ( ] )');
       $('#stage').classList.toggle('drawer-panel', n && vis('panel'));   // 属性抽屉盖住画面时让出底部工具条
     }
@@ -7046,6 +7078,46 @@
         toast(tr('已删除房间 · Ctrl+Z 可撤销', 'Room deleted · Ctrl+Z to undo'));
       }
     }
+    const NUDGE_ARRS = { pillar: 'pillars', stair: 'stairs', lift: 'lifts', rail: 'rails', beam: 'beams', slab: 'slabs', parapet: 'parapets', canopy: 'canopies',
+      balcony: 'balconies', planter: 'planters', flue: 'flues', extra: 'extras', roof: 'roofs', pergola: 'pergolas', deck: 'decks', pool: 'pools', gate: 'gates' };
+    function nudgeObj(kind, id, dx, dy) {                           // 方向键微移：家具 / 各类构件 / 门窗（2D 与 3D 共用，可撤销）
+      if (kind === 'furn') { const f = getF(id); if (!f) return false; mutate(() => { f.cx += dx; f.cy += dy; }); return true; }
+      if (kind === 'wall' || kind === 'arcwall') {
+        const pre = kind === 'wall' ? 'CW' : 'AW', arr = state[kind === 'wall' ? 'walls' : 'arcWalls'] || [];
+        const o = String(id).startsWith(pre) && arr.find(x => pre + x.id === id);
+        if (!o) return false;                                        // 原始墙固定，不可微移
+        mutate(() => { o.a[0] += dx; o.a[1] += dy; o.b[0] += dx; o.b[1] += dy; }); return true;
+      }
+      if (kind === 'open' || kind === 'bopen') {
+        let axis, o, d0, min, max;
+        if (kind === 'open') {
+          o = (state.openings || []).find(x => x.id === id);
+          if (!o || o.legs) return false;                            // 转角飘窗折线腿不整体微移
+          const g = openingWallGeom(o.wall); if (!g) return false;
+          axis = g.u; d0 = o.c; min = 0; max = Math.max(0, g.L - o.w);
+        } else {
+          const r = bopenRect(id); if (!r) return false;
+          const hz = LONG(r); axis = hz ? [1, 0] : [0, 1]; d0 = [...(bov(id).d || [0, 0])];
+        }
+        const t = dx * axis[0] + dy * axis[1];
+        if (kind === 'open') {
+          const c = Math.max(min, Math.min(max, d0 + t));
+          if ((state.openings || []).some(q => q.wall === o.wall && q.id !== o.id && c < q.c + q.w && q.c < c + o.w)) return false;
+          mutate(() => { o.c = c; clampOpening(o); });
+        } else {
+          const d = axis[0] ? [d0[0] + t, d0[1]] : [d0[0], d0[1] + t];
+          mutate(() => { state.bover[id] = { ...bov(id), d }; clampBopen(id); });
+        }
+        return true;
+      }
+      const arr = state[NUDGE_ARRS[kind]];
+      const o = arr && arr.find(x => String(x.id) === String(id)); if (!o) return false;
+      mutate(() => {
+        if (o.a && o.b) { o.a[0] += dx; o.a[1] += dy; o.b[0] += dx; o.b[1] += dy; }
+        else if (typeof o.x === 'number' && typeof o.y === 'number') { o.x += dx; o.y += dy; }
+      });
+      return true;
+    }
     function duplicateSel() {
       if (ui.multi.length > 1) {                                    // 多选：整组复制，偏移 200mm 后选中新副本
         const added = [];
@@ -7128,19 +7200,45 @@
     function setTool(t) {
       if (t !== 'draw') { rotCancel(true); ui.rotPick = false; }  // 离开设计：取消未完成的旋转并还原几何
       ui.tool = t; ui.mA = null; ui.mCur = null; ui.dimA = null; ui.dimCur = null; ui.railA = null; ui.railCur = null; ui.beamA = null; ui.beamCur = null; ui.slabA = null; ui.slabCur = null; ui.parapetA = null; ui.parapetCur = null; ui.canopyA = null; ui.canopyCur = null; ui.rectA = null; ui.rectCur = null; ui.arcA = null; ui.arcCur = null; ui.gateA = null; ui.gateCur = null; ui.exA = null; ui.exCur = null; ui.ldA = null; ui.ldCur = null; wStart = wCur = null; renderDraw();
-      if (t === 'draw') setLibTab('arch');   // 进入设计自动显示建筑工具；退出设计不强制切回
+      if (is3D()) {                                               // 3D 下「预览 / 设计」切换：设计只提供选择子工具，左侧仍固定家具库
+        if (!entering3D) {                                        // 仅进入 3D 那一次同步不动预览态；入场动画期间用户点击也要即时生效
+          m3dPreview = t !== 'draw';
+          toolBefore3D = t === 'draw' ? 'draw' : (toolBefore3D === 'measure' ? 'measure' : 'select');   // 统一模式：3D 内切换即改写保存的模式，返回 2D 按它还原
+          document.body.classList.toggle('m3dprev', m3dPreview);  // 预览整条隐藏选项夹（同步生效，无延迟）
+          setRightTab(m3dPreview ? 'prop' : 'obj');
+          $('#tip').textContent = m3dPreview ? TIP3DPREV() : TIPS()['3d'];
+        } else if (t === 'draw') ui.drawTool = 'select';
+      }
+      if (t === 'draw') svg.dataset.subtool = ui.drawTool;   // 点「设计」不强制切换左侧选项夹，保留用户当前页
       syncArchHint();
-      if (t === 'draw') svg.dataset.subtool = ui.drawTool;
       if (!(t === 'draw' && ui.drawTool === 'select')) select(null);   // 离开「设计+选择」即取消选中（预览只读）
       svg.setAttribute('class', 'tool-' + t);
       $('#dirPad').hidden = t !== 'draw' || ui.drawTool === 'rotate';   // 直角 / 自由 只在设计模式显示，旋转时让位给角度框
       document.querySelectorAll('#tools .btn').forEach(b => b.classList.toggle('on', b.dataset.tool === t));
+      syncEditGrp();
       syncModeHint();
       renderMeasure();
       renderNotes();
     }
+    function canEditFurn() {                                       // 家具可编辑态：2D 设计 / 3D 设计（预览只读）
+      return ui.tool === 'draw' || (is3D() && !m3dPreview);
+    }
+    function syncEditGrp() {                                       // 撤销 / 重做 / 清空布置：仅设计态显示；家具库预览态置灰
+      const edit = canEditFurn();
+      $('#editGrp').classList.toggle('hide', !edit);
+      $('#lib').classList.toggle('preview-off', !edit);
+      $('#libHint').hidden = edit;
+    }
     let hintTimer = 0;
     function syncModeHint() {
+      const h = $('#modehint');
+      if (is3D()) {                                                // 3D：提示区分预览 / 设计
+        h.textContent = m3dPreview ? TIP3DPREV() : TIPS()['3d'];
+        h.classList.add('show');
+        clearTimeout(hintTimer);
+        hintTimer = setTimeout(() => h.classList.remove('show'), 4000);
+        return;
+      }
       const hints = {
         select: COARSE ? tr('预览模式：拖动平移 / 双指缩放 · 点击房间查看面积与地面 · 编辑请进「设计」', 'Preview: pan / pinch to zoom · tap a room for area & flooring · switch to "Design" to edit')
           : tr('预览模式：拖动平移 / 滚轮缩放 · 点击房间查看面积与地面 · 切到「设计」(W) 才能选中修改', 'Preview: pan / wheel zoom · tap a room for area & flooring · switch to "Design" (W) to edit anything'),
@@ -7153,7 +7251,7 @@
         ? tr('旋转：点选要旋转的对象（可连续点选多个）· 点空白处或回车 / 右键结束选择并定基点 · Esc 退出', 'Rotate: click the objects to rotate (multiple OK) · click empty space or press Enter / right-click to finish · Esc exits')
         : tr('旋转：点一下基点 → 移动鼠标旋转 → 再点一下确认；也可在底部输入角度回车 · 默认 15° 吸附，Shift 自由角度 · Esc 取消', 'Rotate: pick a base point → move to rotate → click to confirm; or type an angle below and press Enter · 15° snap, Shift for free angle · Esc cancels');
       const hint = ui.tool === 'draw' && ui.drawTool === 'rotate' ? rotHint : hints[ui.tool];
-      const h = $('#modehint'); h.textContent = hint || '';
+      h.textContent = hint || '';
       clearTimeout(hintTimer);
       if (!hint) { h.classList.remove('show'); return; }
       h.classList.add('show');
@@ -8076,7 +8174,7 @@
       if (d.moved) { commit(d.before); markDirty(); renderAll(); }
     }
 
-    svg.addEventListener('pointerdown', e => {
+    function onSvgPointerDown(e) {                                 // 2D 落点入口（3D 绘制复用同一套创建逻辑，见 window.drawAt3D）
       if (e.button === 2) return;
       if (e.button === 1) {                        // 中键（滚轮键）拖动 = 平移，任何工具下都可用
         e.preventDefault();
@@ -8097,7 +8195,7 @@
         }
       }
       if (pinch) return;
-      const p = toMM(e), t = e.target;
+      const p = e.mm || toMM(e), t = e.target || svg;   // 3D 绘制传 mm 落点，跳过 SVG 坐标换算
       if (ui.tool === 'measure') {
         const q = axisLock(ui.mA, snapPoint(p, false), e.shiftKey);
         if (!ui.mA) { ui.mA = q; ui.mCur = q; drag = { kind: 'measure', sx: e.clientX, sy: e.clientY, moved: false }; svg.setPointerCapture(e.pointerId); }
@@ -8824,7 +8922,31 @@
         drag = { kind: 'pan', sx: e.clientX, sy: e.clientY, x0: view.x0, y0: view.y0, room: room && room.dataset.room, moved: false };
       }
       svg.setPointerCapture(e.pointerId);
-    });
+    }
+    svg.addEventListener('pointerdown', onSvgPointerDown);
+    window.cancelDraw3D = () => {                                  // 3D 右击：与 2D 一致（取消当前起点 / 回到选择 / 取消旋转）
+      if (ui.tool !== 'draw') return;
+      if (ui.drawTool === 'rotate') {
+        if (ui.rotBase) rotCancel(); else if (ui.rotPick) finishRotPick(); else setSubTool('select');
+      } else if (ui.drawTool !== 'select') {
+        const starts = ['dimA', 'railA', 'beamA', 'slabA', 'parapetA', 'canopyA', 'rectA', 'arcA', 'gateA', 'exA', 'ldA'];
+        if (wStart || starts.some(k => ui[k])) {                     // 第一下：只取消已定的起点，保留当前工具
+          wStart = wCur = null;
+          starts.forEach(k => { ui[k] = null; ui[k.replace(/A$/, 'Cur')] = null; });
+          renderDraw(); renderNotes();
+        } else setSubTool('select');                                 // 第二下：回到选择
+      }
+    };
+    window.drawAt3D = (p, shift) => {                              // 3D 地面落点 → 复用 2D 建筑工具的落点创建（两次点击定起终点）
+      const fake = { button: 0, pointerType: 'mouse', pointerId: -1, isPrimary: true, clientX: 0, clientY: 0,
+        shiftKey: !!shift, mm: p, target: { closest: () => null }, preventDefault() { }, stopPropagation() { } };
+      const cap = svg.setPointerCapture, rel = svg.releasePointerCapture;
+      const keys = ['dimA', 'railA', 'beamA', 'slabA', 'parapetA', 'canopyA', 'rectA', 'arcA', 'gateA', 'exA', 'ldA'];
+      const before = { w: wStart, s: keys.map(k => ui[k]) };
+      svg.setPointerCapture = () => { }; svg.releasePointerCapture = () => { };   // 合成事件没有真实指针，捕获是空操作
+      try { onSvgPointerDown(fake); } finally { svg.setPointerCapture = cap; svg.releasePointerCapture = rel; }
+      if ((!before.w && wStart) || keys.some((k, i) => !before.s[i] && ui[k])) toast(tr('已定起点 · 在 3D 地面上再点一下完成', 'Start set — click the 3D ground again to finish'));
+    };
 
     svg.addEventListener('pointermove', e => {
       if (touches.has(e.pointerId)) touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -9405,10 +9527,7 @@
           else setSubTool('select');
           return;
         }
-        if (ui.drawTool !== 'select') {
-          if (wStart) { wStart = wCur = null; renderDraw(); }   // 画墙时第一击：取消当前线段（原功能）
-          else setSubTool('select');                            // 第二击：回到选择子工具
-        }
+        window.cancelDraw3D();                                  // 与 3D 共用：第一击取消起点，第二击回到选择
       }
     });
 
@@ -9441,10 +9560,10 @@
       if (k === '[' || k === ']') { drawer(k === '[' ? 'lib' : 'panel'); return; }
       if (k === 'f' && e.shiftKey) { toggleFullscreen(); return; }
       if (k === 't') setView(is3D() ? '2d' : '3d');
-      else if (is3D() && ['v', 'm', 'x', 'w', 'f', '+', '=', '-'].includes(k)) return;
+      else if (is3D() && ['m', 'w', 'f', '+', '=', '-'].includes(k)) return;   // 3D 下 V / X 可用（切预览 / 设计），测量与画墙等仅 2D
       else if (k === 'v') setTool('select');
       else if (k === 'm') setTool('measure');
-      else if (k === 'x') { setTool('draw'); setSubTool('select'); }
+      else if (k === 'x') { setTool('draw'); if (!is3D()) setSubTool('select'); }
       else if (k === 'w') { setTool('draw'); setSubTool('wall'); }
       else if (k === 'f') fitView();
       else if (k === 'r') rotateSel(e.shiftKey ? -90 : 90);
@@ -9457,9 +9576,12 @@
         else if (ui.sel) { select(null); }
         else if (ui.tool !== 'select') setTool('select');
       }
-      else if (k.startsWith('arrow') && ui.sel?.kind === 'furn') {
+      else if (k.startsWith('arrow')) {
+        if (!ui.sel || (is3D() && m3dPreview)) return;               // 预览只读；方向键微移仅设计态
         e.preventDefault(); const st = e.shiftKey ? 100 : 10;
-        mutate(() => { const f = getF(ui.sel.id); if (k === 'arrowleft') f.cx -= st; if (k === 'arrowright') f.cx += st; if (k === 'arrowup') f.cy -= st; if (k === 'arrowdown') f.cy += st; });
+        const dx = k === 'arrowleft' ? -st : k === 'arrowright' ? st : 0;
+        const dy = k === 'arrowup' ? -st : k === 'arrowdown' ? st : 0;
+        nudgeObj(ui.sel.kind, ui.sel.id, dx, dy);
       }
       else if (k === '+' || k === '=') zoomCenter(1.25);
       else if (k === '-') zoomCenter(.8);
@@ -9475,7 +9597,7 @@
         `家具按真实尺寸（mm）绘制。${COARSE ? '点一下放到画面中央，或按住向右拖到平面图 / 3D 地面上的指定位置（上下滑动为滚动列表）。' : '点击添加到画面中央，或直接拖到平面图 / 3D 地面上。'}添加后可在右侧修改宽深与颜色。`,
         `Furniture is drawn at real size (mm). ${COARSE ? 'Tap to place at the center, or hold and drag right onto the plan / 3D floor (swipe up/down to scroll).' : 'Click to add at the center, or drag onto the plan / 3D floor.'} Edit size and color in the right panel afterwards.`)}</div>`;
       document.querySelectorAll('.item').forEach(el => el.addEventListener('pointerdown', e => {
-        if (e.button) return;
+        if (e.button || !canEditFurn()) return;                       // 预览模式：家具库只读
         libDrag = { el, id: e.pointerId, sx: e.clientX, sy: e.clientY, it: itemOf(el), ghost: null };
       }));
     }
@@ -9511,6 +9633,11 @@
       if (!libDrag || e.pointerId !== libDrag.id) return;
       const d = libDrag; libDrag = null;
       d.el.classList.remove('dragging');
+      if (!canEditFurn()) {                                         // 预览中（或拖放途中切到预览）：不落家具
+        d.ghost?.remove();
+        if (ok) toast(tr('预览模式不能添加家具，请切到「设计」', 'Preview is read-only — switch to Design to add furniture'));
+        return;
+      }
       if (d.ghost) {
         d.ghost.remove();
         if (!ok) return;
@@ -9567,8 +9694,11 @@
     function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800); }
 
     /* ======================= 2D / 3D 切换 ======================= */
-    let viewMode = '2d', switching = false, toolBefore3D = null;   // 进 3D 前的 2D 模式，切回时恢复（设计模式 → 设计模式）
+    let viewMode = '2d', switching = false, toolBefore3D = null;   // 进 3D 前的 2D 工具，切回时按当前预览 / 设计模式还原
+    let m3dPreview = false, drawToolBefore3D = null, entering3D = false;   // 3D 预览态、进 3D 前的 2D 子工具、进入同步标记
+    const TIP3DPREV = () => tr('3D 预览：点门窗可开合 · 点击房间查看 · 家具编辑请切「设计」', '3D preview: click doors / windows to open · tap rooms for info · switch to "Design" to edit furniture');
     const is3D = () => viewMode === '3d';
+    syncEditGrp();                                                 // 初始显隐（预览态隐藏编辑按钮组）
     const TIPS = () => COARSE
       ? {
         '2d': tr('点或拖动家具库添加 · 单指拖动平移 · 双指缩放 · 选中家具后底部工具条可旋转 / 复制 / 删除', 'Tap or drag from the library · 1 finger pans · pinch zooms · bottom bar rotates / duplicates / deletes'),
@@ -9584,20 +9714,35 @@
       switching = true; document.body.classList.add('busy');
       viewMode = m;
       if (m === '3d') {
-        toolBefore3D = ui.tool;                                          // 记住 2D 模式（预览 / 设计 / 测量）
-        if (ui.tool !== 'select') setTool('select'); ui.mA = null; document.body.classList.add('m3d'); await window.View3D.enter();
-        setRightTab('prop');   // 3D 下右侧只保留属性（对象列表仅 2D 可用）
+        toolBefore3D = ui.tool;                                          // 记住 2D 工具（预览 / 设计 / 测量）
+        drawToolBefore3D = ui.drawTool;
+        m3dPreview = toolBefore3D !== 'draw';                            // 2D 模式决定进 3D 的初始模式（预览 / 测量只读，设计可编辑）
+        document.body.classList.toggle('m3dprev', m3dPreview);           // 先定预览态：进入动画期间选项夹就不闪现
+        const tool3D = m3dPreview ? 'select' : 'draw';                   // 3D 的工具栏高亮 / 编辑器状态与模式一致（设计 = draw+select 子工具）
+        entering3D = true;
+        if (ui.tool !== tool3D) setTool(tool3D);
+        entering3D = false;
+        ui.mA = null; document.body.classList.add('m3d'); await window.View3D.enter();
+        m3dPreview = toolBefore3D !== 'draw';                            // 入场动画期间若切换过模式，以最后一次选择为准
+        document.body.classList.toggle('m3dprev', m3dPreview);
+        if (m3dPreview) setLibTab('furn');          // 仅预览态回到家具 / 房间列表；设计态保留用户当前选项夹
+        setRightTab(m3dPreview ? 'prop' : 'obj');    // 设计态默认对象列表；预览只留属性页
         const hasDoors = state.openings.some(o => o.kind === 'door' && openingWallGeom(o.wall)) || DOORS.some((d, i) => !bopenRemoved('d' + i) && !bopenOnDeadWall('d' + i));
-        if (hasDoors && !setView.doorTipShown) { setView.doorTipShown = true; toast(tr('小提示：点击门即可开门 / 关门', 'Tip: click a door to open / close')); }
-        if ((state.extras || []).some(x => x.type === 'flag') && !setView.flagTipShown) { setView.flagTipShown = true; toast(tr('小提示：点击旗杆可升旗 / 降旗', 'Tip: click a flagpole to raise / lower the flag')); }
+        if (m3dPreview) toast(tr('3D 预览模式：可点门窗开合、点房间查看；家具编辑请切「设计」', '3D preview: click doors / windows & rooms; switch to "Design" to edit furniture'));
+        if (!m3dPreview && hasDoors && !setView.doorTipShown) { setView.doorTipShown = true; toast(tr('小提示：点击门即可开门 / 关门', 'Tip: click a door to open / close')); }
+        if (!m3dPreview && (state.extras || []).some(x => x.type === 'flag') && !setView.flagTipShown) { setView.flagTipShown = true; toast(tr('小提示：点击旗杆可升旗 / 降旗', 'Tip: click a flagpole to raise / lower the flag')); }
       }
       else {
-        const back = toolBefore3D; toolBefore3D = null;
-        document.body.classList.remove('m3d');
-        if (back === 'draw') setTool('draw');   // 先切回设计模式，不等 3D 退出动画结束（避免先看到预览再跳设计）
+        const back = toolBefore3D || (m3dPreview ? 'select' : 'draw'); toolBefore3D = null;   // 按统一模式还原 2D 工具（3D 内的切换已写回）
+        if (back === 'draw' && drawToolBefore3D) ui.drawTool = drawToolBefore3D;
+        drawToolBefore3D = null;
+        m3dPreview = false;
+        document.body.classList.remove('m3dprev', 'm3d');   // 恢复 2D：显示右侧选项夹
+        setTool(back);   // 不等 3D 退出动画结束就同步模式，避免先看到预览再跳设计
         await window.View3D.exit(); applyView();
       }
-      $('#tip').textContent = TIPS()[m];
+      $('#tip').textContent = (m === '3d' && m3dPreview) ? TIP3DPREV() : TIPS()[m];
+      syncEditGrp();                                               // 2D / 3D 切换后编辑按钮组跟随设计态
       switching = false; document.body.classList.remove('busy');
     }
     document.querySelectorAll('.menu-pop .btn').forEach(b => b.addEventListener('click', () => b.closest('details').open = false));
@@ -9868,6 +10013,12 @@
     }
     function focusObj(kind, id) {
       if (ui.tool === 'measure') return;                                  // 测量中不响应
+      if (document.body.classList.contains('m3d')) {                      // 3D：列表点选任意对象，属性面板编辑后实时同步
+        if (m3dPreview && kind !== 'room') return;                        // 3D 预览：与 2D 预览一致，仅房间可点选
+        select({ kind, id });
+        renderObjList();
+        return;
+      }
       if (ui.tool !== 'draw' && kind !== 'room') return;                  // 预览模式只允许选房间；其它对象仅设计模式
       if (ui.tool === 'draw' && ui.drawTool !== 'select') setSubTool('select');   // 画墙/开门/开窗中 → 回选择子工具
       select({ kind, id });                                               // 只选中，不动视图（画板不平移）
@@ -10265,7 +10416,7 @@
 
     let inited = false, active = false, raf = 0, anim = null, fly = null;
     let renderer, labelRenderer, scene, camera, orbit, walkCtl, hemi, sun, ground, glassMat, wallMat, capMat, frameMat, casingMat, steelMat, entryCasingMat;
-    let archFloor, archUp, furnG, labelG, lampG, colliders = [], selKey = null, selHelper = null;
+    let archFloor, archUp, furnG, labelG, lampG, colliders = [], selKey = null, selHelpers = [];
     let sigArch = '', sigFurn = '', sigLabels = '', grow = 1, furnGrow = 1;
     const doors = [], keys = {};
 
@@ -10325,15 +10476,76 @@
 
       // 按住已选中的家具拖动：沿地面摆放（与 2D 共用网格和贴墙吸附）。
       // 在父元素上用捕获阶段监听，赶在 OrbitControls 之前关掉它，避免同时旋转镜头
-      let fdrag = null;
+      let fdrag = null, objdrag = null;
+      const OBJ_ARRS = { wall: 'walls', arcwall: 'arcWalls', pillar: 'pillars', stair: 'stairs', lift: 'lifts', rail: 'rails', beam: 'beams', slab: 'slabs', parapet: 'parapets',
+        canopy: 'canopies', balcony: 'balconies', planter: 'planters', flue: 'flues', extra: 'extras', roof: 'roofs', pergola: 'pergolas', deck: 'decks', pool: 'pools', gate: 'gates' };
+      const find3dObj = (kind, id) => {
+        if (kind === 'wall' || kind === 'arcwall') {                 // 原始墙（wN）固定在户型里，不可拖动
+          const pre = kind === 'wall' ? 'CW' : 'AW', arr = state[kind === 'wall' ? 'walls' : 'arcWalls'] || [];
+          return String(id).startsWith(pre) ? arr.find(o => pre + o.id === id) : null;
+        }
+        const arr = state[OBJ_ARRS[kind]];
+        return arr ? arr.find(o => String(o.id) === String(id)) : null;
+      };
+      const openDragInfo = (kind, id) => {                          // 门窗只能沿依附的墙滑动（与 2D 规则一致）
+        if (kind === 'open') {
+          const o = (state.openings || []).find(x => x.id === id);
+          if (!o || o.legs) return null;                             // 转角飘窗的折线腿不做整体拖动
+          const g = openingWallGeom(o.wall); if (!g) return null;
+          return { custom: true, o, axis: g.u, c0: o.c, min: 0, max: Math.max(0, g.L - o.w) };
+        }
+        if (kind === 'bopen') {
+          const r = bopenRect(id); if (!r) return null;
+          const hz = LONG(r);
+          return { custom: false, id, hz, axis: hz ? [1, 0] : [0, 1], d0: [...(bov(id).d || [0, 0])] };
+        }
+        return null;
+      };
+      const move3dObj = (o, dx, dy) => {                            // 点构件改 x/y，线构件（墙 / 梁 / 栏杆等）平移两端点
+        if (o.a && o.b) { o.a[0] += dx; o.a[1] += dy; o.b[0] += dx; o.b[1] += dy; }
+        else if (typeof o.x === 'number' && typeof o.y === 'number') { o.x += dx; o.y += dy; }
+      };
       host.addEventListener('pointerdown', e => {
-        if (e.target !== cv || !e.isPrimary || anim || opt.mode !== 'orbit' || ui.sel?.kind !== 'furn') return;
-        const h = pick(e), f = h?.fid === ui.sel.id && getF(h.fid), g = f && groundAt(e.clientX, e.clientY);
+        if (e.target !== cv || !e.isPrimary || anim || opt.mode !== 'orbit' || m3dPreview || !ui.sel || (ui.tool === 'draw' && ui.drawTool !== 'select' && ui.drawTool !== 'rotate')) return;   // 绘制态不启动对象拖动
+        const h = pick(e), g = groundAt(e.clientX, e.clientY);
         if (!g) return;
-        fdrag = { id: f.id, pid: e.pointerId, sx: e.clientX, sy: e.clientY, ox: g.x - f.cx, oy: g.y - f.cy, before: snap(), moved: false };
+        if (ui.sel.kind === 'furn') {
+          const f = h?.fid === ui.sel.id && getF(h.fid);
+          if (!f) return;
+          fdrag = { id: f.id, pid: e.pointerId, sx: e.clientX, sy: e.clientY, ox: g.x - f.cx, oy: g.y - f.cy, before: snap(), moved: false };
+        } else {
+          if (!h?.kind || h.kind !== ui.sel.kind || String(h.id) !== String(ui.sel.id)) return;
+          const info = openDragInfo(h.kind, h.id);
+          if (!info && !find3dObj(h.kind, h.id)) return;
+          objdrag = { kind: h.kind, id: h.id, pid: e.pointerId, sx: e.clientX, sy: e.clientY, gx: g.x, gy: g.y, dx: 0, dy: 0, moved: false, openInfo: info,
+            targets: archUp.children.filter(o => o.userData.pick3d?.kind === h.kind && String(o.userData.pick3d.id) === String(h.id))
+              .map(o => ({ o, x: o.position.x, z: o.position.z })) };
+        }
         orbit.enabled = false; fly = null; cv.setPointerCapture(e.pointerId);
       }, true);
       cv.addEventListener('pointermove', e => {
+        if (objdrag && e.pointerId === objdrag.pid) {
+          if (!objdrag.moved && Math.hypot(e.clientX - objdrag.sx, e.clientY - objdrag.sy) < TAP) return;
+          const g = groundAt(e.clientX, e.clientY); if (!g) return;
+          objdrag.moved = true; cv.style.cursor = 'grabbing';
+          const step = e.shiftKey ? 50 : 10, info = objdrag.openInfo;
+          if (info) {                                                // 门窗：沿墙投影，改中心位置 / 原始门窗偏移
+            const t = Math.round(((g.x - objdrag.gx) * info.axis[0] + (g.y - objdrag.gy) * info.axis[1]) / step) * step;
+            if (info.custom) {
+              const nc = Math.max(info.min, Math.min(info.max, Math.round((info.c0 + t) / step) * step));
+              if ((state.openings || []).some(q => q.wall === info.o.wall && q.id !== info.o.id && nc < q.c + q.w && q.c < nc + info.o.w)) return;   // 与其它门窗重叠 → 不动
+              objdrag.newC = nc; objdrag.dx = (nc - info.c0) * info.axis[0]; objdrag.dy = (nc - info.c0) * info.axis[1];
+            } else {
+              objdrag.newD = info.hz ? [info.d0[0] + t, info.d0[1]] : [info.d0[0], info.d0[1] + t];
+              objdrag.dx = objdrag.newD[0] - info.d0[0]; objdrag.dy = objdrag.newD[1] - info.d0[1];
+            }
+          } else {
+            objdrag.dx = Math.round((g.x - objdrag.gx) / step) * step;
+            objdrag.dy = Math.round((g.y - objdrag.gy) / step) * step;
+          }
+          objdrag.targets.forEach(t => { t.o.position.x = t.x + objdrag.dx / 1000; t.o.position.z = t.z + objdrag.dy / 1000; });   // 先挪模型，松手写回方案
+          return;
+        }
         if (!fdrag || e.pointerId !== fdrag.pid) return;
         if (!fdrag.moved && Math.hypot(e.clientX - fdrag.sx, e.clientY - fdrag.sy) < TAP) return;
         const f = getF(fdrag.id), g = groundAt(e.clientX, e.clientY); if (!f || !g) return;
@@ -10342,11 +10554,27 @@
         furnG.children.find(o => o.userData.fid === f.id)?.position.set(wx(f.cx), 0, wz(f.cy));   // 拖动中只挪模型，松手再整体同步
       });
       const endF = e => {
+        if (objdrag && e.pointerId === objdrag.pid) {
+          const d = objdrag; objdrag = null; orbit.enabled = true; cv.style.cursor = '';
+          const info = d.openInfo;
+          let ok = false;
+          if (d.moved && (d.dx || d.dy)) {
+            if (info?.custom && d.newC != null) { mutate(() => { info.o.c = d.newC; clampOpening(info.o); }); ok = true; }
+            else if (info && d.newD) { mutate(() => { state.bover[d.id] = { ...bov(d.id), d: d.newD }; clampBopen(d.id); }); ok = true; }
+            else { const o = find3dObj(d.kind, d.id); if (o) { mutate(() => move3dObj(o, d.dx, d.dy)); ok = true; } }
+          }
+          if (!ok) d.targets.forEach(t => { t.o.position.x = t.x; t.o.position.z = t.z; });   // 未拖动 / 取消：还原模型位置
+          return;
+        }
         if (!fdrag || e.pointerId !== fdrag.pid) return;
         const d = fdrag; fdrag = null; orbit.enabled = true; cv.style.cursor = '';
         if (d.moved) { commit(d.before); markDirty(); renderAll(); }
       };
       cv.addEventListener('pointerup', endF); cv.addEventListener('pointercancel', endF);
+      cv.addEventListener('contextmenu', e => {                    // 3D 绘制态右击：取消起点 / 回到选择，与 2D 一致（仅画布，不挡浏览器其它菜单）
+        e.preventDefault();
+        if (active && !anim && opt.mode === 'orbit' && !m3dPreview) window.cancelDraw3D?.();
+      });
 
       cv.addEventListener('pointerup', e => {
         const tap = downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) <= TAP;
@@ -10356,11 +10584,25 @@
           return;
         }
         if (anim || opt.mode !== 'orbit' || !tap) return;
+        if (ui.tool === 'draw' && !m3dPreview && ui.drawTool !== 'select' && ui.drawTool !== 'rotate') {   // 3D 绘制：地面落点直接复用 2D 建筑工具
+          const g = groundAt(e.clientX, e.clientY); if (g) window.drawAt3D?.({ x: g.x, y: g.y }, e.shiftKey);
+          return;
+        }
         const h = pick(e);
-        if (h?.door) h.door.open = !h.door.open;
+        if (m3dPreview) {                                                 // 3D 预览：门窗可点开合 / 房间可查看，家具不可选编辑
+          if (h?.door) h.door.open = !h.door.open;
+          else if (h?.flagSel || h?.flagHandle) startFlagAnim((state.extras || []).find(x => x.id === (h.flagSel || h.flagHandle)));
+          else if (h?.room) window.select({ kind: 'room', id: h.room });
+          return;
+        }
+        if (h?.door) {                                                   // 门 / 窗：开合的同时选中它（属性面板可改尺寸 / 材质 / 开启方向）
+          h.door.open = !h.door.open;
+          if (h.kind && h.id != null) window.select({ kind: h.kind, id: h.id });
+        }
         else if (h?.flagSel || h?.flagHandle) startFlagAnim((state.extras || []).find(x => x.id === (h.flagSel || h.flagHandle)));
         else if (h?.fid) window.select({ kind: 'furn', id: h.fid });
         else if (h?.room) window.select({ kind: 'room', id: h.room });
+        else if (h?.kind && h?.id != null) window.select({ kind: h.kind, id: h.id });   // 墙 / 柱 / 楼梯 / 电梯 / 栏杆 / 梁 / 扩展构件等
         else window.select(null);
       });
 
@@ -11075,10 +11317,13 @@
 
     /* ======================= 建筑 ======================= */
     function clearGroup(g) { g.traverse(o => { if (o.geometry) o.geometry.dispose(); }); g.clear(); }
+    let pickWallId = null, pickWallKind = 'wall';                // 当前正在建模的墙 id / kind（门洞墙垛也归属这面墙）
+    const tagPick = (o, kind, id) => { if (o && id != null) o.userData.pick3d = { kind, id }; return o; };   // 3D 点击选中标记
+    const markNew = (start, kind, id) => { for (let i = start; i < archUp.children.length; i++) { const o = archUp.children[i]; if (!o.userData.pick3d) tagPick(o, kind, id); } };   // 已标记的（如墙垛）保持原归属
     function wallBox([x0, y0, x1, y1], yb, yt, m) {
       if (yt - yb <= .001) return;
       const o = new THREE.Mesh(new THREE.BoxGeometry(M(x1 - x0), yt - yb, M(y1 - y0)), m || [wallMat, wallMat, capMat, wallMat, wallMat, wallMat]);
-      o.position.set(wx((x0 + x1) / 2), (yb + yt) / 2, wz((y0 + y1) / 2)); o.castShadow = o.receiveShadow = true; archUp.add(o);
+      o.position.set(wx((x0 + x1) / 2), (yb + yt) / 2, wz((y0 + y1) / 2)); o.castShadow = o.receiveShadow = true; tagPick(o, pickWallKind, pickWallId); archUp.add(o);
       // 漫游辅助：墙体棱线 + 踢脚线，让相邻墙面、墙角一眼可分（仅漫游模式显示）
       const ln = new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry), edgeMat); ln.position.copy(o.position); ln.userData.walkOnly = true; ln.visible = opt.mode === 'walk'; archUp.add(ln);
       if (yb <= .001) {
@@ -11100,7 +11345,7 @@
       const o = new THREE.Mesh(new THREE.BoxGeometry(M(L), yt - yb, M(T)), [wallMat, wallMat, capMat, wallMat, wallMat, wallMat]);
       const [mx, mz] = wallMid(P0, P1);
       o.position.set(mx, (yb + yt) / 2, mz); o.rotation.y = wallAngle(P0, P1);
-      o.castShadow = o.receiveShadow = true; archUp.add(o);
+      o.castShadow = o.receiveShadow = true; tagPick(o, pickWallKind, pickWallId); archUp.add(o);
       const ln = new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry), edgeMat); ln.position.copy(o.position); ln.rotation.copy(o.rotation);
       ln.userData.walkOnly = true; ln.visible = opt.mode === 'walk'; archUp.add(ln);
       if (yb <= .001) {
@@ -11186,7 +11431,7 @@
     function buildRamp3D(s) {                                  // 坡道：斜面踏板 + 两侧挡条（漫游高度由 stairH 按斜面插值）
       const L = s.len / 1000, W = s.w / 1000, H = Math.max(.05, (s.rise ?? 600) / 1000);
       const g = new THREE.Group();
-      g.position.set(wx(s.x), 0, wz(s.y));
+      g.position.set(wx(s.x), 0, wz(s.y)); tagPick(g, 'stair', s.id);
       g.rotation.y = -s.dir * Math.PI / 180 + (s.flipX ? Math.PI : 0);   // 前后翻转 = 整段调头，上行方向反过来
       const ang = Math.atan2(H, L), sl = Math.hypot(L, H), thk = .12;
       const deckMat = mat('#cfc3ac', { roughness: .9 }), curbMat = mat('#8d8069', { roughness: .85 });
@@ -11218,7 +11463,7 @@
       const lay = stairLayout(s), n = lay.nStep, R = lay.rOuter / 1000, rc = lay.rCore / 1000;
       const H = Math.max(.03, (s.rise ?? 2800) / 1000), stepH = H / n, dA = lay.ang / n;
       const g = new THREE.Group();
-      g.position.set(wx(s.x), 0, wz(s.y));
+      g.position.set(wx(s.x), 0, wz(s.y)); tagPick(g, 'stair', s.id);
       g.rotation.y = -s.dir * Math.PI / 180 + (s.flipX ? Math.PI : 0);
       const treadMat = mat('#c9bda6', { roughness: .9 }), poleMat = mat('#8d8069', { roughness: .85 }),
         railMat = mat('#8a939b', { metalness: .5, roughness: .45 });
@@ -11251,7 +11496,7 @@
     function buildSteps3D(s) {                                  // 台阶：逐级实心踏步块（漫游可逐级上下）
       const N = Math.max(1, Math.round(s.steps || 3)), W = s.w / 1000, L = s.len / 1000, H = Math.max(.03, (s.rise ?? 450) / 1000);
       const g = new THREE.Group();
-      g.position.set(wx(s.x), 0, wz(s.y));
+      g.position.set(wx(s.x), 0, wz(s.y)); tagPick(g, 'stair', s.id);
       g.rotation.y = -s.dir * Math.PI / 180 + (s.flipX ? Math.PI : 0);   // 前后翻转 = 整段调头
       const stMat = mat('#cfc4af', { roughness: .92 }), noseMat = mat('#b8ab92', { roughness: .92 });
       const d = L / N;
@@ -11281,6 +11526,7 @@
       const g = new THREE.Group();
       g.position.set((A[0] + B[0]) / 2, 0, (A[1] + B[1]) / 2);
       g.rotation.y = Math.atan2(-(B[1] - A[1]), B[0] - A[0]);
+      tagPick(g, 'rail', r.id);
       if (r.style === 'drain') {                                // 排水沟：下沉槽体 + 两侧压边 + 不锈钢格栅
         const W = Math.max(.04, Math.min(.3, (r.w ?? 80) / 1000));
         const slot = new THREE.Mesh(new THREE.BoxGeometry(L, .03, W), mat('#3c3b37', { roughness: .95 }));
@@ -11338,7 +11584,7 @@
       const m = new THREE.Mesh(new THREE.BoxGeometry(L, H, W), wallMat);
       m.position.set((A[0] + B[0]) / 2, Y + H / 2, (A[1] + B[1]) / 2);
       m.rotation.y = Math.atan2(-(B[1] - A[1]), B[0] - A[0]);
-      m.castShadow = m.receiveShadow = true;
+      m.castShadow = m.receiveShadow = true; tagPick(m, 'beam', b.id);
       archUp.add(m);
     }
     function buildSlab3D(s) {                                   // 楼板 / 挑板：矩形厚板
@@ -11346,7 +11592,7 @@
       const T = Math.max(.04, (s.thick ?? 120) / 1000), Y = (s.z ?? 0) / 1000;
       const m = new THREE.Mesh(new THREE.BoxGeometry(W, T, D), mat('#d8d2c6', { roughness: .85 }));
       m.position.set(wx(s.x), Y + T / 2, wz(s.y));
-      m.castShadow = m.receiveShadow = true;
+      m.castShadow = m.receiveShadow = true; tagPick(m, 'slab', s.id);
       archUp.add(m);
     }
     function buildParapet3D(p) {                                // 女儿墙：墙身 + 压顶
@@ -11378,13 +11624,13 @@
       const m = new THREE.Mesh(new THREE.BoxGeometry(L, T, dep), mat('#b9c0b8', { roughness: .8 }));
       m.position.set((A[0] + B[0]) / 2 - uz * side * dep / 2, Y + T / 2, (A[1] + B[1]) / 2 + ux * side * dep / 2);
       m.rotation.y = Math.atan2(-uz, ux);
-      m.castShadow = m.receiveShadow = true; archUp.add(m);
+      m.castShadow = m.receiveShadow = true; tagPick(m, 'canopy', c.id); archUp.add(m);
     }
     function buildBalcony3D(b) {                                // 阳台：挑板 + 选中边的玻璃 / 直杆 / 实体栏板
       const W = Math.max(.3, (b.w || 0) / 1000), D = Math.max(.3, (b.d || 0) / 1000);
       const T = Math.max(.06, (b.thick ?? 120) / 1000), Y = (b.z ?? 0) / 1000, RH = Math.max(.2, (b.rh ?? 900) / 1000);
       const g = new THREE.Group();
-      g.position.set(wx(b.x), 0, wz(b.y));
+      g.position.set(wx(b.x), 0, wz(b.y)); tagPick(g, 'balcony', b.id);
       const slab = new THREE.Mesh(new THREE.BoxGeometry(W, T, D), mat('#d8d2c6', { roughness: .85 }));
       slab.position.y = Y + T / 2; slab.castShadow = slab.receiveShadow = true; g.add(slab);
       const st = b.style || 'glass', sd = b.sides || ['l', 't', 'r', 'b'], base = Y + T;
@@ -11437,7 +11683,7 @@
     function buildPlanter3D(p) {                                // 花坛 / 种植池：四周池壁 + 种植土
       const W = Math.max(.2, (p.w || 0) / 1000), D = Math.max(.2, (p.d || 0) / 1000);
       const T = Math.min(Math.max(.04, (p.t ?? 100) / 1000), Math.min(W, D) / 2 - .02), H = Math.max(.1, (p.h ?? 450) / 1000), Y = (p.z ?? 0) / 1000;
-      const g = new THREE.Group(); g.position.set(wx(p.x), 0, wz(p.y));
+      const g = new THREE.Group(); g.position.set(wx(p.x), 0, wz(p.y)); tagPick(g, 'planter', p.id);
       if (p.well) {                                             // 采光井：四周井壁 + 顶部压边 + 采光玻璃
         const Hw = Math.max(.6, (p.h ?? 2800) / 1000), wm = mat('#ddd6c8', { roughness: .9 }), rm = mat('#c9c0ae', { roughness: .8 });
         const put = (w, h, d, x, z, m) => {
@@ -11483,9 +11729,9 @@
       const H = Math.max(.5, (f.h ?? 2800) / 1000), Y = (f.z ?? 0) / 1000;
       const body = new THREE.Mesh(new THREE.BoxGeometry(W, H, D), mat('#c3bdb1', { roughness: .92 }));
       body.position.set(wx(f.x), Y + H / 2, wz(f.y));
-      body.castShadow = body.receiveShadow = true; archUp.add(body);
+      body.castShadow = body.receiveShadow = true; tagPick(body, 'flue', f.id); archUp.add(body);
       const cap = new THREE.Mesh(new THREE.BoxGeometry(W + .04, .04, D + .04), mat('#a9a294', { roughness: .85 }));
-      cap.position.set(wx(f.x), Y + H + .02, wz(f.y)); cap.castShadow = true; archUp.add(cap);
+      cap.position.set(wx(f.x), Y + H + .02, wz(f.y)); cap.castShadow = true; tagPick(cap, 'flue', f.id); archUp.add(cap);
       colliders.push([wx(f.x) - W / 2, wz(f.y) - D / 2, wx(f.x) + W / 2, wz(f.y) + D / 2]);
     }
     function buildLift3D(l) {                                   // 电梯：井道四壁 + 门洞过梁 + 金属双扇门
@@ -11496,7 +11742,7 @@
       const DH = Math.max(1.2, Math.min((l.dh ?? 2100) / 1000, H - .1));         // 门高
       const B = Math.max(0, (l.stop ?? 0) / 1000);              // 停靠高度：井道从这个标高向上建
       const g = new THREE.Group();
-      g.position.set(wx(l.x), 0, wz(l.y));
+      g.position.set(wx(l.x), 0, wz(l.y)); tagPick(g, 'lift', l.id);
       g.rotation.y = -(l.dir || 0) * Math.PI / 180;              // 平面顺时针旋转 → 绕 Y 轴负向
       const t = .1, shMat = mat('#b9bcbd', { roughness: .7 }), doorMat = mat('#9aa2a8', { metalness: .7, roughness: .3 }), flMat = mat('#4d5257', { roughness: .85 });
       const add = (w, h, d, x, y, z, m) => {
@@ -11529,6 +11775,17 @@
         edoor.pivots.push({ g: pg, px: pg.position.x, pz: pg.position.z, ax: 0, az: sd, dist: DW / 2 });
         g.add(pg);
       });
+      const fr = (w, h, d, x, y, z) => {                        // 门套不锈钢包边：两侧立梃 + 上横梁（地面侧不加边框，也挂交互可点关门）
+        const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), frameMat);
+        b.position.set(x, y + B, z); b.castShadow = b.receiveShadow = true;
+        b.userData.door = edoor; g.add(b);
+      };
+      fr(.06, dH, .06, W / 2 - .01, dH / 2, z0 + .03);          // 左立梃
+      fr(.06, dH, .06, W / 2 - .01, dH / 2, z1 - .03);          // 右立梃
+      fr(.06, .06, DW + .12, W / 2 - .01, dH - .03, DOFF);      // 上横梁
+      const sil = new THREE.Mesh(new THREE.BoxGeometry(t + .04, .02, DW + .12), doorMat);   // 门槛板：与地面齐平，盖住门洞下沿露出的深色井道底板
+      sil.position.set(W / 2 - (t + .04) / 2 + .02, B + .01, DOFF); sil.castShadow = sil.receiveShadow = true;
+      sil.userData.door = edoor; g.add(sil);
       const call = new THREE.Mesh(new THREE.BoxGeometry(.02, .13, .09), doorMat);   // 门侧呼叫面板（门开走后仍可点它关门）
       call.position.set(W / 2 - t - .03, B + Math.min(1.15, dH * .6), z1 + .2);
       call.castShadow = true; call.userData.door = edoor; g.add(call);
@@ -11939,10 +12196,17 @@
           archUp.add(pg);
         });
         doors.push(edoor);
-        [dT - .06, dB + .03].forEach(y => {                  // 门套横梁 / 地槛（也挂交互：门开后可点门框关闭）
+        [dT - .06].forEach(y => {                            // 门套上横梁（也挂交互：门开后可点门框关闭；地面侧不加边框）
           const tr = new THREE.Mesh(new THREE.BoxGeometry(L + .1, .1, TT * 1.02), frameMat);
           tr.position.set(mx, y, mz); tr.rotation.y = rot; tr.userData.door = edoor; archUp.add(tr);
         });
+        [-1, 1].forEach(sd => {                              // 两侧竖向门套立梃（也挂交互，与横梁同材质）
+          const jamb = new THREE.Mesh(new THREE.BoxGeometry(.06, hh, TT * 1.04), frameMat);
+          jamb.position.set(mx + dx * sd * (L / 2 + .03), dB + hh / 2, mz + dz * sd * (L / 2 + .03));
+          jamb.rotation.y = rot; jamb.userData.door = edoor; archUp.add(jamb);
+        });
+        const sill = new THREE.Mesh(new THREE.BoxGeometry(L + .06, .02, TT), mat('#b9c0c6', { metalness: .6, roughness: .35 }));   // 金属门槛板：盖住门洞下的地面缺口（黑洞），就是真实电梯的门槛槽
+        sill.position.set(mx, .01, mz); sill.rotation.y = rot; sill.receiveShadow = true; archUp.add(sill);
         const bs = o.btn === 'l' ? -1 : 1;                                    // 呼叫按钮装在门的左侧还是右侧
         const bx = mx + dx * bs * (L / 2 + .16), bz = mz + dz * bs * (L / 2 + .16);   // 呼叫按钮：门侧墙面上（门扇滑进墙后仍可点它关门）
         [[dz, -dx], [-dz, dx]].forEach(([nx, nz]) => {       // 两侧墙面各一个，哪边都能按
@@ -12168,6 +12432,7 @@
 
     function buildArch() {
       window.clearDoorHover?.();                                   // 门被重建后悬停高亮引用已失效，立即清除
+      selHelpers.forEach(h => { scene.remove(h); h.geometry.dispose(); }); selHelpers = []; selKey = null;
       clearGroup(archFloor); clearGroup(archUp); lampG.clear(); doors.length = 0; colliders = [];
       const top = opt.cut;
       allRooms().forEach(r => {
@@ -12218,6 +12483,7 @@
       };
       WALLS.forEach((w, i) => {
         const id = 'w' + i;
+        pickWallId = id;                                         // 本面墙及门洞墙段归属这个 id，3D 可直接点选
         if (state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
         const s = builtinSeg(i), os = openingsOf(id), cuts = wallCuts(id, s.L), ht = wallTop(id, wallTypeOf(i) === 'low' ? Math.min(1, top) : top);
         if (!cuts.length) {
@@ -12231,11 +12497,12 @@
           if (lbo) cornerStub3D(P0, P1, s.T, ht, lbo); else wallSeg3D(P0, P1, s.T, 0, ht);
           pushWallCollider(P0, P1, s.T);
         });
-        os.forEach(o => buildOpening3D(s.A, s.B, o, ht, s.T));
+        os.forEach(o => { const s0 = archUp.children.length; buildOpening3D(s.A, s.B, o, ht, s.T); markNew(s0, 'open', o.id); });   // 自画门窗：点击可开合并选中
       });
       // 自己画的墙（含斜墙）：统一用带角度的墙段盒
       state.walls.forEach(w => {
         const id = 'CW' + w.id;
+        pickWallId = id;
         if (state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
         const L = Math.hypot(w.b[0] - w.a[0], w.b[1] - w.a[1]);
         const segs = wallSegs(id, L);
@@ -12249,7 +12516,7 @@
           const [P0, P1] = segPts(w.a, w.b, c0x, c1x), k = cwType(w);
           const lbo = c1 - c0 <= 400 && ((c1 >= L - 1 && lbCornerAt(id, 1)) || (c0 <= 1 && lbCornerAt(id, 0)));
           if (k === 'g' || k === 'lg') {                     // 玻璃隔断 / 玻璃矮隔断
-            buildGlassWall(P0, P1, cwT(w), ht);
+            const s0 = archUp.children.length; buildGlassWall(P0, P1, cwT(w), ht); markNew(s0, 'wall', id);
           } else if (lbo) {                                  // 转角飘窗转角的小墙垛：窗洞范围内留空
             cornerStub3D(P0, P1, cwT(w), ht, lbo);
           } else {
@@ -12257,11 +12524,12 @@
           }
           pushWallCollider(P0, P1, cwT(w));
         });
-        openingsOf(id).forEach(o => buildOpening3D(w.a, w.b, o, ht, cwT(w)));
+        openingsOf(id).forEach(o => { const s0 = archUp.children.length; buildOpening3D(w.a, w.b, o, ht, cwT(w)); markNew(s0, 'open', o.id); });
       });
       // 弧形墙：按折线分段生成墙体与碰撞体
       (state.arcWalls || []).forEach(w => {
         const id = 'AW' + w.id;
+        pickWallId = id; pickWallKind = 'arcwall';
         if (state.deletedWalls.includes(id) || state.demolished.includes(id)) return;
         const pts = arcSamples(w.a, w.b, +w.bulge || 0, 24), th = Math.max(60, +w.t || 240);
         const ht = Math.min(top, Math.max(.6, (+w.h || 2800) / 1000));
@@ -12270,9 +12538,11 @@
           pushWallCollider(pts[i], pts[i + 1], th);
         }
       });
+      pickWallId = null; pickWallKind = 'wall';                // 后续洞口过梁等不属于任何可选墙
       /* ---------- 屋顶 / 廊架 / 露台 / 泳池（室外配套） ---------- */
       const roofMat = mat('#8a6a58', { roughness: .85 }), outWood = mat('#8d7355', { roughness: .8 });
       (state.roofs || []).forEach(r => {
+        const s0 = archUp.children.length;
         const oh = M(Math.max(0, +r.overhang || 0)), hz = M(r.hz ?? 2800), rise = M(r.rise ?? 1200);
         const x0 = wx(r.x - r.w / 2) - oh, x1 = wx(r.x + r.w / 2) + oh;
         const z0 = wz(r.y - r.d / 2) - oh, z1 = wz(r.y + r.d / 2) + oh;
@@ -12314,11 +12584,13 @@
           [x0, x1].forEach(x => {
             const g = new THREE.BufferGeometry();
             g.setAttribute('position', new THREE.Float32BufferAttribute([x, hz, z0, x, hz, z1, x, hz + rise, zc], 3));
-            g.computeVertexNormals(); archUp.add(new THREE.Mesh(g, mat('#cfc8b8', { side: THREE.DoubleSide })));
+            g.computeVertexNormals();             archUp.add(new THREE.Mesh(g, mat('#cfc8b8', { side: THREE.DoubleSide })));
           });
         }
+        markNew(s0, 'roof', r.id);
       });
       (state.pergolas || []).forEach(p => {
+        const s0 = archUp.children.length;
         const x0 = wx(p.x - p.w / 2), x1 = wx(p.x + p.w / 2), z0 = wz(p.y - p.d / 2), z1 = wz(p.y + p.d / 2);
         const H = M(p.h ?? 2600), ps = M(p.post ?? 150), beam = .18;
         const nx = Math.max(2, Math.round((x1 - x0) / 2.4) + 1), ny = Math.max(2, Math.round((z1 - z0) / 2.4) + 1);
@@ -12338,8 +12610,10 @@
           b.position.set(x0 + (x1 - x0) * i / nr, H + beam + .05, (z0 + z1) / 2);
           b.castShadow = true; archUp.add(b);
         }
+        markNew(s0, 'pergola', p.id);
       });
       (state.decks || []).forEach(k => {
+        const s0 = archUp.children.length;
         const x0 = wx(k.x - k.w / 2), z0 = wz(k.y - k.d / 2), w = M(k.w), d = M(k.d);
         const th = M(k.thick ?? 150), base = M(k.z ?? 0);
         const slab = new THREE.Mesh(new THREE.BoxGeometry(w, th, d), outWood);
@@ -12351,8 +12625,10 @@
           const s = new THREE.Mesh(new THREE.BoxGeometry(.008, .004, d - .02), seamMat);
           s.position.set(x0 + w * i / n, base + th + .002, wz(k.y)); archUp.add(s);
         }
+        markNew(s0, 'deck', k.id);
       });
       (state.pools || []).forEach(p => {
+        const s0 = archUp.children.length;
         const x0 = wx(p.x - p.w / 2), z0 = wz(p.y - p.d / 2), w = M(p.w), d = M(p.d);
         const cp = M(Math.min(p.coping ?? 300, Math.min(p.w, p.d) / 3));
         const copMat = mat('#cfc6b4', { roughness: .9 }), waterMat = mat('#5fb3c8', { roughness: .15, metalness: .1, transparent: true, opacity: .82 });
@@ -12364,8 +12640,10 @@
         };
         curb(w, cp, wx(p.x), z0 + cp / 2); curb(w, cp, wx(p.x), z0 + d - cp / 2);
         curb(cp, d - cp * 2, x0 + cp / 2, wz(p.y)); curb(cp, d - cp * 2, x0 + w - cp / 2, wz(p.y));
+        markNew(s0, 'pool', p.id);
       });
       (state.gates || []).forEach(g => {                     // 院门：两端门柱 + 双扇外开门扇（按开启角度，3D 可点击开关）
+        const s0 = archUp.children.length;
         const A = [wx(g.a[0]), wz(g.a[1])], B = [wx(g.b[0]), wz(g.b[1])];
         const L = Math.hypot(B[0] - A[0], B[1] - A[1]); if (L < .4) return;
         const ux = (B[0] - A[0]) / L, uz = (B[1] - A[1]) / L;
@@ -12398,8 +12676,11 @@
         };
         addLeaf([A[0] + ux * PS / 2, A[1] + uz * PS / 2], 1);
         addLeaf([B[0] - ux * PS / 2, B[1] - uz * PS / 2], -1, .01);   // 右扇少 10mm，关合时中缝不重合闪面
+        markNew(s0, 'gate', g.id);
       });
       (state.extras || []).forEach(e => {                    // 扩展构件：楼板洞口 / 设备平台 / 停车位 / 凉亭 / 天窗 / 散水 / 挡土墙 / 天沟 / 雨水管
+        const s0 = archUp.children.length;
+        try {
         const T3 = e.type;
         const box = (w, h, d, x, y, z, m, ry = 0) => {
           const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
@@ -12639,6 +12920,7 @@
           [-.28, 0, .28].forEach(f => box(w * .7, .02, .02, cx, y + t + h * (.45 + f), cz - d * .39 - .01, mat('#8b9094', { metalness: .4, roughness: .5 })));
           return;
         }
+        } finally { markNew(s0, 'extra', e.id); }
       });
       (state.pillars || []).forEach(c => {                   // 柱子：方 / 圆 / L 形 / 十字形，从地面通到顶，占碰撞（漫游挡路）
         const r = c.w / 2000, shape = pillarShape(c);
@@ -12653,6 +12935,7 @@
           m.position.set(wx(c.x), 0, wz(c.y));
         }
         else m = new THREE.Mesh(new THREE.BoxGeometry(r * 2, top, r * 2), wallMat);
+        tagPick(m, 'pillar', c.id);
         if (shape === 'L' || shape === 'cross') { m.castShadow = m.receiveShadow = true; archUp.add(m); }
         else { m.position.set(wx(c.x), top / 2, wz(c.y)); m.castShadow = m.receiveShadow = true; archUp.add(m); }
         colliders.push([wx(c.x) - r, wz(c.y) - r, wx(c.x) + r, wz(c.y) + r]);
@@ -12663,7 +12946,7 @@
         if (s.type === 'spiral') return buildSpiral3D(s);    // 螺旋楼梯单独生成
         const lay = stairLayout(s), W = lay.w / 1000;
         const g = new THREE.Group();
-        g.position.set(wx(s.x), 0, wz(s.y)); g.rotation.y = -s.dir * Math.PI / 180;
+        g.position.set(wx(s.x), 0, wz(s.y)); g.rotation.y = -s.dir * Math.PI / 180; tagPick(g, 'stair', s.id);
         const treadMat = mat('#c9bda6', { roughness: .9 }), riserMat = mat('#b3a58c', { roughness: .9 }),
           beamMat = mat('#8d8069', { roughness: .85 }), landMat = mat('#cfc3ac', { roughness: .9 });
         lay.runs.forEach(r => {
@@ -12758,7 +13041,7 @@
       (state.rails || []).forEach(buildRail3D);               // 栏杆
       (state.beams || []).forEach(buildBeam3D);               // 梁
       (state.slabs || []).forEach(buildSlab3D);               // 楼板 / 挑板
-      (state.parapets || []).forEach(buildParapet3D);         // 女儿墙
+      (state.parapets || []).forEach(p => { const s0 = archUp.children.length; buildParapet3D(p); markNew(s0, 'parapet', p.id); });   // 女儿墙
       (state.canopies || []).forEach(buildCanopy3D);          // 雨棚
       (state.lifts || []).forEach(buildLift3D);               // 电梯
       (state.balconies || []).forEach(buildBalcony3D);        // 阳台
@@ -12772,6 +13055,7 @@
       [...DOORS.map((d, i) => [bopenDoor(i).rect, 2.1, 'd' + i]), ...SLIDES.map((s, i) => [bopenRect('s' + i), s.v ? 2.4 : 2.1, 's' + i]), ...bayLintels]
         .forEach(([r, h, id]) => { if (id && (bopenRemoved(id) || bopenOnDeadWall(id))) return; if (top > h) wallBox(r, h, top); });
       WINS.forEach((r0, i) => {
+        const s0 = archUp.children.length;
         if (bopenRemoved('w' + i) || bopenOnDeadWall('w' + i)) return;
         const r = bopenRect('w' + i);
         const sill = i === 0 ? 1.4 : i >= 6 ? .45 : .9, head = 2.4;
@@ -12798,8 +13082,10 @@
           mu.position.set(cx + (hz ? t : 0), sill + gh / 2, cz + (hz ? 0 : t)); mu.castShadow = true; archUp.add(mu);
         }
         [sill + .02, gTop - .02].forEach(y => { const tr = new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .06, .04, hz ? .06 : L), frameMat); tr.position.set(cx, y, cz); archUp.add(tr); });
+        markNew(s0, 'bopen', 'w' + i);
       });
       DOORS.forEach((d0, i) => {
+        const s0 = archUp.children.length;
         if (bopenRemoved('d' + i) || bopenOnDeadWall('d' + i)) return;
         const d = bopenDoor(i);
         const [rx0, ry0, rx1, ry1] = d.rect, hzD = LONG(d.rect);
@@ -12816,8 +13102,10 @@
         door.cur = door.a1; pivot.rotation.y = door.cur; leaf.userData.door = knob.userData.door = door;
         doors.push(door); archUp.add(pivot);
         addDoorCasing(PA, PB, 0, Math.max(dh, Math.min(2.1, top)), hzD ? ry1 - ry0 : rx1 - rx0, isEntry('d' + i) ? entryCasingMat : casingMat);   // 原始门同样加门套，入户门用同色门套，顶到 2.1 遮挡门扇上方的缝隙
+        markNew(s0, 'bopen', 'd' + i);
       });
       SLIDES.forEach((s0, i) => {
+        const s0c = archUp.children.length;
         if (bopenRemoved('s' + i) || bopenOnDeadWall('s' + i)) return;
         const [x0, y0, x1, y1] = bopenRect('s' + i), v = s0.v;
         const L = M(v ? y1 - y0 : x1 - x0), ph = Math.min(v ? 2.4 : 2.1, top), pl = L * .55;
@@ -12827,6 +13115,7 @@
           [ph - .03, .03].forEach(y => { const fr = new THREE.Mesh(new THREE.BoxGeometry(v ? .04 : pl, .05, v ? pl : .04), frameMat); fr.position.set(x, y, z); archUp.add(fr); });
           [-1, 1].forEach(e => { const fr = new THREE.Mesh(new THREE.BoxGeometry(.04, ph, .04), frameMat); fr.position.set(v ? x : x + e * pl / 2, ph / 2, v ? z + e * pl / 2 : z); archUp.add(fr); });
         });
+        markNew(s0c, 'bopen', 's' + i);
       });
       applyLight(); applyGrow();
       syncCeilSide(opt.mode);                                        // 重建后按当前模式设置天花单 / 双面
@@ -12835,7 +13124,7 @@
     function buildFurn() {
       clearGroup(furnG);
       state.furniture.forEach(f => furnG.add(buildFurniture(f)));
-      furnG.visible = opt.furn; selKey = null; applyGrow();
+      furnG.visible = opt.furn; selKey = null; selHelpers.forEach(h => { scene.remove(h); h.geometry.dispose(); }); selHelpers = []; applyGrow();
     }
 
     function buildLabels() {
@@ -12981,13 +13270,17 @@
         let o = h.object;
         if ((o.material === glassMat && !o.userData.pickGlass) || o === doorHiRef) continue;   // 玻璃（门窗扇除外）与门悬停高亮层不参与拾取
         if (o.userData.walkOnly || o.isLine || o.isLineSegments) continue;   // 漫游棱线 / 踢脚线只是辅助显示，不挡拾取（否则关着的门永远拾取不到）
-        if (o.userData.door) return { door: o.userData.door, dist: h.distance, mesh: o };
+        let sel = null;                                                  // 沿父链找通用构件标记 / 家具
+        for (let p = o; p && p !== scene; p = p.parent) {
+          if (p.userData.pick3d) { sel = { ...p.userData.pick3d }; break; }
+          if (p.userData.fid) { sel = { fid: p.userData.fid }; break; }
+        }
+        if (o.userData.door) return { door: o.userData.door, dist: h.distance, mesh: o, ...(sel || {}) };   // 门扇：开合同时带回所属门窗 / 电梯 / 院门，供选中
         if (o.userData.room) return { room: o.userData.room };
         if (o.userData.flagHandle) return { flagHandle: o.userData.flagHandle, dist: h.distance };   // 旗面升降手柄
         if (o.userData.flagId) return { flagSel: o.userData.flagId, dist: h.distance };                               // 旗杆杆身：点击选中（漫游距离判断需要 dist）
-        while (o && !o.userData.fid && o !== scene) o = o.parent;
-        if (o?.userData.fid) return { fid: o.userData.fid };
-        return null;                                     // 被墙体挡住
+        if (sel) return { ...sel, dist: h.distance };
+        continue;                                        // 未标记的对象不挡拾取，继续找后面的命中
       }
       return null;
     }
@@ -13007,15 +13300,24 @@
         a.distanceTo(px(hit.clone().add(new THREE.Vector3(0, 0, 1)).project(camera)))) / 1000;
       return { x: hit.x * 1000 + OX, y: hit.z * 1000 + OY, s };
     }
-    function updateSel() {
-      const key = ui.sel?.kind === 'furn' ? ui.sel.id : '';
+    function updateSel() {                                       // 家具 / 墙 / 柱 / 楼梯等选中对象统一橙色包围盒
+      const key = ui.sel?.id != null ? ui.sel.kind + ':' + ui.sel.id : '';
       if (key !== selKey) {
         selKey = key;
-        if (selHelper) { scene.remove(selHelper); selHelper.geometry.dispose(); selHelper = null; }
-        const g = key && furnG.children.find(g => g.userData.fid === key);
-        if (g) { selHelper = new THREE.BoxHelper(g, 0xb5653a); scene.add(selHelper); }
+        selHelpers.forEach(h => { scene.remove(h); h.geometry.dispose(); }); selHelpers = [];
+        const targets = [];
+        if (ui.sel?.kind === 'furn') {
+          const g = furnG.children.find(g => g.userData.fid === ui.sel.id);
+          if (g) targets.push(g);
+        } else if (ui.sel?.id != null) {
+          archUp.children.forEach(o => {                         // 墙段可能有多块，全部高亮
+            const t = o.userData.pick3d;
+            if (t && t.kind === ui.sel.kind && String(t.id) === String(ui.sel.id)) targets.push(o);
+          });
+        }
+        targets.forEach(o => { const h = new THREE.BoxHelper(o, 0xb5653a); scene.add(h); selHelpers.push(h); });
       }
-      if (selHelper) selHelper.update();
+      selHelpers.forEach(h => h.update());
     }
 
     /* ======================= 漫游 ======================= */
@@ -13069,10 +13371,14 @@
           camera.position.set(wx(4200), 1.6, wz(8755)); camera.lookAt(wx(7000), 1.5, wz(8755));   // 兜底：原始入户门外
         }
         $('#walkOverlay').style.display = 'flex';
+        $('#tools').style.visibility = 'hidden';                       // 漫游中隐藏左上角模式切换
+        $('#sunPad').style.visibility = 'hidden';                      // 漫游中隐藏右上角日照滑杆
         syncHint3d();
       } else {
         walkCtl.unlock(); stopTouchWalk(); orbit.enabled = true;
         $('#walkOverlay').style.display = 'none'; $('#cross').style.display = 'none';
+        $('#tools').style.visibility = '';
+        $('#sunPad').style.visibility = '';
         syncHint3d();
         orbit.target.set(0, 0, 0); flyTo(isoWhole());
       }
@@ -13265,7 +13571,7 @@
       $('#vIso').onclick = () => { if (opt.mode === 'walk') setMode('orbit'); else flyTo(isoWhole()); };
       $('#vTop').onclick = () => { if (opt.mode === 'walk') setMode('orbit'); flyTo(topWhole()); };
       document.querySelectorAll('[data-cut]').forEach(b => b.onclick = () => { if (opt.mode === 'walk') return; opt.cut = +b.dataset.cut; syncCutBtns(); sync(); });
-      document.querySelectorAll('#toggles3d .btn').forEach(b => b.onclick = () => {
+      document.querySelectorAll('#toggles3d .btn, #sunPad .btn').forEach(b => b.onclick = () => {
         const k = b.dataset.t; opt[k] = !opt[k]; b.classList.toggle('on', opt[k]);
         if (k === 'furn') { furnG.visible = opt.furn; if (!opt.furn && ui.sel?.kind === 'furn') window.select(null); }
         if (k === 'labels') showLabels(opt.labels && opt.mode === 'orbit' && !anim);
