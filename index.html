@@ -2334,6 +2334,9 @@
           title="点选墙 / 门 / 窗 / 家具：拖动、改尺寸、删除；在空白处 / 房间内按住左键拖出矩形可框选家具、楼梯、柱子、自画墙（Ctrl+D 复制、Delete 删除；按住 Alt 拖动可从任意位置起手）"
           data-en-title="Click to edit; drag on empty space or inside a room to marquee-select furniture / stairs / columns / walls (Ctrl+D duplicates, Delete removes, Alt+drag starts anywhere)" data-en="Select"><i
           data-lucide="mouse-pointer-2"></i>选择</button>
+          <button class="btn chip" data-dt="move" title="移动：按住家具 / 墙 / 门窗 / 构件等拖动位置，多选后按住其中任一对象可整组移动；轻点仍可选中"
+            data-en-title="Move: drag furniture / walls / openings / structures to reposition; drag any selected item to move the whole group" data-en="Move"><i
+            data-lucide="move"></i>移动</button>
           <button class="btn chip" data-dt="rotate" title="旋转：点此工具后直接在画板上点选对象（可多选），点空白处或回车结束选择，再点基点；移动鼠标旋转，再点一下确认，也可输入角度回车"
           data-en-title="Rotate: click this tool, then click objects on the canvas (multiple OK). Click empty space or press Enter to finish picking, pick a base point, move to rotate, click to confirm — or type an angle" data-en="Rotate"><i
           data-lucide="rotate-cw"></i>旋转</button>
@@ -4648,7 +4651,7 @@
     }
 
     function rotateSel(deg) {                                    // 快捷 90° 整转（R 键 / 属性面板按钮 / 双击家具）：绕选区中心
-      if (is3D() ? m3dPreview : !(ui.tool === 'draw' && ui.drawTool === 'select')) return;   // 仅设计（含 3D 可编辑态）可用，预览只读
+      if (is3D() ? m3dPreview : !(ui.tool === 'draw' && ['select', 'move'].includes(ui.drawTool))) return;   // 仅设计（含 3D 可编辑态）可用，预览只读
       const list = rotTargets();
       if (!list.length) return;
       let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
@@ -6968,7 +6971,7 @@
       }).filter(Boolean);
     }
     function selectAllObjects() {                                   // Ctrl+A：全选家具 / 楼梯 / 柱子 / 自画墙
-      if (!(ui.tool === 'draw' && ui.drawTool === 'select')) return;
+      if (!(ui.tool === 'draw' && ['select', 'move'].includes(ui.drawTool))) return;
       const all = state.furniture.map(f => ({ kind: 'furn', id: f.id }))
         .concat((state.stairs || []).map(s => ({ kind: 'stair', id: s.id })),
           (state.pillars || []).map(c => ({ kind: 'pillar', id: c.id })),
@@ -7200,18 +7203,18 @@
     function setTool(t) {
       if (t !== 'draw') { rotCancel(true); ui.rotPick = false; }  // 离开设计：取消未完成的旋转并还原几何
       ui.tool = t; ui.mA = null; ui.mCur = null; ui.dimA = null; ui.dimCur = null; ui.railA = null; ui.railCur = null; ui.beamA = null; ui.beamCur = null; ui.slabA = null; ui.slabCur = null; ui.parapetA = null; ui.parapetCur = null; ui.canopyA = null; ui.canopyCur = null; ui.rectA = null; ui.rectCur = null; ui.arcA = null; ui.arcCur = null; ui.gateA = null; ui.gateCur = null; ui.exA = null; ui.exCur = null; ui.ldA = null; ui.ldCur = null; wStart = wCur = null; renderDraw();
-      if (is3D()) {                                               // 3D 下「预览 / 设计」切换：设计只提供选择子工具，左侧仍固定家具库
+      if (is3D()) {                                               // 3D 下「预览 / 设计」切换；建筑工具 / 拖动与 2D 共用
         if (!entering3D) {                                        // 仅进入 3D 那一次同步不动预览态；入场动画期间用户点击也要即时生效
           m3dPreview = t !== 'draw';
           toolBefore3D = t === 'draw' ? 'draw' : (toolBefore3D === 'measure' ? 'measure' : 'select');   // 统一模式：3D 内切换即改写保存的模式，返回 2D 按它还原
           document.body.classList.toggle('m3dprev', m3dPreview);  // 预览整条隐藏选项夹（同步生效，无延迟）
           setRightTab(m3dPreview ? 'prop' : 'obj');
           $('#tip').textContent = m3dPreview ? TIP3DPREV() : TIPS()['3d'];
-        } else if (t === 'draw') ui.drawTool = 'select';
+        }                                                        // 进入 3D 不重置子工具：2D 选的「移动」/ 建筑工具带进 3D
       }
       if (t === 'draw') svg.dataset.subtool = ui.drawTool;   // 点「设计」不强制切换左侧选项夹，保留用户当前页
       syncArchHint();
-      if (!(t === 'draw' && ui.drawTool === 'select')) select(null);   // 离开「设计+选择」即取消选中（预览只读）
+      if (!(t === 'draw' && (ui.drawTool === 'select' || ui.drawTool === 'move'))) select(null);   // 离开「设计+选择/移动」即取消选中（预览只读）
       svg.setAttribute('class', 'tool-' + t);
       $('#dirPad').hidden = t !== 'draw' || ui.drawTool === 'rotate';   // 直角 / 自由 只在设计模式显示，旋转时让位给角度框
       document.querySelectorAll('#tools .btn').forEach(b => b.classList.toggle('on', b.dataset.tool === t));
@@ -7232,8 +7235,9 @@
     let hintTimer = 0;
     function syncModeHint() {
       const h = $('#modehint');
-      if (is3D()) {                                                // 3D：提示区分预览 / 设计
-        h.textContent = m3dPreview ? TIP3DPREV() : TIPS()['3d'];
+      if (is3D()) {                                                // 3D：提示区分预览 / 设计 / 移动
+        h.textContent = m3dPreview ? TIP3DPREV()
+          : (ui.drawTool === 'move' ? tr('3D 移动：按住对象沿地面拖动改位置 · Shift 锁轴 · 右击回到选择', '3D move: drag objects along the ground · Shift locks axis · right-click back to Select') : TIPS()['3d']);
         h.classList.add('show');
         clearTimeout(hintTimer);
         hintTimer = setTimeout(() => h.classList.remove('show'), 4000);
@@ -7250,7 +7254,10 @@
       const rotHint = ui.rotPick
         ? tr('旋转：点选要旋转的对象（可连续点选多个）· 点空白处或回车 / 右键结束选择并定基点 · Esc 退出', 'Rotate: click the objects to rotate (multiple OK) · click empty space or press Enter / right-click to finish · Esc exits')
         : tr('旋转：点一下基点 → 移动鼠标旋转 → 再点一下确认；也可在底部输入角度回车 · 默认 15° 吸附，Shift 自由角度 · Esc 取消', 'Rotate: pick a base point → move to rotate → click to confirm; or type an angle below and press Enter · 15° snap, Shift for free angle · Esc cancels');
-      const hint = ui.tool === 'draw' && ui.drawTool === 'rotate' ? rotHint : hints[ui.tool];
+      const moveHint = COARSE
+        ? tr('移动：按住对象拖到新位置 · 多选后按住其中任一对象整组移动 · Shift 直角移动', 'Move: drag an object to reposition · drag any selected item to move the group · Shift locks axis')
+        : tr('移动：按住家具 / 墙 / 门窗 / 构件拖动改位置 · 多选后按住其中任一对象整组移动 · Shift 锁定水平 / 垂直 · 右击回到选择', 'Move: drag furniture / walls / openings / structures to reposition · drag any selected item to move the group · Shift locks axis · right-click back to Select');
+      const hint = ui.tool === 'draw' && ui.drawTool === 'rotate' ? rotHint : (ui.tool === 'draw' && ui.drawTool === 'move' ? moveHint : hints[ui.tool]);
       h.textContent = hint || '';
       clearTimeout(hintTimer);
       if (!hint) { h.classList.remove('show'); return; }
@@ -8140,7 +8147,7 @@
         renderDraw(); return;
       }
       if (d.kind === 'pan') {
-        const editing = ui.tool === 'select' || (ui.tool === 'draw' && ui.drawTool === 'select');   // 预览 / 设计-选择子工具都可点选
+        const editing = ui.tool === 'select' || (ui.tool === 'draw' && ['select', 'move'].includes(ui.drawTool));   // 预览 / 设计-选择 / 移动都可点选
         if (!cancel && !d.moved && editing && !d.keepSel) {
           if (d.room) select({ kind: 'room', id: d.room });              // 点房间 → 选中该房间（预览与设计模式均可）
           else select(null);                                             // 点空白 → 失焦（预览与设计模式一致）
@@ -8694,7 +8701,7 @@
         else drawCommit(wStart, q);
         renderDraw(); return;
       }
-      const edit = ui.tool === 'draw' && ui.drawTool === 'select';   // 编辑仅在设计+选择子工具下
+      const edit = ui.tool === 'draw' && (ui.drawTool === 'select' || ui.drawTool === 'move');   // 选择：选中 / 改尺寸；移动：整体拖动
       if (edit && e.altKey) {                                      // Alt + 拖动 = 强制框选（起点压在家具 / 门窗 / 墙上也能框）
         drag = { kind: 'marquee', sx: e.clientX, sy: e.clientY, ax: p.x, ay: p.y, room: t.closest('[data-room]')?.dataset.room, add: e.shiftKey, mq: null, moved: false, keepSel: true };
         svg.setPointerCapture(e.pointerId); return;
@@ -8920,6 +8927,10 @@
       } else {
         const room = t.closest('[data-room]');
         drag = { kind: 'pan', sx: e.clientX, sy: e.clientY, x0: view.x0, y0: view.y0, room: room && room.dataset.room, moved: false };
+      }
+      if (ui.drawTool === 'select' && drag && (drag.kind === 'move' || drag.kind === 'multiMove' || /Move$/.test(drag.kind))) {
+        drag = null;                                            // 「选择」只选中 / 改尺寸，整体拖动交给「移动」工具
+        return;
       }
       svg.setPointerCapture(e.pointerId);
     }
@@ -9567,7 +9578,7 @@
       else if (k === 'w') { setTool('draw'); setSubTool('wall'); }
       else if (k === 'f') fitView();
       else if (k === 'r') rotateSel(e.shiftKey ? -90 : 90);
-      else if (k === 'delete' || k === 'backspace') { e.preventDefault(); if (ui.tool === 'draw' && ui.drawTool === 'select') deleteSel(); }   // 仅设计模式可删，预览模式不动方案
+      else if (k === 'delete' || k === 'backspace') { e.preventDefault(); if (ui.tool === 'draw' && ['select', 'move'].includes(ui.drawTool)) deleteSel(); }   // 仅设计模式可删，预览模式不动方案
       else if (k === 'escape') {
         if (wStart) { wStart = wCur = null; renderDraw(); }
         else if (ui.mA) { ui.mA = null; renderMeasure(); }
@@ -9800,7 +9811,7 @@
       if (!['balcony', 'planter', 'well', 'slabhole', 'ac', 'park', 'pavilion', 'skylight', 'shaft', 'lawn', 'well2', 'dormer', 'hatch', 'solar', 'equip'].includes(dt)) { ui.rectA = null; ui.rectCur = null; ui.rectKind = null; }
       svg.dataset.subtool = dt;
       $('#dirPad').hidden = ui.tool !== 'draw' || dt === 'rotate';   // 旋转时不需要方向模式，让位给角度输入框
-      if (dt !== 'select' && dt !== 'rotate') select(null);   // 切到创建类子工具时取消选中；旋转保留选中
+      if (dt !== 'select' && dt !== 'move' && dt !== 'rotate') select(null);   // 切到创建类子工具时取消选中；选择 / 移动 / 旋转保留选中
       else renderSel();                       // 按当前选中对象重画手柄（房间顶点 / 家具手柄立即出现）
       document.querySelectorAll('#designTools .btn[data-dt]').forEach(x => x.classList.toggle('on', x.dataset.dt === dt));
       if (ui.tool === 'draw' && innerWidth <= 900) document.querySelector('aside.lib')?.classList.remove('open');   // 手机上选完工具收起抽屉
@@ -10506,7 +10517,7 @@
         else if (typeof o.x === 'number' && typeof o.y === 'number') { o.x += dx; o.y += dy; }
       };
       host.addEventListener('pointerdown', e => {
-        if (e.target !== cv || !e.isPrimary || anim || opt.mode !== 'orbit' || m3dPreview || !ui.sel || (ui.tool === 'draw' && ui.drawTool !== 'select' && ui.drawTool !== 'rotate')) return;   // 绘制态不启动对象拖动
+        if (e.target !== cv || !e.isPrimary || anim || opt.mode !== 'orbit' || m3dPreview || !ui.sel || (ui.tool === 'draw' && ui.drawTool !== 'move')) return;   // 仅「移动」工具可拖动对象，与 2D 一致
         const h = pick(e), g = groundAt(e.clientX, e.clientY);
         if (!g) return;
         if (ui.sel.kind === 'furn') {
@@ -10584,7 +10595,7 @@
           return;
         }
         if (anim || opt.mode !== 'orbit' || !tap) return;
-        if (ui.tool === 'draw' && !m3dPreview && ui.drawTool !== 'select' && ui.drawTool !== 'rotate') {   // 3D 绘制：地面落点直接复用 2D 建筑工具
+        if (ui.tool === 'draw' && !m3dPreview && !['select', 'move', 'rotate'].includes(ui.drawTool)) {   // 3D 绘制：地面落点直接复用 2D 建筑工具
           const g = groundAt(e.clientX, e.clientY); if (g) window.drawAt3D?.({ x: g.x, y: g.y }, e.shiftKey);
           return;
         }
