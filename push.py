@@ -9,6 +9,7 @@
     - 远端还没有 main 分支时（首次推送场景）自动跳过 pull --rebase
 """
 import json
+import os
 import subprocess
 import sys
 import time
@@ -39,7 +40,10 @@ def git(*args: str, check: bool = True, show: bool = True):
     """执行 git 命令，输出直通终端（show=False 时捕获输出）。"""
     if show:
         print("$", "git " + " ".join(args))
-    r = subprocess.run(["git", *args], cwd=ROOT, shell=True,
+    env = os.environ.copy()
+    env.update({"GIT_TERMINAL_PROMPT": "0", "GCM_INTERACTIVE": "never", "GIT_ASKPASS": "echo"})
+    r = subprocess.run(["git", "-c", "credential.interactive=never", "-c", "credential.helper=", *args],
+                       cwd=ROOT, shell=True, env=env,
                        capture_output=not show, text=True,
                        encoding="utf-8", errors="replace")
     if check and r.returncode != 0:
