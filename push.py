@@ -9,7 +9,6 @@
     - 远端还没有 main 分支时（首次推送场景）自动跳过 pull --rebase
 """
 import json
-import os
 import subprocess
 import sys
 import time
@@ -40,10 +39,7 @@ def git(*args: str, check: bool = True, show: bool = True):
     """执行 git 命令，输出直通终端（show=False 时捕获输出）。"""
     if show:
         print("$", "git " + " ".join(args))
-    env = os.environ.copy()
-    env.update({"GIT_TERMINAL_PROMPT": "0", "GCM_INTERACTIVE": "never", "GIT_ASKPASS": "echo"})
-    r = subprocess.run(["git", "-c", "credential.interactive=never", "-c", "credential.helper=", *args],
-                       cwd=ROOT, shell=True, env=env,
+    r = subprocess.run(["git", *args], cwd=ROOT, shell=True,
                        capture_output=not show, text=True,
                        encoding="utf-8", errors="replace")
     if check and r.returncode != 0:
@@ -133,16 +129,15 @@ def commit_all(message: str) -> bool:
 def countdown(seconds: int = 5):
     """结束后倒计时，让双击运行的用户看清结果，按 Ctrl+C 可立即退出。"""
     try:
-        print(f"{seconds} 秒后退出...", flush=True)
-        for i in range(seconds - 1, 0, -1):
+        for i in range(seconds, 0, -1):
+            print(f"\r{i} 秒后退出...", end="", flush=True)
             time.sleep(1)
-            print(f"{i} 秒后退出...", flush=True)
-        time.sleep(1)
+        print("\r" + " " * 20, end="\r", flush=True)
     except KeyboardInterrupt:
         pass
 
 
-def _run():
+def main():
     env = load_env()
     message = " ".join(sys.argv[1:]).strip()
     ensure_repo(env)
@@ -152,13 +147,7 @@ def _run():
         git("pull", "--rebase", "origin", BRANCH)   # 同步远端，避免冲突堆积
     git("push", "-u", "origin", BRANCH)
     print(f"[ok] 已推送到 origin/{BRANCH}" + ("（首次推送）" if first_push else ""))
-
-
-def main():
-    try:
-        _run()
-    finally:
-        countdown()                                 # 成功 / 失败都停留 5 秒，便于看清结果
+    countdown()
 
 
 if __name__ == "__main__":
