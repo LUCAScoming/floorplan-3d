@@ -497,6 +497,17 @@
       cursor: pointer
     }
 
+    /* 按住空格：画布进入平移模式（抓手光标），子元素一并覆盖 */
+    #plan.spacepan,
+    #plan.spacepan * {
+      cursor: grab
+    }
+
+    #plan.spacepan.panning,
+    #plan.spacepan.panning * {
+      cursor: grabbing
+    }
+
     [data-handle=size] {
       cursor: nwse-resize
     }
@@ -1665,7 +1676,8 @@
       padding: 4px;
       box-shadow: 0 10px 30px rgba(40, 30, 20, .14);
       z-index: 20;
-      animation: fadeIn .2s ease
+      animation: fadeIn .2s ease;
+      overflow-y: auto
     }
 
     .menu-pop .btn {
@@ -7243,26 +7255,10 @@
         hintTimer = setTimeout(() => h.classList.remove('show'), 4000);
         return;
       }
-      const hints = {
-        select: COARSE ? tr('预览模式：拖动平移 / 双指缩放 · 点击房间查看面积与地面 · 编辑请进「设计」', 'Preview: pan / pinch to zoom · tap a room for area & flooring · switch to "Design" to edit')
-          : tr('预览模式：拖动平移 / 滚轮缩放 · 点击房间查看面积与地面 · 切到「设计」(W) 才能选中修改', 'Preview: pan / wheel zoom · tap a room for area & flooring · switch to "Design" (W) to edit anything'),
-        measure: COARSE ? tr('按住拖出测量线，或依次点两点 · 靠近墙面自动吸附 · 点「预览」或右击退出', 'Hold and drag a line, or tap two points · snaps to walls · tap "Preview" or right-click to exit')
-          : tr('点击两点（或按住拖动）测量距离 · 靠近墙面自动吸附 · Shift 锁定水平/垂直 · Esc 取消 · 右击回到预览', 'Click two points (or drag) to measure · snaps to walls · Shift locks horizontal/vertical · Esc cancels · right-click back to preview'),
-        draw: COARSE ? tr('子工具「选择」= 点选编辑：选中后 Delete 或底部按钮删除（内置墙=标记拆除）· 空白处拖动可框选（双指缩放 / 平移）· 画墙（点两点）/ 房门 / 窗户（点墙上的位置）', '"Select" edits: Delete or the bottom bar removes (original walls are marked for removal) · drag on empty space to marquee-select (two fingers to pan / zoom) · draw walls, add doors / windows')
-          : tr('子工具「选择」= 点选墙 / 门 / 窗 / 家具编辑，在空白处 / 房间内拖出矩形可框选家具 / 楼梯 / 柱子 / 自画墙（Ctrl+D 复制、Delete 删除；按住 Alt 拖动可从任意位置起手），Delete 删除（内置墙 = 标记拆除，点拆除残留可恢复，黑色承重墙不可拆）· 画墙 = 点两点（画板下方「直角 / 自由」控制方向：直角只走水平 / 垂直，自由任意角度，Shift 临时锁轴；右键 / Esc 取消，靠近旧墙自动吸上融合；也可点起点后直接输入长度回车）· 栏杆 / 梁 / 女儿墙 / 雨棚 / 尺寸标注同样受「直角 / 自由」约束· 房门 / 垭口 / 双开门 / 子母门 / 卷帘门 / 电梯门 / 落地窗 / 落地推拉门 / 单扇推拉门 / 折叠门 / 窗户 / 高窗 / 门连窗 / 飘窗 = 点墙上的位置 · 文字标注 = 点位置放文字（右侧改内容/字号，可拖动）· 台阶 = 点位置放一组台阶（级数可改）· 栏杆 = 点起点再点终点（高度 / 直杆或玻璃可改）· 梁 = 点起点再点终点（宽 / 高 / 底标高可改）· 标高 = 点位置放标高符号 · 尺寸标注 = 点起点再点终点 · 材质刷 = 点房间刷地面材料（先用「选择」点一个样板房间换材料）· 入户 = 点一个门洞设为唯一入户门 · 柱子 / 楼梯（直跑 · 双跑 · 三跑 · 正三跑）= 点任意位置放置（可拖动）· 楼板 = 点两个对角点（板厚 / 底标高可改）· 女儿墙 = 点起点再点终点（厚 / 高 / 底标高可改）· 雨棚 = 点起点再点终点（挑出 / 板厚 / 底标高可改）· 指北针 = 点位置放置（全局唯一，角度可改）· 电梯 = 点位置放置（宽 / 深 / 停靠高度 / 门宽 / 开门方向可改）· 阳台 / 花坛 = 点两个对角点 · 烟道 = 点位置放置', '"Select" = click walls / doors / windows / furniture to edit; drag on empty space or inside a room to marquee-select furniture / stairs / columns / walls (Ctrl+D duplicates, Alt+drag starts anywhere); Delete removes (original walls = mark for removal, click the dashed remains to restore, black load-bearing walls protected) · Draw = two points (the 直角 / 自由 toggle under the canvas sets the direction — orthogonal or any angle, Shift locks axis, right-click / Esc cancels, snaps onto existing walls to fuse; or click the start point and type a length, Enter to confirm) · Railing / beam / parapet / canopy / dimension follow the same toggle · Door / Roller / Elevator / Window = click a wall · Entry = click a door opening to set the unique entry · Railing / beam / parapet / canopy = click two points · Slab = two opposite corners · North arrow / elevator / flue = click to place · Balcony / planter = two opposite corners · Level / dimension = click to place')
-      };
-      const rotHint = ui.rotPick
-        ? tr('旋转：点选要旋转的对象（可连续点选多个）· 点空白处或回车 / 右键结束选择并定基点 · Esc 退出', 'Rotate: click the objects to rotate (multiple OK) · click empty space or press Enter / right-click to finish · Esc exits')
-        : tr('旋转：点一下基点 → 移动鼠标旋转 → 再点一下确认；也可在底部输入角度回车 · 默认 15° 吸附，Shift 自由角度 · Esc 取消', 'Rotate: pick a base point → move to rotate → click to confirm; or type an angle below and press Enter · 15° snap, Shift for free angle · Esc cancels');
-      const moveHint = COARSE
-        ? tr('移动：按住对象拖到新位置 · 多选后按住其中任一对象整组移动 · Shift 直角移动', 'Move: drag an object to reposition · drag any selected item to move the group · Shift locks axis')
-        : tr('移动：按住家具 / 墙 / 门窗 / 构件拖动改位置 · 多选后按住其中任一对象整组移动 · Shift 锁定水平 / 垂直 · 右击回到选择', 'Move: drag furniture / walls / openings / structures to reposition · drag any selected item to move the group · Shift locks axis · right-click back to Select');
-      const hint = ui.tool === 'draw' && ui.drawTool === 'rotate' ? rotHint : (ui.tool === 'draw' && ui.drawTool === 'move' ? moveHint : hints[ui.tool]);
-      h.textContent = hint || '';
+      // 2D 各工具不再弹出长段操作提示，只保留按钮自带的悬停说明（title / data-en-title）
       clearTimeout(hintTimer);
-      if (!hint) { h.classList.remove('show'); return; }
-      h.classList.add('show');
-      hintTimer = setTimeout(() => h.classList.remove('show'), 4000);   // 4 秒后自动淡出，避免常显挡住工具栏
+      h.textContent = '';
+      h.classList.remove('show');
     }
 
     /* ======================= 视图 ======================= */
@@ -8119,7 +8115,7 @@
     }
 
     /* ======================= 指针交互 ======================= */
-    let drag = null, pinch = null;
+    let drag = null, pinch = null, spacePan = false;   // spacePan：按住空格进入画布平移模式
     let wStart = null, wCur = null;                // 画墙模式：当前线段的起点 / 终点
     const touches = new Map();                     // 当前按在平面图上的手指
     const svgXY = (x, y) => { const r = svg.getBoundingClientRect(); return [x - r.left, y - r.top]; };
@@ -8186,6 +8182,12 @@
       if (e.button === 1) {                        // 中键（滚轮键）拖动 = 平移，任何工具下都可用
         e.preventDefault();
         drag = { kind: 'pan', sx: e.clientX, sy: e.clientY, x0: view.x0, y0: view.y0, moved: false, keepSel: true, mid: true };
+        svg.setPointerCapture(e.pointerId);
+        return;
+      }
+      if (spacePan && e.button === 0) {            // 空格 + 左键拖动 = 平移，任何工具下都可用
+        e.preventDefault();
+        drag = { kind: 'pan', sx: e.clientX, sy: e.clientY, x0: view.x0, y0: view.y0, moved: false, keepSel: true, space: true };
         svg.setPointerCapture(e.pointerId);
         return;
       }
@@ -9022,7 +9024,7 @@
         renderAll(); return;
       }
       if (drag.kind === 'pan') {
-        if (!drag.mid && e.pointerType === 'mouse') return;   // 鼠标：平移用中键（滚轮键）拖动，左键仅点选
+        if (!drag.mid && !drag.space && e.pointerType === 'mouse') return;   // 鼠标：平移用中键或「空格 + 左键」拖动，左键仅点选
         if (!drag.moved && !far) return;
         drag.moved = true; svg.classList.add('panning');
         const rr = rotRad(), dxs = (e.clientX - drag.sx) / view.s, dys = (e.clientY - drag.sy) / view.s;
@@ -9598,6 +9600,19 @@
       else if (k === '-') zoomCenter(.8);
     });
 
+    /* 按住空格 = 画布平移模式：配合左键拖动可平移（2D 任意工具下均可用；3D 漫游的空格跳跃不受影响） */
+    document.addEventListener('keydown', e => {
+      if (e.code !== 'Space' || is3D()) return;
+      if (e.target?.closest?.('input,select,textarea,[contenteditable="true"],[contenteditable=""]')) return;   // 输入框内正常输入空格
+      e.preventDefault();                                  // 阻止页面滚动 / 空格重复触发按钮
+      if (!spacePan) { spacePan = true; svg.classList.add('spacepan'); }
+    });
+    document.addEventListener('keyup', e => {
+      if (e.code !== 'Space') return;
+      spacePan = false; svg.classList.remove('spacepan');
+    });
+    addEventListener('blur', () => { spacePan = false; svg.classList.remove('spacepan'); });   // 切走窗口时复位
+
     /* ======================= 家具库 ======================= */
     function buildLib() {
       $('#lib').innerHTML = LIB.map((c, ci) => `<h4>${nm(c.cat)}</h4><div class="lib-grid">${c.items.map((it, ii) => {
@@ -9756,6 +9771,25 @@
       syncEditGrp();                                               // 2D / 3D 切换后编辑按钮组跟随设计态
       switching = false; document.body.classList.remove('busy');
     }
+    /**
+     * 「文件」下拉打开时钳制在视口内。
+     * 顶栏在窄窗口会换行，按钮可能被挤到左侧，右对齐的菜单会伸出屏幕左边；
+     * 窗口较矮（手机横屏 / 小窗口）时菜单底部也会超出屏幕。
+     * 打开时按实测位置把菜单移到视口内（左右各留 8px），下方空间不足时限制高度并在菜单内部滚动。
+     * @author Alfie
+     */
+    function clampMenuPop() {
+      const menu = $('details.menu'); if (!menu) return;
+      const pop = menu.querySelector('.menu-pop');
+      pop.style.left = ''; pop.style.right = ''; pop.style.maxHeight = '';   // 先还原默认定位再测量
+      if (!menu.open) return;
+      const b = pop.getBoundingClientRect(), mb = menu.getBoundingClientRect();
+      const left = Math.max(8, Math.min(b.left, innerWidth - b.width - 8));
+      pop.style.left = (left - mb.left) + 'px';                                // 相对 .menu 定位
+      pop.style.right = 'auto';
+      pop.style.maxHeight = Math.max(80, innerHeight - b.top - 8) + 'px';
+    }
+    $('details.menu').addEventListener('toggle', clampMenuPop);
     document.querySelectorAll('.menu-pop .btn').forEach(b => b.addEventListener('click', () => b.closest('details').open = false));
     document.querySelectorAll('#viewSeg .btn').forEach(b => b.onclick = () => setView(b.dataset.view));
 
